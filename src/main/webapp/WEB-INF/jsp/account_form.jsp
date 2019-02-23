@@ -18,8 +18,10 @@
     <h2>Account</h2>
     <form:form modelAttribute="accountForm" method="post" action="${saveURL }" cssClass="form" >
         <form:hidden path="accountNo"/>
-        <div class="form-group">
-            <label>Account No</label>
+        <div class="form-group mx-sm-3 mb-2">
+            <%--<label>Account No</label>--%>
+            <%--<form:input path="accountNo" cssClass="form-control" id="name" />--%>
+            <label>Balance</label>
             <form:input path="balance" cssClass="form-control" id="balance" />
         </div>
         <button type="submit" class="btn btn-primary">Save</button>

@@ -10,7 +10,7 @@
     <title>Accounts List</title>
     <link href="../../webjars/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"/>
     <script src="../../webjars/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="@{js/jquery.min.js}"></script>
+    <script src="../../webjars/bootstrap/4.0.0/js/jquery.min.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
@@ -84,18 +84,18 @@
                 <td>${account.created }</td>
                 <td>
                     <spring:url value="/account/updateAccount/${account.accountNo }" var="updateURL"/>
-                    <a class="btn btn-primary" href="${updateURL }" role="button">Update</a>
+                    <a class="btn btn-primary" href="${updateURL }" role="button">update</a>
                 </td>
                 <td>
                     <spring:url value="/account/deleteAccount/${account.accountNo }" var="deleteURL"/>
-                    <a class="btn btn-primary" href="${deleteURL }" role="button">Delete</a>
+                    <a class="btn btn-primary" href="${deleteURL }" role="button">delete</a>
                 </td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
     <spring:url value="/account/addAccount/" var="addURL"/>
-    <a class="btn btn-primary" href="${addURL }" role="button">Add New Article</a>
+    <a class="btn btn-primary" href="${addURL }" role="button">Create New</a>
 </div>
 </body>
 </html>
