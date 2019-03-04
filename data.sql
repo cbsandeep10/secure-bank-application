@@ -27,7 +27,7 @@ CREATE TABLE bank.transaction (
   PRIMARY KEY (transfer_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
+INSERT INTO bank.account VALUES (123, 53.0, 456, 1, 5.0, CURDATE() ,CURDATE() );
 
 DROP TABLE IF EXISTS bank.user;
 CREATE TABLE bank.user (
