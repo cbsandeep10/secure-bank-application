@@ -86,4 +86,3 @@ insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','2');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','3');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','4');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','5');
-
