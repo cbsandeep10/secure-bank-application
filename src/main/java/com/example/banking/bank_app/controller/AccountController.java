@@ -16,9 +16,12 @@ public class  AccountController {
     AccountService accountService;
 
     @RequestMapping(value="/list", method= RequestMethod.GET)
-    public List<Account> list() {
+    public ModelAndView list() {
         List<Account> accountList = accountService.getAllAccounts();
-        return accountList;
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("accountList", accountList);
+        modelAndView.setViewName("account_list");
+        return modelAndView;
     }
 //
 //    @RequestMapping(value="/addAccount/", method= RequestMethod.GET)
