@@ -17,10 +17,19 @@ public class UserController {
     UserService userService;
 
     @RequestMapping(value="/list", method= RequestMethod.GET)
+    public ModelAndView list() {
+        List<User> userList = accountService.getAllUsers();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("userList", accountList);
+        modelAndView.setViewName("user_list");
+        return modelAndView;
+    }
+
+/*    @RequestMapping(value="/list", method= RequestMethod.GET)
     public List<User> list() {
         List<User> userList = userService.getAllUsers();
         return userList;
-    }
+    }*/
 //
 //    @RequestMapping(value="/addAccount/", method= RequestMethod.GET)
 //    public Account addAccount() {
