@@ -35,7 +35,7 @@ public class UserController {
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
     public ModelAndView list(@PathVariable("page") int page) {
         ModelAndView modelAndView = new ModelAndView("user_list");
-        PageRequest pageable = PageRequest.of(page - 1, 1);
+        PageRequest pageable = PageRequest.of(page - 1, 15);
         Page<User> userPage = userService.getPaginated(pageable);
         int totalPages = userPage.getTotalPages();
         if(totalPages > 0) {

@@ -19,15 +19,28 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <td>User No</td>
+                    <td>User Id</td>
                     <td>Name</td>
-                    <td>Routing No</td>
+                    <td>Gender</td>
+                    <td>DOB</td>
+                    <td>Contact No</td>
+                    <td>Email Id</td>
+                    <td>Address</td>
+                    <td>Created At</td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="user: ${userList}">
-                    <td th:text="${user.userId}"></td>
-                    <td th:text="${user.name}"></td>
+                    <td th:text="${user.getUserId()}"></td>
+                    <td th:text="${user.getName()}"></td>
+                    <td th:text="${user.getGender()}"></td>
+                    <td th:text="${user.getDob()}"></td>
+                    <td th:text="${user.getContact()}"></td>
+                    <td th:text="${user.getEmailId()}"></td>
+                    <td th:text="${user.getAddress()}"></td>
+                    <td th:text="${user.getCreated()}"></td>
                     <td><a class="btn btn-primary eBtn">Edit</a></td>
                     <td><a class="btn btn-primary eBtn">Delete</a></td>
                 </tr>
