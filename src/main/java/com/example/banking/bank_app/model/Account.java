@@ -31,6 +31,10 @@ public class Account {
     @Temporal(TemporalType.DATE)
     private Date updated;
 
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
+
     public Long getAccountNo() {
         return accountNo;
     }
@@ -85,5 +89,13 @@ public class Account {
 
     public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

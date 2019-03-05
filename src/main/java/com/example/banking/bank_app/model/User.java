@@ -3,6 +3,7 @@ package com.example.banking.bank_app.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="user")
@@ -36,6 +37,9 @@ public class User {
     @Column(name="created")
     @Temporal(TemporalType.DATE)
     private Date created;
+
+    @OneToMany(mappedBy = "user")
+    private List<Account> accounts;
 
     public Long getUserId() {
         return userId;
@@ -107,5 +111,13 @@ public class User {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 }
