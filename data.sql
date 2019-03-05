@@ -43,8 +43,6 @@ CREATE TABLE bank.user (
   PRIMARY KEY (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-
 DROP TABLE IF EXISTS bank.auth_user_role;
 DROP TABLE IF EXISTS bank.auth_role;
 DROP TABLE IF EXISTS bank.auth_user;
@@ -87,3 +85,43 @@ insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','3');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','4');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','5');
 
+
+DROP TABLE IF EXISTS bank.admin_log;
+CREATE TABLE bank.admin_log (
+  id int(11) unsigned NOT NULL,
+  type_id int(11) NOT NULL,
+  log_timestamp date ,
+  related_user_id int(11) unsigned NOT NULL,
+  message varchar(256),
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+INSERT INTO bank.admin_log (id, type_id,log_timestamp,related_user_id,message)
+VALUES (1,2,'2019-03-02',3,"Transaction Success");
+INSERT INTO bank.admin_log (id, type_id,log_timestamp,related_user_id,message)
+VALUES (2,3,'2019-03-02',4,"Transaction Failure");
+INSERT INTO bank.admin_log (id, type_id,log_timestamp,related_user_id,message)
+VALUES (3,4,'2019-03-02',5,"Transaction Success");
+
+DROP TABLE IF EXISTS bank.employee;
+CREATE TABLE bank.employee
+(
+    employee_id int(11) unsigned NOT NULL,
+    employee_name varchar(256),
+    gender varchar(256),
+    age int(11),
+    tier_level int(11) unsigned NOT NULL,
+    designation_id int(11),
+    contact_no varchar(256),
+    email_id varchar(256),
+    address varchar(256),
+    PRIMARY KEY (employee_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
+VALUES (1,"abc","M",23,1,1,"452-345-6789","abc@gmail.com","Tempe,AZ");
+INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
+VALUES (2,"def","M",25,2,2,"408-345-6789","def@gmail.com","Tempe,AZ");
+INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
+VALUES (3,"inter","M",24,3,1,"402-345-6789","inter@gmail.com","Tempe,AZ");
