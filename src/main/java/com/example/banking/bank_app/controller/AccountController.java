@@ -34,34 +34,12 @@ public class  AccountController {
         return modelAndView;
     }
 
-//    @RequestMapping(value = "/listBooks", method = RequestMethod.GET)
-//    public String listBooks(
-//            Model model,
-//            @RequestParam("page") Optional<Integer> page,
-//            @RequestParam("size") Optional<Integer> size) {
-//        int currentPage = page.orElse(1);
-//        int pageSize = size.orElse(5);
 //
-//        Page<Book> bookPage = accountService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
-//
-//        model.addAttribute("bookPage", bookPage);
-//
-//        int totalPages = bookPage.getTotalPages();
-//        if (totalPages > 0) {
-//            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-//                    .boxed()
-//                    .collect(Collectors.toList());
-//            model.addAttribute("pageNumbers", pageNumbers);
-//        }
-//
-//        return "listBooks.html";
-//    }
-//
-//    @RequestMapping(value="/addAccount/", method= RequestMethod.GET)
-//    public Account addAccount() {
-//        Account account = new Account();
-//        return account;
-//    }
+    @RequestMapping(value="/addAccount/", method= RequestMethod.GET)
+    public Account addAccount() {
+        Account account = new Account();
+        return account;
+    }
 //
 //    @RequestMapping(value="/updateArticle/{accountNo}", method= RequestMethod.GET)
 //    public ModelAndView editArticle(@PathVariable Long accountNo) {

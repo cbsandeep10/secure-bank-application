@@ -6,13 +6,15 @@ CREATE DATABASE bank;
 DROP TABLE IF EXISTS bank.account;
 CREATE TABLE bank.account (
   account_no int(11) unsigned NOT NULL,
+  user_id int(11) unsigned NOT NULL,
   balance decimal(10,2) NOT NULL,
   routing_no int(11) NOT NULL,
   account_type int(02) NOT NULL default 1,
   interest decimal(5,2),
   created date,
   updated date,
-  PRIMARY KEY (account_no)
+  PRIMARY KEY (account_no),
+  FOREIGN KEY (user_id) REFERENCES bank.user(user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS bank.transaction;
@@ -27,7 +29,8 @@ CREATE TABLE bank.transaction (
   PRIMARY KEY (transfer_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO bank.account VALUES (123, 53.0, 456, 1, 5.0, CURDATE() ,CURDATE() );
+INSERT INTO bank.user values(1,'Sandeep Balaji', 'M', CURDATE(), '4805775641', 'scbalaji@asu.edu', '2430 S MILL AVE, TEMPE',1,CURDATE() );
+INSERT INTO bank.account VALUES (123,1, 53.0, 456, 1, 5.0, CURDATE() ,CURDATE() );
 
 DROP TABLE IF EXISTS bank.user;
 CREATE TABLE bank.user (
