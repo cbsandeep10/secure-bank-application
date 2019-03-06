@@ -3,6 +3,20 @@
 DROP DATABASE bank;
 CREATE DATABASE bank;
 
+DROP TABLE IF EXISTS bank.user;
+CREATE TABLE bank.user (
+  user_id int(11) unsigned NOT NULL,
+  name varchar(256) NOT NULL,
+  gender varchar(2) NOT NULL,
+  dob date NOT NULL,
+  contact varchar(12) NOT NULL,
+  email_id varchar(256) NOT NULL,
+  address varchar(256) NOT NULL,
+  user_type int(2) NOT NULL,
+  created date,
+  PRIMARY KEY (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS bank.account;
 CREATE TABLE bank.account (
   account_no int(11) unsigned NOT NULL,
@@ -31,20 +45,6 @@ CREATE TABLE bank.transaction (
 
 INSERT INTO bank.user values(1,'Sandeep Balaji', 'M', CURDATE(), '4805775641', 'scbalaji@asu.edu', '2430 S MILL AVE, TEMPE',1,CURDATE() );
 INSERT INTO bank.account VALUES (123,1, 53.0, 456, 1, 5.0, CURDATE() ,CURDATE() );
-
-DROP TABLE IF EXISTS bank.user;
-CREATE TABLE bank.user (
-  user_id int(11) unsigned NOT NULL,
-  name varchar(256) NOT NULL,
-  gender varchar(2) NOT NULL,
-  dob date NOT NULL,
-  contact varchar(12) NOT NULL,
-  email_id varchar(256) NOT NULL,
-  address varchar(256) NOT NULL,
-  user_type int(2) NOT NULL,
-  created date,
-  PRIMARY KEY (user_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS bank.auth_user_role;
 DROP TABLE IF EXISTS bank.auth_role;
