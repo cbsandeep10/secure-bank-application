@@ -36,4 +36,43 @@ public class AuthenticationController {
         modelAndView.setViewName("home"); // resources/template/home.html
         return modelAndView;
     }
+
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    public ModelAndView admin() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin"); // resources/template/admin.html
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/tier1", method = RequestMethod.GET)
+    public ModelAndView tier1() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("tier1"); // resources/template/tier1.html
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/tier2", method = RequestMethod.GET)
+    public ModelAndView tier2() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("tier2"); // resources/template/tier2.html
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public ModelAndView user() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("user"); // resources/template/user.html
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/merchant", method = RequestMethod.GET)
+    public ModelAndView merchant() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("merchant"); // resources/template/merchant.html
+        return modelAndView;
+    }
+
+
+
+
 }
