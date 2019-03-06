@@ -1,5 +1,8 @@
 package com.example.banking.bank_app.controller;
 
+import com.example.banking.bank_app.model.User;
+import com.example.banking.bank_app.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AuthenticationController {
+
+    @Autowired
+    UserService userService;
 
     @RequestMapping(value = { "/login" }, method = RequestMethod.GET)
     public ModelAndView login() {
@@ -34,6 +40,9 @@ public class AuthenticationController {
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("home"); // resources/template/home.html
+        Long id = 1L;
+        User user = userService.getUserByUserId(id);
+        modelAndView.addObject("user",user);
         return modelAndView;
     }
 }
