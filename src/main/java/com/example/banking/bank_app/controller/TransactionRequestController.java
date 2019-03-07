@@ -1,8 +1,7 @@
 package com.example.banking.bank_app.controller;
 
-import com.example.banking.bank_app.model.Account;
-import com.example.banking.bank_app.model.Request;
-import com.example.banking.bank_app.service.RequestService;
+import com.example.banking.bank_app.model.TransactionRequest;
+import com.example.banking.bank_app.service.TransactionRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,15 +17,15 @@ import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping(value="/request")
-public class RequestController {
+public class TransactionRequestController {
 
     @Autowired
-    RequestService requestService;
+    TransactionRequestService transactionRequestService;
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
     public ModelAndView list(@PathVariable("page") int page) {
         ModelAndView modelAndView = new ModelAndView("request_list");
         PageRequest pageable = PageRequest.of(page - 1, 10);
-        Page<Request> requestPage = requestService.getPaginated(pageable);
+        Page<TransactionRequest> requestPage = transactionRequestService.getPaginated(pageable);
         int totalPages = requestPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNums = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());

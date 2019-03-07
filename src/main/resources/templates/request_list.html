@@ -36,19 +36,21 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <td>Request Id</td>
-                        <td>Created By</td>
-                        <td>Transaction Amount</td>
-                        <td>Account No</td>
-                        <td>Created at</td>
+                        <td><strong>REQUEST ID</strong></td>
+                        <td><strong>CREATED BY</strong></td>
+                        <td><strong>TRANSACTION AMOUNT</strong></td>
+                        <td><strong>FROM ACCOUNT</strong></td>
+                        <td><strong>TO ACCOUNT</strong></td>
+                        <td><strong>CREATED AT</strong></td>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="request: ${requestList}">
                         <td th:text="${request.getRequest_id()}"></td>
-                        <td th:text="${request.user1.getName()}"></td>
-                        <td th:text="${request.transaction.gettransfer_amount()}"></td>
-                        <td th:text="${request.transaction.getfrom_account()}"></td>
+                        <td th:text="${request.getCreated_user().getName()}"></td>
+                        <td th:text="${request.getTransaction_amount()}"></td>
+                        <td th:text="${request.getFrom_account()}"></td>
+                        <td th:text="${request.getTo_account()}"></td>
                         <td th:text="${request.getCreated_at()}"></td>
                         <td><a class="btn btn-primary eBtn">Approve</a></td>
                         <td><a class="btn btn-primary eBtn">Decline</a></td>

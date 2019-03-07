@@ -40,7 +40,7 @@ public class AuthenticationController {
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("home"); // resources/template/home.html
-        Long id = 1L;
+        Long id = 1000L;
         User user = userService.getUserByUserId(id);
         modelAndView.addObject("user",user);
         return modelAndView;

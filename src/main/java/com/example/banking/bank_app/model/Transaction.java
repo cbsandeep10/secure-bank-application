@@ -11,12 +11,12 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transaction_id;
 
-    @Column(name="transfer_amount")
-    private float transfer_amount;
+    @Column(name="transaction_amount")
+    private float transaction_amount;
 
-    @Column(name="transfer_date")
+    @Column(name="transaction_timestamp")
     @Temporal(TemporalType.DATE)
-    private Date transfer_date;
+    private Date transaction_timestamp;
 
     @Column(name="description")
     private String description;
@@ -24,11 +24,19 @@ public class Transaction {
     @Column(name="status")
     private Integer status;
 
-    @Column(name="from_account")
-    private Integer from_account;
+    @Column(name="account_no")
+    private Integer account_no;
 
-    @Column(name="to_account")
-    private Integer to_account;
+    @Column(name="balance")
+    private float balance;
+
+    @Column(name="transaction_type")
+    private int transaction_type;
+
+    @ManyToOne()
+    @JoinColumn(name="request_id",referencedColumnName="request_id", insertable=false, updatable=false)
+    private TransactionRequest request;
+
 
     public Long getTransaction_id() {
         return transaction_id;
@@ -38,51 +46,59 @@ public class Transaction {
         this.transaction_id = transaction_id;
     }
 
-    public float gettransfer_amount() {
-        return transfer_amount;
+    public float getTransaction_amount() {
+        return transaction_amount;
     }
 
-    public void settransfer_amount(float transfer_amount) {
-        this.transfer_amount = transfer_amount;
+    public void setTransaction_amount(float transaction_amount) {
+        this.transaction_amount = transaction_amount;
     }
 
-    public Date gettransfer_date() {
-        return transfer_date;
+    public Date getTransaction_timestamp() {
+        return transaction_timestamp;
     }
 
-    public void settransfer_date(Date transfer_date) {
-        this.transfer_date = transfer_date;
+    public void setTransaction_timestamp(Date transaction_timestamp) {
+        this.transaction_timestamp = transaction_timestamp;
     }
 
-    public String getdescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setdescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public Integer getstatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setstatus(Integer status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public Integer getfrom_account() {
-        return from_account;
+    public Integer getAccount_no() {
+        return account_no;
     }
 
-    public void setfrom_account(Integer from_account) {
-        this.from_account = from_account;
+    public void setAccount_no(Integer account_no) {
+        this.account_no = account_no;
     }
 
-    public Integer getto_account() {
-        return to_account;
+    public float getBalance() {
+        return balance;
     }
 
-    public void setto_account(Integer to_account) {
-        this.to_account = to_account;
+    public void setBalance(float balance) {
+        this.balance = balance;
+    }
+
+    public TransactionRequest getRequest() {
+        return request;
+    }
+
+    public void setRequest(TransactionRequest request) {
+        this.request = request;
     }
 }

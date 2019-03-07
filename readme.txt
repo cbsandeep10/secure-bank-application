@@ -39,6 +39,11 @@ Request type :{
     3 : employee detail modification
 }
 
+Transaction type :{
+    1 : Debit
+    2 : Credit
+}
+
 Status type :{
     0 : Pending
     1 : Approved
