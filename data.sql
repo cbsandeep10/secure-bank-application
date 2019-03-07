@@ -5,7 +5,7 @@ CREATE DATABASE bank;
 
 DROP TABLE IF EXISTS bank.user;
 CREATE TABLE bank.user (
-  user_id int(11) unsigned NOT NULL,
+  user_id int(11) unsigned NOT NULL AUTO_INCREMENT,
   name varchar(256) NOT NULL,
   gender varchar(2) NOT NULL,
   dob date NOT NULL,
@@ -13,38 +13,43 @@ CREATE TABLE bank.user (
   email_id varchar(256) NOT NULL,
   address varchar(256) NOT NULL,
   user_type int(2) NOT NULL,
-  created date,
+  created timestamp DEFAULT CURRENT_TIMESTAMP(),
   PRIMARY KEY (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE bank.user AUTO_INCREMENT=1000;
+
 DROP TABLE IF EXISTS bank.account;
 CREATE TABLE bank.account (
-  account_no int(11) unsigned NOT NULL,
+  account_no int(11) unsigned NOT NULL AUTO_INCREMENT,
   user_id int(11) unsigned NOT NULL,
   balance decimal(10,2) NOT NULL,
   routing_no int(11) NOT NULL,
-  account_type int(02) NOT NULL default 1,
+  account_type int(2) NOT NULL,
   interest decimal(5,2),
-  created date,
-  updated date,
+  created timestamp DEFAULT CURRENT_TIMESTAMP(),
+  updated timestamp DEFAULT CURRENT_TIMESTAMP(),
   PRIMARY KEY (account_no),
   FOREIGN KEY (user_id) REFERENCES bank.user(user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE bank.account AUTO_INCREMENT=1000;
+
 DROP TABLE IF EXISTS bank.transaction;
 CREATE TABLE bank.transaction (
-  transfer_id int(11) unsigned NOT NULL,
-  transfer_amount decimal(10,2) NOT NULL,
-  transfer_date date,
+  transaction_id int(11) unsigned NOT NULL AUTO_INCREMENT,
+  transaction_amount decimal(10,2) NOT NULL,
+  transaction_timestamp timestamp DEFAULT CURRENT_TIMESTAMP(),
   description varchar(256),
   status int(1),
-  from_account int(11),
-  to_account int(11),
-  PRIMARY KEY (transfer_id)
+  account_no int(11),
+  balance decimal(10,2),
+  PRIMARY KEY (transfer_id),
+  FOREIGN KEY (account_no) REFERENCES bank.account(account_no)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO bank.user values(1,'Sandeep Balaji', 'M', CURDATE(), '4805775641', 'scbalaji@asu.edu', '2430 S MILL AVE, TEMPE',1,CURDATE() );
-INSERT INTO bank.account VALUES (123,1, 53.0, 456, 1, 5.0, CURDATE() ,CURDATE() );
+INSERT INTO bank.user values(1,'Sandeep Balaji', 'M', CURRENT_TIMESTAMP(), '4805775641', 'scbalaji@asu.edu', '2430 S MILL AVE, TEMPE',1,CURRENT_TIMESTAMP() );
+INSERT INTO bank.account VALUES (123,1, 53.0, 456, 1, 5.0, CURRENT_TIMESTAMP() ,CURRENT_TIMESTAMP() );
 
 DROP TABLE IF EXISTS bank.auth_user_role;
 DROP TABLE IF EXISTS bank.auth_role;
@@ -91,9 +96,9 @@ insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','5');
 
 DROP TABLE IF EXISTS bank.admin_log;
 CREATE TABLE bank.admin_log (
-  id int(11) unsigned NOT NULL,
+  id int(11) unsigned NOT NULL AUTO_INCREMENT,
   type_id int(11) NOT NULL,
-  log_timestamp date ,
+  log_timestamp timestamp ,
   related_user_id int(11) unsigned NOT NULL,
   message varchar(256),
   PRIMARY KEY (id)
@@ -101,26 +106,30 @@ CREATE TABLE bank.admin_log (
 
 
 INSERT INTO bank.admin_log (id, type_id,log_timestamp,related_user_id,message)
-VALUES (1,2,'2019-03-02',3,"Transaction Success");
+VALUES (1,2,'2019-03-02 00:00:00',3,"Transaction Success");
 INSERT INTO bank.admin_log (id, type_id,log_timestamp,related_user_id,message)
-VALUES (2,3,'2019-03-02',4,"Transaction Failure");
+VALUES (2,3,'2019-03-02 00:00:00',4,"Transaction Failure");
 INSERT INTO bank.admin_log (id, type_id,log_timestamp,related_user_id,message)
-VALUES (3,4,'2019-03-02',5,"Transaction Success");
+VALUES (3,4,'2019-03-02 00:00:00',5,"Transaction Success");
 
 DROP TABLE IF EXISTS bank.employee;
 CREATE TABLE bank.employee
 (
-    employee_id int(11) unsigned NOT NULL,
-    employee_name varchar(256),
-    gender varchar(256),
-    age int(11),
+    employee_id int(11) unsigned NOT NULL AUTO_INCREMENT,
+    employee_name varchar(256) NOT NULL,
+    gender varchar(256) NOT NULL,
+    age int(11) ,
     tier_level int(11) unsigned NOT NULL,
     designation_id int(11),
     contact_no varchar(256),
     email_id varchar(256),
     address varchar(256),
+    created timestamp DEFAULT CURRENT_TIMESTAMP(),
+    updated timestamp DEFAULT CURRENT_TIMESTAMP(),
     PRIMARY KEY (employee_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE bank.employee AUTO_INCREMENT=1000;
 
 INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
 VALUES (1,"abc","M",23,1,1,"452-345-6789","abc@gmail.com","Tempe,AZ");
@@ -128,3 +137,17 @@ INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, de
 VALUES (2,"def","M",25,2,2,"408-345-6789","def@gmail.com","Tempe,AZ");
 INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
 VALUES (3,"inter","M",24,3,1,"402-345-6789","inter@gmail.com","Tempe,AZ");
+
+
+DROP TABLE IF EXISTS  bank.request;
+CREATE TABLE bank.request (
+ request_id int(11) NOT NULL AUTO_INCREMENT,
+ request_type int(2),
+ created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP(),
+ status_id int(11) DEFAULT NULL,
+ created_by int(11) DEFAULT NULL,
+ approved_by int(11) DEFAULT NULL,
+ approved_at timestamp NULL DEFAULT CURRENT_TIMESTAMP(),
+ transaction_id int(11) DEFAULT NULL,
+ PRIMARY KEY (request_id)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
