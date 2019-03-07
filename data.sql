@@ -140,14 +140,14 @@ VALUES (3,"inter","M",24,3,1,"402-345-6789","inter@gmail.com","Tempe,AZ");
 
 
 DROP TABLE IF EXISTS  bank.request;
-CREATE TABLE bank.request (
- request_id int(11) NOT NULL AUTO_INCREMENT,
- request_type int(2),
- created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP(),
- status_id int(11) DEFAULT NULL,
- created_by int(11) DEFAULT NULL,
- approved_by int(11) DEFAULT NULL,
- approved_at timestamp NULL DEFAULT CURRENT_TIMESTAMP(),
- transaction_id int(11) DEFAULT NULL,
- PRIMARY KEY (request_id)
+CREATE TABLE bank.`request` (
+  `request_id` int(11) NOT NULL AUTO_INCREMENT,
+  `request_type` int(2),
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP(),
+  `status_id` int(11) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `approved_by` int(11) DEFAULT NULL,
+  `approved_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP(),
+  `transaction_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`request_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
