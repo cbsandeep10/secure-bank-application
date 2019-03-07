@@ -33,6 +33,23 @@ public class Request {
    // @Temporal(TemporalType.TIMESTAMP)
     private Timestamp approved_at;
 
+   // @ManyToOne
+   // @JoinColumn(name="transaction_id", nullable=false)
+   // private Transaction transaction;
+
+    @ManyToOne(optional=false)
+    @JoinColumn(name="transaction_id",referencedColumnName="transaction_id", insertable=false, updatable=false)
+    private Transaction transaction;
+
+
+    @ManyToOne(optional=false)
+    @JoinColumn(name="created_by",referencedColumnName="userId", insertable=false, updatable=false)
+    private User user1;
+
+    @ManyToOne(optional=false)
+    @JoinColumn(name="approved_by",referencedColumnName="userId", insertable=false, updatable=false)
+    private User user2;
+
     public Long getRequest_id() {
         return request_id;
     }
@@ -87,5 +104,29 @@ public class Request {
 
     public void setApproved_at(Timestamp approved_at) {
         this.approved_at = approved_at;
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
+    }
+
+    public User getUser1() {
+        return user1;
+    }
+
+    public void setUser1(User user1) {
+        this.user1 = user1;
+    }
+
+    public User getUser2() {
+        return user2;
+    }
+
+    public void setUser2(User user2) {
+        this.user2 = user2;
     }
 }

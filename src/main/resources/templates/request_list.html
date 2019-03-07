@@ -37,17 +37,21 @@
                     <thead>
                     <tr>
                         <td>Request Id</td>
-                        <td>Type</td>
+                        <td>Created By</td>
+                        <td>Transaction Amount</td>
+                        <td>Account No</td>
                         <td>Created at</td>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="request: ${requestList}">
-                        <td th:text="${request.request_id}"></td>
-                        <td th:text="${request.request_type}"></td>
-                        <td th:text="${request.created_at}"></td>
-                        <td><a class="btn btn-primary eBtn">Edit</a></td>
-                        <td><a class="btn btn-primary eBtn">Delete</a></td>
+                        <td th:text="${request.getRequest_id()}"></td>
+                        <td th:text="${request.user1.getName()}"></td>
+                        <td th:text="${request.transaction.gettransfer_amount()}"></td>
+                        <td th:text="${request.transaction.getfrom_account()}"></td>
+                        <td th:text="${request.getCreated_at()}"></td>
+                        <td><a class="btn btn-primary eBtn">Approve</a></td>
+                        <td><a class="btn btn-primary eBtn">Decline</a></td>
                     </tr>
                     </tbody>
                 </table>
