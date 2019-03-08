@@ -1,0 +1,20 @@
+package com.example.banking.bank_app.model;
+
+/**
+ * Application constants.
+ */
+
+public final class Config {
+    //Status fields
+    public static final int PENDING = 0;
+    public static final int APPROVED = 1;
+    public static final int DECLINED = 2;
+
+    //Transaction fields
+    public static final int DEBIT = 1;
+    public static final int CREDIT = 2;
+
+    //Transaction limit
+    public static final float LIMIT = 1000;
+
+}

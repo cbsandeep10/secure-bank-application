@@ -22,47 +22,49 @@
                 <li class="active"><a th:href="@{/home}">Home</a></li>
                 <li><a th:href="@{/account/list/1}">Accounts</a></li>
                 <li><a th:href="@{/request/list/1}">Requests</a></li>
+                <li><a th:href="@{/transaction}">Transfer</a></li>
                 <li><a th:href="@{/log/list/1}">Logs</a></li>
             </ul>
             <div class="pull-right">
                 <ul class="nav pull-right navbar-nav">
-                    <li><a href="">Log Out</a></li>
+                    <li><a th:href="@{/logout}">Log Out</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container">
-        <div class ="card">
 
-            <div class="card-block">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>Employee ID</th>
-                        <th>Employee Name</th>
-                        <th>Gender</th>
-                        <th>Age</th>
-                        <th>Tier Level</th>
-                        <th>Designation ID</th>
-                        <th>Contact</th>
-                        <th>Email</th>
-                        <th>Address</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="dar : ${EmployeeList}">
-                        <td th:text="${dar.employee_id}"></td>
-                        <td th:text="${dar.employee_name}"></td>
-                        <td th:text="${dar.gender}"></td>
-                        <td th:text="${dar.age}"></td>
-                        <td th:text="${dar.tier_level}"></td>
-                        <td th:text="${dar.designation_id}"></td>
-                        <td th:text="${dar.contact_no}"></td>
-                        <td th:text="${dar.email_id}"></td>
-                        <td th:text="${dar.address}"></td>
-                        <td><a class="btn btn-primary eBtn">Edit</a></td>
-                        <td><a class="btn btn-primary eBtn">Delete</a></td>
-                    </tr>
+<div class="container">
+    <div class ="card">
+
+        <div class="card-block">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Employee Name</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Tier Level</th>
+                    <th>Designation ID</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="dar : ${EmployeeList}">
+                    <td th:text="${dar.getEmployee_id()}"></td>
+                    <td th:text="${dar.getEmployee_name()}"></td>
+                    <td th:text="${dar.getGender()}"></td>
+                    <td th:text="${dar.getAge()}"></td>
+                    <td th:text="${dar.getTier_level()}"></td>
+                    <td th:text="${dar.getDesignation_id()}"></td>
+                    <td th:text="${dar.getContact_no()}"></td>
+                    <td th:text="${dar.getEmail_id()}"></td>
+                    <td th:text="${dar.getAddress()}"></td>
+                    <td><a class="btn btn-primary eBtn">Edit</a></td>
+                    <td><a class="btn btn-primary eBtn">Delete</a></td>
+                </tr>
 
                     </tbody>
                 </table>

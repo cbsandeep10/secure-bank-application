@@ -64,12 +64,11 @@ ALTER TABLE bank.account AUTO_INCREMENT=1000;
 DROP TABLE IF EXISTS  bank.transaction_request;
 CREATE TABLE bank.`transaction_request` (
   `request_id` int(11) NOT NULL AUTO_INCREMENT,
-  `request_type` int(2) NOT NULL,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP(),
   `status_id` int(11) NOT NULL,
   `created_by` int(11) unsigned NOT NULL,
-  `approved_by` int(11) unsigned  NOT NULL,
-  `approved_at` timestamp DEFAULT CURRENT_TIMESTAMP(),
+  `approved_by` int(11) unsigned,
+  `approved_at` timestamp,
   `from_account` int(11) unsigned NOT NULL,
   `to_account` int(11) unsigned NOT NULL,
   `transaction_amount` decimal(10,2) NOT NULL,

@@ -13,20 +13,11 @@ public class TransactionRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long request_id;
 
-    @Column(name="request_type")
-    private String request_type;
-
     @Column(name="status_id")
-    private String status_id;
-
-    @Column(name="created_by")
-    private String created_by;
+    private Integer status_id;
 
     @Column(name="created_at")
     private Timestamp created_at;
-
-    @Column(name="approved_by")
-    private String approved_by;
 
     @Column(name="approved_at")
     private Timestamp approved_at;
@@ -35,10 +26,16 @@ public class TransactionRequest {
     private float transaction_amount;
 
     @Column(name="from_account")
-    private Integer from_account;
+    private Long from_account;
 
     @Column(name="to_account")
-    private Integer to_account;
+    private Long to_account;
+
+    @Column(name="created_by")
+    private Long created_by;
+
+    @Column(name="approved_by")
+    private Long approved_by;
 
     @ManyToOne
     @JoinColumn(name="approved_by", nullable=false, insertable = false, updatable = false)
@@ -56,28 +53,12 @@ public class TransactionRequest {
         this.request_id = request_id;
     }
 
-    public String getRequest_type() {
-        return request_type;
-    }
-
-    public void setRequest_type(String request_type) {
-        this.request_type = request_type;
-    }
-
-    public String getStatus_id() {
+    public Integer getStatus_id() {
         return status_id;
     }
 
-    public void setStatus_id(String status_id) {
+    public void setStatus_id(Integer status_id) {
         this.status_id = status_id;
-    }
-
-    public String getCreated_by() {
-        return created_by;
-    }
-
-    public void setCreated_by(String created_by) {
-        this.created_by = created_by;
     }
 
     public Timestamp getCreated_at() {
@@ -86,14 +67,6 @@ public class TransactionRequest {
 
     public void setCreated_at(Timestamp created_at) {
         this.created_at = created_at;
-    }
-
-    public String getApproved_by() {
-        return approved_by;
-    }
-
-    public void setApproved_by(String approved_by) {
-        this.approved_by = approved_by;
     }
 
     public Timestamp getApproved_at() {
@@ -128,19 +101,35 @@ public class TransactionRequest {
         this.transaction_amount = transaction_amount;
     }
 
-    public Integer getFrom_account() {
+    public Long getFrom_account() {
         return from_account;
     }
 
-    public void setFrom_account(Integer from_account) {
+    public void setFrom_account(Long from_account) {
         this.from_account = from_account;
     }
 
-    public Integer getTo_account() {
+    public Long getTo_account() {
         return to_account;
     }
 
-    public void setTo_account(Integer to_account) {
+    public void setTo_account(Long to_account) {
         this.to_account = to_account;
+    }
+
+    public Long getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(Long created_by) {
+        this.created_by = created_by;
+    }
+
+    public Long getApproved_by() {
+        return approved_by;
+    }
+
+    public void setApproved_by(Long approved_by) {
+        this.approved_by = approved_by;
     }
 }

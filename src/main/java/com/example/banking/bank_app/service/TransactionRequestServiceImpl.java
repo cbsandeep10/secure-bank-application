@@ -28,8 +28,8 @@ public class TransactionRequestServiceImpl implements TransactionRequestService 
     }
 
     @Override
-    public void saveOrUpdate(TransactionRequest request) {
-        transactionRequestRepository.save(request);
+    public TransactionRequest saveOrUpdate(TransactionRequest request) {
+        return transactionRequestRepository.save(request);
     }
 
     @Override

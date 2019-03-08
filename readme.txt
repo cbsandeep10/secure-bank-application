@@ -24,7 +24,7 @@ balance
 ## Requests - employees detail modification - admin
 
 account type :{
-    1 : Checkings,
+    1 : Checking
     2 : Savings
 }
 
@@ -37,6 +37,11 @@ Request type :{
     1 : Transaction
     2 : user detail modification
     3 : employee detail modification
+}
+
+Transaction Request Type:{
+    1: Online
+    2: Offline
 }
 
 Transaction type :{

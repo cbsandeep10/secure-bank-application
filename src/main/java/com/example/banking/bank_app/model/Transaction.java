@@ -1,7 +1,10 @@
 package com.example.banking.bank_app.model;
 
-
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -11,12 +14,14 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transaction_id;
 
+    @Min(1)
+    @Max(4000)
+    @NotNull(message="Amount is between 1 and 4000")
     @Column(name="transaction_amount")
     private float transaction_amount;
 
     @Column(name="transaction_timestamp")
-    @Temporal(TemporalType.DATE)
-    private Date transaction_timestamp;
+    private Timestamp transaction_timestamp;
 
     @Column(name="description")
     private String description;
@@ -24,14 +29,18 @@ public class Transaction {
     @Column(name="status")
     private Integer status;
 
+    @NotNull(message="Account number cannot be empty")
     @Column(name="account_no")
-    private Integer account_no;
+    private Long account_no;
 
     @Column(name="balance")
     private float balance;
 
     @Column(name="transaction_type")
     private int transaction_type;
+
+    @Column(name="request_id")
+    private Long request_id;
 
     @ManyToOne()
     @JoinColumn(name="request_id",referencedColumnName="request_id", insertable=false, updatable=false)
@@ -58,7 +67,7 @@ public class Transaction {
         return transaction_timestamp;
     }
 
-    public void setTransaction_timestamp(Date transaction_timestamp) {
+    public void setTransaction_timestamp(Timestamp transaction_timestamp) {
         this.transaction_timestamp = transaction_timestamp;
     }
 
@@ -78,11 +87,11 @@ public class Transaction {
         this.status = status;
     }
 
-    public Integer getAccount_no() {
+    public Long getAccount_no() {
         return account_no;
     }
 
-    public void setAccount_no(Integer account_no) {
+    public void setAccount_no(Long account_no) {
         this.account_no = account_no;
     }
 
@@ -100,5 +109,21 @@ public class Transaction {
 
     public void setRequest(TransactionRequest request) {
         this.request = request;
+    }
+
+    public int getTransaction_type() {
+        return transaction_type;
+    }
+
+    public void setTransaction_type(int transaction_type) {
+        this.transaction_type = transaction_type;
+    }
+
+    public Long getRequest_id() {
+        return request_id;
+    }
+
+    public void setRequest_id(Long request_id) {
+        this.request_id = request_id;
     }
 }

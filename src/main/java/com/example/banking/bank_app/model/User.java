@@ -2,6 +2,7 @@ package com.example.banking.bank_app.model;
 
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -36,8 +37,7 @@ public class User {
     private Date dob;
 
     @Column(name="created")
-    @Temporal(TemporalType.DATE)
-    private Date created;
+    private Timestamp created;
 
     @OneToMany(mappedBy = "user")
     private List<Account> accounts;
@@ -106,11 +106,11 @@ public class User {
         this.dob = dob;
     }
 
-    public Date getCreated() {
+    public Timestamp getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(Timestamp created) {
         this.created = created;
     }
 
