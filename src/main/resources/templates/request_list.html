@@ -9,6 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+    <script type="text/javascript" src="/js/request.js"></script>
     <title>Request list</title>
 </head>
 <body>
@@ -53,7 +54,7 @@
                         <td th:text="${request.getTo_account()}"></td>
                         <td th:text="${request.getCreated_at()}"></td>
                         <td><a class="btn btn-primary eBtn">Approve</a></td>
-                        <td><a class="btn btn-primary eBtn">Decline</a></td>
+                        <td><a class="btn btn-primary eBtn2">Decline</a></td>
                     </tr>
                     </tbody>
                 </table>
@@ -70,6 +71,62 @@
                         </nav>
                     </div>
                     <div class="col-md-2"></div>
+                </div>
+
+                <div class="requestForm">
+                    <form th:action="@{/request/save/}" method="post">
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <!--<h5 class="modal-title" id="exampleModalLabel">Approve Transaction</h5>-->
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label class="col-form-label">Are you sure to approve the transaction?</label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-secondary">Yes</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                    <div class="requestForm2">
+                        <form th:action="@{/request/save/}" method="post">
+                            <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!--<h5 class="modal-title" id="exampleModalLabel2">Decline</h5>-->
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Are you sure to decline the transaction?</label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-secondary">Yes</button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                 </div>
             </div>
         </div>
