@@ -23,15 +23,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    /*@RequestMapping(value="/list", method= RequestMethod.GET)
-    public ModelAndView list() {
-        List<User> userList = userService.getAllUsers();
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("userList", userList);
-        modelAndView.setViewName("user_list");
-        return modelAndView;
-    }
-*/
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
     public ModelAndView list(@PathVariable("page") int page) {
         ModelAndView modelAndView = new ModelAndView("user_list");

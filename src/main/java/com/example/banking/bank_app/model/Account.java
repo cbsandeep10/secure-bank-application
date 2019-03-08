@@ -1,6 +1,7 @@
 package com.example.banking.bank_app.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -24,12 +25,10 @@ public class Account {
     private float interest;
 
     @Column(name="created")
-    @Temporal(TemporalType.DATE)
-    private Date created;
+    private Timestamp created;
 
     @Column(name="updated")
-    @Temporal(TemporalType.DATE)
-    private Date updated;
+    private Timestamp updated;
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
@@ -75,19 +74,19 @@ public class Account {
         this.interest = interest;
     }
 
-    public Date getCreated() {
+    public Timestamp getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(Timestamp created) {
         this.created = created;
     }
 
-    public Date getUpdated() {
+    public Timestamp getUpdated() {
         return updated;
     }
 
-    public void setUpdated(Date updated) {
+    public void setUpdated(Timestamp updated) {
         this.updated = updated;
     }
 

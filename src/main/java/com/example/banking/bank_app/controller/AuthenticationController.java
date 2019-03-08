@@ -7,12 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-
-
 
 @Controller
 public class AuthenticationController {
@@ -21,6 +15,11 @@ public class AuthenticationController {
     UserService userService;
 
     @RequestMapping(value = { "/" }, method = RequestMethod.GET)
+    public String main() { // resources/template/login.html
+        return "redirect:/login";
+    }
+
+    @RequestMapping(value = { "/login" }, method = RequestMethod.GET)
     public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login"); // resources/template/login.html

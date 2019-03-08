@@ -11,7 +11,7 @@ public interface TransactionRequestService {
 
     public TransactionRequest getRequestByRequestId(Long request_id);
 
-    public void saveOrUpdate(TransactionRequest request);
+    public TransactionRequest saveOrUpdate(TransactionRequest request);
 
     public void deleteRequest(Long request_id);
 

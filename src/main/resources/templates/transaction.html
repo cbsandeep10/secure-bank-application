@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Transaction Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/home}">Secure Bank</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a th:href="@{/home}">Home</a></li>
+            <li><a th:href="@{/account/list/1}">Accounts</a></li>
+            <li><a th:href="@{/request/list/1}">Requests</a></li>
+            <li><a th:href="@{/transaction}">Transfer</a></li>
+            <li><a th:href="@{/log/list/1}">Logs</a></li>
+        </ul>
+        <div class="pull-right">
+            <ul class="nav pull-right navbar-nav">
+                <li><a th:href="@{/logout}">Log Out</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <h2><strong>TRANSFER AMOUNT</strong></h2>
+    <form name="myForm" class="form-horizontal" th:object="${transfer}" th:action="@{/transaction}"  method="post">
+        <div class="form-group" >
+            <label class="control-label col-sm-2" >Account Number</label>
+            <div class="col-sm-4" th:classappend="${#fields.hasErrors('transfers[0].account_no')} ? 'input-icon right' : ''">
+                <i th:if="${#fields.hasErrors('transfers[0].account_no')}" class="fa fa-exclamation tooltips" data-original-title="Valid Account Number" data-container="body"></i>
+                <select class="form-control" th:field="*{transfers[0].account_no}" name="AccountNumber">
+                    <option value="">Select account</option>
+                    <option th:each="account : ${accounts}"
+                            th:value="${account.getAccountNo()}"
+                            th:text="${account.getAccountNo()}+' : '+${account.getAccountType()==1 ? 'Checkings' : 'Savings'}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('transfers[0].account_no')}" class="help-block" th:errors="*{transfers[0].account_no}"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" >Amount($)</label>
+            <div class="col-sm-4"th:classappend="${#fields.hasErrors('transfers[0].transaction_amount')} ? 'input-icon right' : ''">
+                <i th:if="${#fields.hasErrors('transfers[0].transaction_amount')}" class="fa fa-exclamation tooltips" data-original-title="Valid Amount" data-container="body"></i>
+                <input type ="number" class="form-control" th:field="*{transfers[0].transaction_amount}" placeholder="Enter Amount" name="Amount">
+                <span th:if="${#fields.hasErrors('transfers[0].transaction_amount')}" class="help-block" th:errors="*{transfers[0].transaction_amount}"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" >To Account</label>
+            <div class="col-sm-4" th:classappend="${#fields.hasErrors('transfers[1].account_no')} ? 'input-icon right' : ''">
+                <i th:if="${#fields.hasErrors('transfers[1].account_no')}" class="fa fa-exclamation tooltips" data-original-title="Valid Email" data-container="body"></i>
+                <input type ="text" class="form-control" th:field="*{transfers[1].account_no}" placeholder="Enter Account No" name="Email">
+                <span th:if="${#fields.hasErrors('transfers[1].account_no')}" class="help-block" th:errors="*{transfers[1].account_no}"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" >Comments</label>
+            <div class="col-sm-4" th:classappend="${#fields.hasErrors('transfers[0].description')} ? 'input-icon right' : ''">
+                <i th:if="${#fields.hasErrors('transfers[0].description')}" class="fa fa-exclamation tooltips" data-original-title="Valid Phone Number" data-container="body"></i>
+                <input type ="text" class="form-control" th:field="*{transfers[0].description}" placeholder="Enter Comments" name="PhoneNumber">
+                <span th:if="${#fields.hasErrors('transfers[0].description')}" class="help-block" th:errors="*{transfers[0].description}"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Transfer</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

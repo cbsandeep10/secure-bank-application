@@ -1,6 +1,7 @@
 package com.example.banking.bank_app.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -16,8 +17,7 @@ public class Log {
 
 
     @Column(name="log_timestamp")
-    @Temporal(TemporalType.DATE)
-    private Date logTimeStamp;
+    private Timestamp logTimeStamp;
 
     @Column(name="related_user_id")
     private Integer relatedUserID;
@@ -41,11 +41,11 @@ public class Log {
         this.typeID = typeID;
     }
 
-    public Date getLogTimeStamp() {
+    public Timestamp getLogTimeStamp() {
         return logTimeStamp;
     }
 
-    public void setLogTimeStamp(Date logTimeStamp) {
+    public void setLogTimeStamp(Timestamp logTimeStamp) {
         this.logTimeStamp = logTimeStamp;
     }
 
