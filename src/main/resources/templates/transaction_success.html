@@ -20,7 +20,15 @@
             <li class="active"><a th:href="@{/home}">Home</a></li>
             <li><a th:href="@{/account/list/1}">Accounts</a></li>
             <li><a th:href="@{/request/list/1}">Requests</a></li>
-            <li><a th:href="@{/transaction}">Transfer</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transfer
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/transfer/account}">By Account</a></li>
+                    <li><a th:href="@{/transfer/phone}">By Phone</a></li>
+                    <li><a th:href="@{/transfer/email}">By Email</a></li>
+                </ul>
+            </li>
             <li><a th:href="@{/log/list/1}">Logs</a></li>
         </ul>
         <div class="pull-right">
@@ -32,10 +40,10 @@
 </nav>
 <div class="container">
     <h2>You have Successfully transferred!</h2>
-    <form class="form-horizontal" action="/action_page.php" >
+    <form class="form-horizontal">
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <a class="btn btn-info" th:href="@{/transaction}">Do Another Transaction</a>
+                <a class="btn btn-info" th:href="@{/transfer/account}">Do Another Transfer</a>
             </div>
         </div>
     </form>

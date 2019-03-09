@@ -9,8 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-    <link rel="stylesheet" th:href="@{/css/error.css}">
-    <title>Home</title>
+    <title>Statement list</title>
+
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -41,24 +41,44 @@
     </div>
 </nav>
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="error-template">
-                <h1>
-                    Oops!</h1>
-                <h2>
-                    Something went wrong!</h2>
-                <div class="error-details">
-                    Sorry, an error has occurred, Requested page not found!
+    <div class ="card">
+        <div class="card-block">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th><strong>TIMESTAMP</strong></th>
+                    <th><strong>DESCRIPTION</strong></th>
+                    <th><strong>TYPE</strong></th>
+                    <th><strong>AMOUNT</strong></th>
+                    <th><strong>BALANCE</strong></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="statement : ${statementList}">
+                    <td th:text="${statement.getTransaction_timestamp()}"></td>
+                    <td th:text="${statement.getDescription()}"></td>
+                    <td th:text="${statement.getTransaction_type()}"></td>
+                    <td th:text="${statement.getTransaction_amount()}"></td>
+                    <td th:text="${statement.getBalance()}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="row" th:fragment="pagination">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <nav aria-label="Pagination">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:each="pageNumber : ${pageNumbers}" >
+                                <a class="page-link" th:href="@{|/log/list/page/${pageNumber}|}" th:text="${pageNumber}">1</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
-                <div class="error-actions">
-                    <a th:href="@{/home}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
-                        Take Me Home </a>
-                </div>
+                <div class="col-md-2"></div>
             </div>
         </div>
     </div>
 </div>
-
 </body>
 </html>

@@ -1,8 +1,6 @@
 package com.example.banking.bank_app.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -14,9 +12,6 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transaction_id;
 
-    @Min(1)
-    @Max(4000)
-    @NotNull(message="Amount is between 1 and 4000")
     @Column(name="transaction_amount")
     private float transaction_amount;
 

@@ -47,6 +47,8 @@ Transaction Request Type:{
 Transaction type :{
     1 : Debit
     2 : Credit
+    3 : Direct Deposit
+    4 : Check Deposit
 }
 
 Status type :{
@@ -54,3 +56,23 @@ Status type :{
     1 : Approved
     2 : Declined
 }
+
+
+### Password
+
+----ENVIRONMENT-----------------
+
+Runtime: Oracle Corporation Java HotSpot(TM) 64-Bit Server VM 25.201-b09
+
+
+
+----ARGUMENTS-------------------
+
+input: tuFH@nvRqO23
+password: themachine
+
+
+
+----OUTPUT----------------------
+
+wsRal3LM4k0XkpBv93fuSq4nbbLchMJL

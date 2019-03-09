@@ -1,6 +1,5 @@
 package com.example.banking.bank_app.model;
 
-import javax.jnlp.IntegrationService;
 import javax.persistence.*;
 import java.sql.Timestamp;
 

@@ -17,4 +17,9 @@ public final class Config {
     //Transaction limit
     public static final float LIMIT = 1000;
 
+    //Transfer type
+    public static final String ACCOUNT = "account";
+    public static final String EMAIL = "email";
+    public static final String PHONE = "phone";
+
 }

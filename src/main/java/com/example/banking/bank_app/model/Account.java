@@ -2,7 +2,6 @@ package com.example.banking.bank_app.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Date;
 
 @Entity
 @Table(name="account")
