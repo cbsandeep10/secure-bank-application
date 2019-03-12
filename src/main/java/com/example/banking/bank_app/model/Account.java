@@ -1,5 +1,7 @@
 package com.example.banking.bank_app.model;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -29,9 +31,11 @@ public class Account {
     @Column(name="updated")
     private Timestamp updated;
 
-    @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
-    private User user;
+    @Column(name="user_id")
+    private Long userId;
+
+    @Formula("(select user.name from user where user.user_id = user_id)")
+    private String userName;
 
     public Long getAccountNo() {
         return accountNo;
@@ -89,11 +93,19 @@ public class Account {
         this.updated = updated;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

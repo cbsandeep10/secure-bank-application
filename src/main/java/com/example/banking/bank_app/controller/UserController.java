@@ -1,6 +1,9 @@
 package com.example.banking.bank_app.controller;
 
+import com.example.banking.bank_app.model.Account;
+import com.example.banking.bank_app.model.Config;
 import com.example.banking.bank_app.model.User;
+import com.example.banking.bank_app.service.AccountService;
 import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -21,6 +25,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    AccountService accountService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
     public ModelAndView list(@PathVariable("page") int page) {
@@ -35,5 +42,24 @@ public class UserController {
         modelAndView.addObject("activeUserList", true);
         modelAndView.addObject("userList", userPage.getContent());
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/accounts/{type}/{data}", method= RequestMethod.GET)
+    public List<Account> getAccounts(@PathVariable String type, @PathVariable String data){
+        long userId;
+        List<Account> accounts = new ArrayList<>() ;
+        if(data!=null){
+            switch (type) {
+                case Config.EMAIL:
+                    userId = userService.findUserByEmail(data);
+                    accounts = userService.getUserByUserId(userId).getAccounts();
+                    break;
+                case Config.PHONE:
+                    userId = userService.findUserByPhone(data);
+                    accounts = userService.getUserByUserId(userId).getAccounts();
+                    break;
+            }
+        }
+        return accounts;
     }
 }

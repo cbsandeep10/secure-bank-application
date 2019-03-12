@@ -6,8 +6,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/transaction.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -39,11 +41,11 @@
 </nav>
 <div class="container">
     <h2><strong>TRANSFER AMOUNT</strong></h2>
-    <form name="myForm" class="form-horizontal" th:object="${transfer}" th:action="@{'/transfer/'+${type}}" method="post">
+    <form name="myForm" class="form-horizontal" th:object="${transfer}" th:action="@{/transfer}" method="post" novalidate>
         <div class="form-group" >
             <label class="control-label col-sm-2" >Account Number</label>
             <div class="col-sm-4">
-               <select class="form-control" th:field="*{from_account_no}" name="AccountNumber" required>
+               <select class="form-control" th:field="*{from_account_no}" id="AccountNumber" required>
                     <option value="">Select account</option>
                     <option th:each="account : ${accounts}"
                             th:value="${account.getAccountNo()}"
@@ -55,7 +57,7 @@
             <label class="control-label col-sm-2" >Amount($)</label>
             <div class="col-sm-4"th:classappend="${#fields.hasErrors('transaction_amount')} ? 'input-icon right' : ''">
                 <i th:if="${#fields.hasErrors('transaction_amount')}" class="fa fa-exclamation tooltips" data-original-title="Valid Amount" data-container="body"></i>
-                <input type ="number" class="form-control" th:field="*{transaction_amount}" placeholder="Enter Amount" name="Amount" id="amount" min="1" required>
+                <input type ="number" class="form-control" th:field="*{transaction_amount}" placeholder="Enter Amount" name="Amount" id="amount" min="1" step="0.01" required>
                 <span th:if="${#fields.hasErrors('transaction_amount')}" class="help-block" th:errors="*{transaction_amount}"></span>
             </div>
         </div>
@@ -71,19 +73,27 @@
         <!--Phone-->
         <div class="form-group" th:if="${type == 'phone'}">
             <label class="control-label col-sm-2" >Phone</label>
-            <div class="col-sm-4" th:classappend="${#fields.hasErrors('phone')} ? 'input-icon right' : ''">
-                <i th:if="${#fields.hasErrors('phone')}" class="fa fa-exclamation tooltips" data-original-title="Valid Phone" data-container="body"></i>
-                <input type ="number" class="form-control" th:field="*{phone}" placeholder="Enter Phone" name="phone" id="phone" required>
-                <span th:if="${#fields.hasErrors('phone')}" class="help-block" th:errors="*{phone}"></span>
+            <div class="col-sm-4">
+                <input type ="number" class="form-control"  placeholder="Enter Phone" name="phone" id="phone" required>
+                <span class="help-block" id="phone-error"></span>
             </div>
+            <button class="btn btn-primary" id="phone-btn"><i class="fa fa-search"></i></button>
         </div>
         <!--Email-->
         <div class="form-group" th:if="${type == 'email'}">
             <label class="control-label col-sm-2" >Email</label>
-            <div class="col-sm-4" th:classappend="${#fields.hasErrors('email')} ? 'input-icon right' : ''">
-                <i th:if="${#fields.hasErrors('email')}" class="fa fa-exclamation tooltips" data-original-title="Valid Email" data-container="body"></i>
-                <input type ="email" class="form-control" th:field="*{email}" placeholder="Enter Email" name="Email" id="email" required>
-                <span th:if="${#fields.hasErrors('email')}" class="help-block" th:errors="*{email}"></span>
+            <div class="col-sm-4">
+                <input type ="email" class="form-control" placeholder="Enter Email" name="Email" id="email" required>
+                <span class="help-block" id="email-error"></span>
+            </div>
+            <button class="btn btn-primary" id="email-btn"><i class="fa fa-search"></i></button>
+        </div>
+        <div class="form-group" id="account-id" style="display:none;">
+            <label class="control-label col-sm-2" >Account No</label>
+            <div class="col-sm-4">
+                <select id="account-select" required th:field="*{to_account_no}">
+                    <option selected disabled value="">Select Account</option>
+                </select>
             </div>
         </div>
         <div class="form-group">
@@ -91,7 +101,7 @@
             <div class="col-sm-4" th:classappend="${#fields.hasErrors('description')} ? 'input-icon right' : ''">
                 <i th:if="${#fields.hasErrors('description')}" class="fa fa-exclamation tooltips" data-original-title="Valid Phone Number" data-container="body"></i>
                 <input type ="text" class="form-control" th:field="*{description}" placeholder="Enter Comments (Optional)" name="PhoneNumber">
-                <span th:if="${#fields.hasErrors('description')}" class="help-block" th:errors="*{description}"></span>
+                <span class="help-block" id="description-error"></span>
             </div>
         </div>
         <div class="form-group">

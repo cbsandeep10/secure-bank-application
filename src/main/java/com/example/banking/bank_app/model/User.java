@@ -8,7 +8,6 @@ import java.util.List;
 
 @Entity
 @Table(name="user")
-
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +38,8 @@ public class User {
     @Column(name="created")
     private Timestamp created;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable=false, insertable = false, updatable = false)
     private List<Account> accounts;
 
     public Long getUserId() {

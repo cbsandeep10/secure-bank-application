@@ -1,8 +1,6 @@
 package com.example.banking.bank_app.service;
 
 import com.example.banking.bank_app.model.Transaction;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 public interface TransactionService {
@@ -14,5 +12,7 @@ public interface TransactionService {
 
     public void deleteTransaction(Long transfer_id);
 
-    public Page<Transaction> getPaginated(Pageable pageable);
+    public List<Transaction> findAllByAccountNo(Long account_no);
+
+    public List<Transaction> findAllByRequest_id(Long request_id);
 }

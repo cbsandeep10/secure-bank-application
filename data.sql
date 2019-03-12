@@ -100,7 +100,7 @@ INSERT INTO bank.account(user_id,balance ,routing_no,account_type, interest) VAL
 INSERT INTO bank.account(user_id,balance ,routing_no,account_type, interest) VALUES (1000, 2500.0, 45622, 2, 12.0);
 
 
-INSERT INTO `bank`.`transaction_request` (`request_type`, `status_id`,`created_by`,`approved_by`,from_account,to_account,transaction_amount) VALUES(1,0,1000,1,1000,1001,200.0);
+INSERT INTO `bank`.`transaction_request` (`request_id`, `status_id`,`created_by`,`approved_by`,from_account,to_account,transaction_amount) VALUES(1,0,1000,1,1000,1001,200.0);
 
 INSERT INTO bank.transaction (transaction_amount,transaction_type,description,status,account_no,request_id)values(200.0,1,'Just transfering',0,1000,1);
 INSERT INTO bank.transaction (transaction_amount,transaction_type,description,status,account_no,request_id)values(200.0,2,'Just transfering',0,1001,1);

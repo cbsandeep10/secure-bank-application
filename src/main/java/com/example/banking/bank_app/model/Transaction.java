@@ -37,7 +37,7 @@ public class Transaction {
     @Column(name="request_id")
     private Long request_id;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name="request_id",referencedColumnName="request_id", insertable=false, updatable=false)
     private TransactionRequest request;
 

@@ -37,7 +37,7 @@ public class TransactionRequest {
     private Long approved_by;
 
     @ManyToOne
-    @JoinColumn(name="approved_by", nullable=false, insertable = false, updatable = false)
+    @JoinColumn(name="approved_by", insertable = false, updatable = false)
     private Employee approved_user;
 
     @ManyToOne(optional=false)

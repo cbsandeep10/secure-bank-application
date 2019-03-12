@@ -4,7 +4,6 @@ import com.example.banking.bank_app.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface UserService {
@@ -18,5 +17,7 @@ public interface UserService {
 
     public Page<User> getPaginated(Pageable pageable);
 
-    public Long findUserByColumn(@NotNull final String data, String type);
+    public Long findUserByEmail(String email);
+
+    public Long findUserByPhone(String phone);
 }
