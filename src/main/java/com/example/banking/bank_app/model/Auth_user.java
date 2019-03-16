@@ -1,31 +1,37 @@
 package com.example.banking.bank_app.model;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
+//import;
 
 @Entity
 @Table(name = "auth_user")
 public class Auth_user {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "auth_user_id")
     private int id;
 
+    @NotNull(message = "*Please Enter Your Name!")
     @Column(name = "first_name")
     private String name;
 
+    @NotNull (message = "*Please Enter Your Last Name!")
     @Column(name = "last_name")
     private String lastName;
 
+    @NotNull (message = "*Please Enter Your Email Address!")
     @Column(name = "email")
     private String email;
 
+    @NotNull (message = "Please Enter Your Password!")
+    @Length(min = 5, message = "*Password must be at least 5 characters")
     @Column(name = "password")
     private String password;
-
-    @Column(name = "mobile")
-    private String mobile;
 
     @Column(name = "status")
     private String status;
@@ -72,14 +78,6 @@ public class Auth_user {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
     }
 
     public String getStatus() {
