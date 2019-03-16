@@ -28,6 +28,8 @@ public class Auth_user {
     @Column(name = "email")
     private String email;
 
+    //////
+    
     @NotNull (message = "Please Enter Your Password!")
     @Length(min = 5, message = "*Password must be at least 5 characters")
     @Column(name = "password")
