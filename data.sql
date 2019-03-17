@@ -115,11 +115,11 @@ CREATE TABLE bank.auth_role (
   role_desc varchar(255) DEFAULT NULL,
   PRIMARY KEY (auth_role_id)
 );
-INSERT INTO bank.auth_role VALUES (1,'ADMIN','This user has ultimate rights for everything');
-INSERT INTO bank.auth_role VALUES (2,'tier1','tier 1');
-INSERT INTO bank.auth_role VALUES (3,'tier2','tier 2');
-INSERT INTO bank.auth_role VALUES (4,'user','user');
-INSERT INTO bank.auth_role VALUES (5,'merchant','merchant');
+INSERT INTO bank.auth_role VALUES (1,'ADMIN','Administrator');
+INSERT INTO bank.auth_role VALUES (2,'TIER1','Tier 1 Employee');
+INSERT INTO bank.auth_role VALUES (3,'TIER2','Tier 2 Employee');
+INSERT INTO bank.auth_role VALUES (4,'USER','Bank User');
+INSERT INTO bank.auth_role VALUES (5,'MERCHANT','Merchant customers');
 
 
 CREATE TABLE bank.auth_user (
