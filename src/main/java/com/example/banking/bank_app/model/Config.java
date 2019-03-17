@@ -22,4 +22,7 @@ public final class Config {
     public static final String EMAIL = "email";
     public static final String PHONE = "phone";
 
+    //Account type
+
+
 }

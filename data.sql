@@ -59,7 +59,7 @@ CREATE TABLE bank.account (
   FOREIGN KEY (user_id) REFERENCES bank.user(user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE bank.account AUTO_INCREMENT=1000;
+ALTER TABLE bank.account AUTO_INCREMENT=1000000;
 
 DROP TABLE IF EXISTS  bank.transaction_request;
 CREATE TABLE bank.`transaction_request` (
@@ -100,10 +100,10 @@ INSERT INTO bank.account(user_id,balance ,routing_no,account_type, interest) VAL
 INSERT INTO bank.account(user_id,balance ,routing_no,account_type, interest) VALUES (1000, 2500.0, 45622, 2, 12.0);
 
 
-INSERT INTO `bank`.`transaction_request` (`request_id`, `status_id`,`created_by`,`approved_by`,from_account,to_account,transaction_amount) VALUES(1,0,1000,1,1000,1001,200.0);
+-- INSERT INTO `bank`.`transaction_request` (`request_id`, `status_id`,`created_by`,`approved_by`,from_account,to_account,transaction_amount) VALUES(1,0,1000,1,1000,1001,200.0);
 
-INSERT INTO bank.transaction (transaction_amount,transaction_type,description,status,account_no,request_id)values(200.0,1,'Just transfering',0,1000,1);
-INSERT INTO bank.transaction (transaction_amount,transaction_type,description,status,account_no,request_id)values(200.0,2,'Just transfering',0,1001,1);
+-- INSERT INTO bank.transaction (transaction_amount,transaction_type,description,status,account_no,request_id)values(200.0,1,'Just transfering',0,10000000000,1);
+-- INSERT INTO bank.transaction (transaction_amount,transaction_type,description,status,account_no,request_id)values(200.0,2,'Just transfering',0,1000000000,1);
 
 
 DROP TABLE IF EXISTS bank.auth_user_role;
@@ -167,4 +167,20 @@ VALUES (2,3,'2019-03-02 00:00:00',4,"Transaction Failure");
 INSERT INTO bank.admin_log (id, type_id,log_timestamp,related_user_id,message)
 VALUES (3,4,'2019-03-02 00:00:00',5,"Transaction Success");
 
+DROP TABLE IF EXISTS bank.cards;
+CREATE TABLE bank.cards (
+  card_id int(11) unsigned NOT NULL AUTO_INCREMENT,
+  account_no int(11) unsigned NOT NULL,
+  balance decimal(10,2) NOT NULL,
+  credit_limit decimal(10,2) NOT NULL,
+  type int(2) NOT NULL,
+  created timestamp DEFAULT CURRENT_TIMESTAMP(),
+  updated timestamp DEFAULT CURRENT_TIMESTAMP(),
+  PRIMARY KEY (card_id),
+  FOREIGN KEY (account_no) REFERENCES bank.account(account_no)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE bank.cards AUTO_INCREMENT=8000000;
+
+INSERT INTO bank.cards(account_no ,balance,credit_limit, type) VALUES (1000000, 2500.0, 45622, 2);
+-- INSERT INTO bank.cards(account_no ,balance,limit, type) VALUES (10000000000, 2500.0, 45622, 2);

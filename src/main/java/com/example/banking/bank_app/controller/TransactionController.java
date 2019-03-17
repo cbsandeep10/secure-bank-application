@@ -6,6 +6,7 @@ import com.example.banking.bank_app.model.Transaction;
 import com.example.banking.bank_app.service.TransactionService;
 import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,8 +25,8 @@ public class TransactionController {
     TransactionService transactionService;
 
     @RequestMapping(value="/statement/list", method= RequestMethod.GET)
-    public List<Transaction> statement_list() {
-        Long userId=1000L;
+    public List<Transaction> statement_list(Authentication authentication) {
+        Long userId =  userService.findUserByEmail(authentication.getName());
         List<Transaction> transactions= new ArrayList<>();
         for(Account account: userService.getUserByUserId(userId).getAccounts()){
             transactions.addAll(transactionService.findAllByAccountNo(account.getAccountNo()));

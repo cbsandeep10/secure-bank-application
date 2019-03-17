@@ -4,6 +4,7 @@ import com.example.banking.bank_app.model.Auth_user;
 import com.example.banking.bank_app.model.User;
 import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -41,10 +42,10 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public ModelAndView home() {
+    public ModelAndView home(Authentication authentication) {
+        Long id =  userService.findUserByEmail(authentication.getName());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("home"); // resources/template/home.html
-        Long id = 1000L;
         User user = userService.getUserByUserId(id);
         modelAndView.addObject("user",user);
         return modelAndView;

@@ -6,6 +6,7 @@ import com.example.banking.bank_app.service.TransactionRequestService;
 import com.example.banking.bank_app.service.TransactionService;
 import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,22 +34,22 @@ public class TransferController {
     AccountService accountService;
 
     @GetMapping("/transfer/{type}")
-    public String transactionForm(Model model, @PathVariable String type) {
+    public String transactionForm(Model model, @PathVariable String type, Authentication authentication) {
         Transfer transfer = new Transfer();
         model.addAttribute("transfer", transfer);
         model.addAttribute("type", type);
-        long id = 1000L;
+        Long id =  userService.findUserByEmail(authentication.getName());
         model.addAttribute("accounts",userService.getUserByUserId(id).getAccounts());
         return "transaction";
     }
 
     @RequestMapping(value = "/transfer", method= RequestMethod.POST)
-    public String formSubmit(@Valid Transfer transfer, BindingResult bindingResult, Model model) {
+    public String formSubmit(@Valid Transfer transfer, BindingResult bindingResult, Model model, Authentication authentication) {
         if (bindingResult.hasErrors()) {
             return "redirect:/transfer/account";
         }
         //Dont delete the comment
-        long id = 1000L;
+        Long id =  userService.findUserByEmail(authentication.getName());
         Transaction from_transaction = new Transaction();
         Transaction to_transaction = new Transaction();
         from_transaction.setTransaction_amount(transfer.getTransaction_amount());
