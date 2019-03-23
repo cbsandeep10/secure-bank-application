@@ -5,6 +5,7 @@ import com.example.banking.bank_app.model.User;
 import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Controller
 public class AuthenticationController {
@@ -21,12 +25,18 @@ public class AuthenticationController {
     UserService userService;
 
     @RequestMapping(value = { "/" }, method = RequestMethod.GET)
-    public String main() { // resources/template/login.html
+    public String main(Authentication authentication) { // resources/template/login.html
+        if (authentication != null && authentication.isAuthenticated()){
+            return "redirect:/home";
+        }
         return "redirect:/login";
     }
 
     @RequestMapping(value = { "/login" }, method = RequestMethod.GET)
-    public ModelAndView login() {
+    public ModelAndView login(Authentication authentication) {
+        if(authentication != null){
+            authentication.setAuthenticated(false);
+        }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login"); // resources/template/login.html
         return modelAndView;
@@ -42,13 +52,30 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public ModelAndView home(Authentication authentication) {
-        Long id =  userService.findUserByEmail(authentication.getName());
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("home"); // resources/template/home.html
-        User user = userService.getUserByUserId(id);
-        modelAndView.addObject("user",user);
-        return modelAndView;
+    public String home(Authentication authentication) {
+        String url = "/login?error=true";
+
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> roles = new ArrayList<String>();
+        for(GrantedAuthority a : authorities) {
+            roles.add(a.getAuthority());
+        }
+        if(roles.contains("ADMIN")) {
+            url = "/admin";
+        }
+        else if(roles.contains("TIER1")) {
+            url = "/tier1";
+        }
+        else if(roles.contains("TIER2")) {
+            url = "/tier2";
+        }
+        else if(roles.contains("USER")) {
+            url = "/user";
+        }
+        else if(roles.contains("MERCHANT")) {
+            url = "/merchant";
+        }
+        return "redirect:"+url;
     }
     @RequestMapping (value = "/register", method = RequestMethod.POST)
     public ModelAndView registerUser(@Valid Auth_user user, BindingResult bindingResult, ModelMap modelMap) {
@@ -80,23 +107,32 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/tier1", method = RequestMethod.GET)
-    public ModelAndView tier1() {
+    public ModelAndView tier1(Authentication authentication) {
+        Long id =  userService.findUserByEmail(authentication.getName());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("tier1"); // resources/template/tier1.html
+        User user = userService.getUserByUserId(id);
+        modelAndView.addObject("user",user);
         return modelAndView;
     }
 
     @RequestMapping(value = "/tier2", method = RequestMethod.GET)
-    public ModelAndView tier2() {
+    public ModelAndView tier2(Authentication authentication) {
+        Long id =  userService.findUserByEmail(authentication.getName());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("tier2"); // resources/template/tier2.html
+        User user = userService.getUserByUserId(id);
+        modelAndView.addObject("user",user);
         return modelAndView;
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public ModelAndView user() {
+    public ModelAndView user(Authentication authentication) {
+        Long id =  userService.findUserByEmail(authentication.getName());
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("user"); // resources/template/user.html
+        modelAndView.setViewName("user"); // resources/template/home.html
+        User user = userService.getUserByUserId(id);
+        modelAndView.addObject("user",user);
         return modelAndView;
     }
 
@@ -106,8 +142,5 @@ public class AuthenticationController {
         modelAndView.setViewName("merchant"); // resources/template/merchant.html
         return modelAndView;
     }
-
-
-
 
 }

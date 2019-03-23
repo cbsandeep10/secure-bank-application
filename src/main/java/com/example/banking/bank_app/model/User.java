@@ -1,6 +1,8 @@
 package com.example.banking.bank_app.model;
 
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -33,6 +35,7 @@ public class User {
 
     @Column(name="dob")
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dob;
 
     @Column(name="created")

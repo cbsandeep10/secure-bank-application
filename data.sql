@@ -62,21 +62,22 @@ CREATE TABLE bank.account (
 ALTER TABLE bank.account AUTO_INCREMENT=1000000;
 
 DROP TABLE IF EXISTS  bank.transaction_request;
-CREATE TABLE bank.`transaction_request` (
-  `request_id` int(11) NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP(),
-  `status_id` int(11) NOT NULL,
-  `created_by` int(11) unsigned NOT NULL,
-  `approved_by` int(11) unsigned,
-  `approved_at` timestamp,
-  `from_account` int(11) unsigned NOT NULL,
-  `to_account` int(11) unsigned NOT NULL,
-  `transaction_amount` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`request_id`),
-  FOREIGN KEY (`approved_by`) REFERENCES bank.employee(employee_id),
-  FOREIGN KEY (`created_by`) REFERENCES bank.user(user_id),
-  FOREIGN KEY (from_account) REFERENCES bank.account(account_no),
-  FOREIGN KEY (to_account) REFERENCES bank.account(account_no)
+CREATE TABLE bank.transaction_request (
+  request_id int(11) NOT NULL AUTO_INCREMENT,
+  created_at timestamp DEFAULT CURRENT_TIMESTAMP(),
+  status_id int(11) NOT NULL,
+  created_by int(11) unsigned NOT NULL,
+  approved_by int(11) unsigned,
+  approved_at timestamp,
+  from_account int(11) unsigned NOT NULL,
+  to_account int(11) unsigned,
+  description varchar(256),
+  type int(2) NOT NULL,
+  transaction_amount decimal(10,2) NOT NULL,
+  PRIMARY KEY (request_id),
+  FOREIGN KEY (approved_by) REFERENCES bank.employee(employee_id),
+  FOREIGN KEY (created_by) REFERENCES bank.user(user_id),
+  FOREIGN KEY (from_account) REFERENCES bank.account(account_no)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS bank.transaction;
@@ -100,7 +101,7 @@ INSERT INTO bank.account(user_id,balance ,routing_no,account_type, interest) VAL
 INSERT INTO bank.account(user_id,balance ,routing_no,account_type, interest) VALUES (1000, 2500.0, 45622, 2, 12.0);
 
 
--- INSERT INTO `bank`.`transaction_request` (`request_id`, `status_id`,`created_by`,`approved_by`,from_account,to_account,transaction_amount) VALUES(1,0,1000,1,1000,1001,200.0);
+-- INSERT INTO bank.transaction_request (request_id, status_id,created_by,approved_by,from_account,to_account,transaction_amount) VALUES(1,0,1000,1,1000,1001,200.0);
 
 -- INSERT INTO bank.transaction (transaction_amount,transaction_type,description,status,account_no,request_id)values(200.0,1,'Just transfering',0,10000000000,1);
 -- INSERT INTO bank.transaction (transaction_amount,transaction_type,description,status,account_no,request_id)values(200.0,2,'Just transfering',0,1000000000,1);
@@ -141,7 +142,7 @@ CREATE TABLE bank.auth_user_role (
   CONSTRAINT FK_auth_user_role FOREIGN KEY (auth_role_id) REFERENCES auth_role (auth_role_id)
 ) ;
 
-insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (1,'Ankit','Wasankar','admin@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
+insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (1,'Admin','admin','admin@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','1');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','2');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','3');
@@ -184,3 +185,22 @@ ALTER TABLE bank.cards AUTO_INCREMENT=8000000;
 
 INSERT INTO bank.cards(account_no ,balance,credit_limit, type) VALUES (1000000, 2500.0, 45622, 2);
 -- INSERT INTO bank.cards(account_no ,balance,limit, type) VALUES (10000000000, 2500.0, 45622, 2);
+
+
+insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (2,'Tier 1','Tier 1','tier1@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
+insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('2','2');
+insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('2','3');
+insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('2','4');
+insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('2','5');
+
+insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (3,'Tier 2','Tier 2','tier2@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
+insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('3','3');
+insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('3','4');
+insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('3','5');
+
+insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (4,'Sandeep','Balaji','scbalaji@asu.edu','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
+insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('4','4');
+
+
+INSERT INTO bank.user (name, gender,dob, contact,email_id, address,user_type) values('Tier 1', 'M', CURRENT_TIMESTAMP(), '4805775642', 'tier1@gmail.com', 'TEMPE',0 );
+INSERT INTO bank.user (name, gender,dob, contact,email_id, address,user_type) values('Tier 2', 'M', CURRENT_TIMESTAMP(), '4805775643', 'tier2@gmail.com', 'TEMPE',0 );

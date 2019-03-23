@@ -2,6 +2,11 @@
  *
  */
 $(document).ready( function () {
+    var $inputs = $('input[name=Email],input[name=phone]');
+    $inputs.on('input', function () {
+        // Set the required property of the other input to false if this input is not empty.
+        $inputs.not(this).prop('required', !$(this).val().length);
+    });
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     $('#transfer').on('click',function (event) {
         var from = document.getElementById('AccountNumber').value;
@@ -35,7 +40,6 @@ $(document).ready( function () {
         dropdown.prop('selectedIndex', 0);
         dropdown.find('option').not(':first').remove();
         var url = '/user/accounts/phone/'+phone;
-
         $.getJSON(url, function (data) {
             $.each(data, function (key, entry) {
                 var type = 'Savings';

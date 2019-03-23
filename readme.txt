@@ -35,6 +35,7 @@ card type: {
 }
 
 user type :{
+    0 : Employee
     1 : Individual
     2 : Merchant
 }

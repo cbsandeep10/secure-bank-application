@@ -10,10 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.sql.Timestamp;
@@ -34,19 +32,28 @@ public class TransferController {
     AccountService accountService;
 
     @GetMapping("/transfer/{type}")
-    public String transactionForm(Model model, @PathVariable String type, Authentication authentication) {
+    public String transactionForm(Model model, @PathVariable String type, Authentication authentication, @ModelAttribute("message") String message) {
         Transfer transfer = new Transfer();
         model.addAttribute("transfer", transfer);
         model.addAttribute("type", type);
+        model.addAttribute("message",message);
         Long id =  userService.findUserByEmail(authentication.getName());
         model.addAttribute("accounts",userService.getUserByUserId(id).getAccounts());
         return "transaction";
     }
 
-    @RequestMapping(value = "/transfer", method= RequestMethod.POST)
-    public String formSubmit(@Valid Transfer transfer, BindingResult bindingResult, Model model, Authentication authentication) {
+    @RequestMapping(value = "/transfer/{type}", method= RequestMethod.POST)
+    public String formSubmit(@Valid Transfer transfer,  @PathVariable String type, BindingResult bindingResult, Authentication authentication, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/transfer/account";
+            redirectAttributes.addFlashAttribute("message","Please correct the errors!");
+            return "redirect:/transfer/"+type;
+        }
+        try{
+            accountService.getAccountByAccountNo(transfer.getTo_account_no());
+        }
+        catch (Exception e){
+            redirectAttributes.addFlashAttribute("message","Account number doesn't exists!");
+            return "redirect:/transfer/"+type;
         }
         //Dont delete the comment
         Long id =  userService.findUserByEmail(authentication.getName());
@@ -55,7 +62,7 @@ public class TransferController {
         from_transaction.setTransaction_amount(transfer.getTransaction_amount());
         from_transaction.setTransaction_timestamp(new Timestamp(System.currentTimeMillis()));
         from_transaction.setTransaction_type(Config.DEBIT);
-        from_transaction.setDescription("Transfer to "+transfer.getTo_account_no()+ "; Comments: "+transfer.getDescription());
+        from_transaction.setDescription("Transfer to "+transfer.getTo_account_no()+ " || Comments: "+transfer.getDescription());
         from_transaction.setAccount_no(transfer.getFrom_account_no());
         from_transaction.setStatus(Config.APPROVED);
         float from_balance = accountService.getAccountByAccountNo(transfer.getFrom_account_no()).getBalance();
@@ -64,7 +71,7 @@ public class TransferController {
         to_transaction.setTransaction_amount(transfer.getTransaction_amount());
         to_transaction.setTransaction_timestamp(new Timestamp(System.currentTimeMillis()));
         to_transaction.setTransaction_type(Config.CREDIT);
-        to_transaction.setDescription("Transfer from "+transfer.getFrom_account_no()+ "; Comments: "+transfer.getDescription());
+        to_transaction.setDescription("Transfer from "+transfer.getFrom_account_no()+ " || Comments: "+transfer.getDescription());
         to_transaction.setAccount_no(transfer.getTo_account_no());
         to_transaction.setStatus(Config.APPROVED);
         float to_balance = accountService.getAccountByAccountNo(transfer.getTo_account_no()).getBalance();
@@ -79,6 +86,8 @@ public class TransferController {
             transactionRequest.setStatus_id(Config.PENDING);
             transactionRequest.setTransaction_amount(transfer.getTransaction_amount());
             transactionRequest.setCreated_at(new Timestamp(System.currentTimeMillis()));
+            transactionRequest.setDescription("Fund Transfer || Comments: "+transfer.getDescription());
+            transactionRequest.setType(Config.TRANSFER);
             request_id = transactionRequestService.saveOrUpdate(transactionRequest).getRequest_id();
             from_transaction.setRequest_id(request_id);
             from_transaction.setStatus(Config.PENDING);
@@ -99,6 +108,7 @@ public class TransferController {
         }
         transactionService.saveOrUpdate(from_transaction);
         transactionService.saveOrUpdate(to_transaction);
-        return "transaction_success";
+        redirectAttributes.addFlashAttribute("message","Successfully transferred");
+        return "redirect:/transfer/"+type;
     }
 }
