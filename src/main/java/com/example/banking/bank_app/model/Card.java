@@ -11,7 +11,7 @@ public class Card {
     private Long cardId;
 
     @Column(name="account_no")
-    private Integer accountNo;
+    private Long accountNo;
 
     @Column(name="balance")
     private float balance;
@@ -36,11 +36,11 @@ public class Card {
         this.cardId = cardId;
     }
 
-    public Integer getAccountNo() {
+    public Long getAccountNo() {
         return accountNo;
     }
 
-    public void setAccountNo(Integer accountNo) {
+    public void setAccountNo(Long accountNo) {
         this.accountNo = accountNo;
     }
 

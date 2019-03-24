@@ -23,6 +23,7 @@
             <li><a th:href="@{/account/list/1}">Accounts</a></li>
             <li><a th:href="@{/request/list/1}">Requests</a></li>
             <li><a th:href="@{/statements}">Statements</a></li>
+            <li><a th:href="@{/account-request/list/1}">Account Request</a></li>
             <li><a th:href="@{/account/deposit}">Deposit</a></li>
             <li><a th:href="@{/account/withdraw}">Withdraw</a></li>
             <li class="dropdown">
@@ -44,6 +45,10 @@
     </div>
 </nav>
 <div class="container">
+    <div class="alert alert-info" role="alert" th:if="${message!=''}">
+        <p th:text="${message}">
+        </p>
+    </div>
     <div class="panel panel-default">
         <div class="panel-heading">
             <p><strong>Welcome!</strong></p>
@@ -59,7 +64,9 @@
                 <div class="col-lg-4" th:each="account: ${user.getAccounts()}">
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
-                            <h5 class="card-title" th:text="|${account.getAccountType()==1 ? 'Checkings' : 'Savings'} Account|"></h5>
+                            <h5 class="card-title" th:if="${account.getAccountType() == 1}" th:text="|Checkings|"></h5>
+                            <h5 class="card-title" th:if="${account.getAccountType() == 2}" th:text="|Savings|"></h5>
+                            <h5 class="card-title" th:if="${account.getAccountType() == 3}" th:text="|Credit Card|"></h5>
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item" th:text="|Account No: ${account.getAccountNo()}|"></li>
@@ -127,6 +134,40 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--Form for new account-->
+    <div class="profileForm">
+        <form th:action="@{/account/new}" method="post" id="new" th:object="${account}" >
+            <div class="modal fade" id="newaccountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel1">Create account</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="name" class="col-form-label">Name:</label>
+                                    <select class="form-control" id="type-select" required th:field="*{accountType}">
+                                        <option selected disabled value="0">Select Account</option>
+                                        <option selected value="1">Checkings</option>
+                                        <option selected value="2">Savings</option>
+                                        <option selected value="3">Credit card</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Create</button>
                         </div>
                     </div>
                 </div>

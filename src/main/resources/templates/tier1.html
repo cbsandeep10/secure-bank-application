@@ -21,8 +21,17 @@
         <ul class="nav navbar-nav">
             <li class="active"><a th:href="@{/home}">Home</a></li>
             <li><a th:href="@{/account/list/1}">Accounts</a></li>
-            <li><a th:href="@{/request/list/1}">Requests</a></li>
-            <li><a th:href="@{/statements}">Statements</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Request
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/request/list/1}">Transaction</a></li>
+                    <li><a th:href="@{/account-request/list/1}">Account</a></li>
+                </ul>
+            </li>
+            <li><a th:href="@{/account/deposit}">Deposit</a></li>
+            <li><a th:href="@{/account/withdraw}">Withdraw</a></li>
+            <li><a th:href="@{/request/list/1}">Issue</a></li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transfer
                     <span class="caret"></span></a>
@@ -32,7 +41,6 @@
                     <li><a th:href="@{/transfer/email}">By Email</a></li>
                 </ul>
             </li>
-            <li><a th:href="@{/log/list/1}">Logs</a></li>
         </ul>
         <div class="pull-right">
             <ul class="nav pull-right navbar-nav">
@@ -49,15 +57,16 @@
             <p th:text="|Email: ${user.getEmailId()}|"></p>
             <p th:text="|Phone: ${user.getContact()}|"></p>
             <p th:text="|Address: ${user.getAddress()}|"></p>
-            <a class="btn btn-info" id="edit-profile">Edit Profile</a>
         </div>
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-4">
                     <div class="btn-group-vertical" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary">Left</button>
-                        <button type="button" class="btn btn-primary">Middle</button>
-                        <button type="button" class="btn btn-primary">Right</button>
+                        <button type="button" class="btn btn-primary">Deposit Fund</button>
+                        <button type="button" class="btn btn-primary">Withdraw Fund</button>
+                        <button type="button" class="btn btn-primary">Issue Cashier Cheque</button>
+                        <button type="button" class="btn btn-primary">Transfer Fund</button>
+                        <button type="button" class="btn btn-primary">Customer Request</button>
                     </div>
                 </div>
             </div>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class UserController {
     }
 
     @RequestMapping(value="/edit", method= RequestMethod.POST)
-    public ModelAndView editAccount(@Valid User user, Authentication authentication) {
+    public ModelAndView editAccount(@Valid User user, Authentication authentication, RedirectAttributes redirectAttributes) {
         Long id =  userService.findUserByEmail(authentication.getName());
         User old_user = userService.getUserByUserId(id);
         old_user.setAddress(user.getAddress());
@@ -74,6 +75,7 @@ public class UserController {
         old_user.setEmailId(user.getEmailId());
         old_user.setDob(user.getDob());
         userService.saveOrUpdate(old_user);
-        return new ModelAndView("redirect:/home");
+        redirectAttributes.addFlashAttribute("message","Successfully saved data!");
+        return new ModelAndView("redirect:/user");
     }
 }

@@ -38,8 +38,8 @@ public class TransactionRequestServiceImpl implements TransactionRequestService 
     }
 
     @Override
-    public Page<TransactionRequest> getPaginated(Pageable pageable) {
-        return transactionRequestRepository.findAll(pageable);
+    public Page<TransactionRequest> getPaginated(Pageable pageable, int critical) {
+        return transactionRequestRepository.findAll(pageable, critical);
     }
 
 }

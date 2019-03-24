@@ -7,6 +7,7 @@ import com.example.banking.bank_app.service.TransactionService;
 import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Controller
 public class TransferController {
@@ -33,12 +37,22 @@ public class TransferController {
 
     @GetMapping("/transfer/{type}")
     public String transactionForm(Model model, @PathVariable String type, Authentication authentication, @ModelAttribute("message") String message) {
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> roles = new ArrayList<String>();
+        for(GrantedAuthority a : authorities) {
+            roles.add(a.getAuthority());
+        }
+        String role = "0";
+        if(roles.contains("TIER1")){
+            role = "1";
+        }
         Transfer transfer = new Transfer();
         model.addAttribute("transfer", transfer);
         model.addAttribute("type", type);
         model.addAttribute("message",message);
         Long id =  userService.findUserByEmail(authentication.getName());
         model.addAttribute("accounts",userService.getUserByUserId(id).getAccounts());
+        model.addAttribute("role", role);
         return "transaction";
     }
 
@@ -50,6 +64,7 @@ public class TransferController {
         }
         try{
             accountService.getAccountByAccountNo(transfer.getTo_account_no());
+            accountService.getAccountByAccountNo(transfer.getFrom_account_no());
         }
         catch (Exception e){
             redirectAttributes.addFlashAttribute("message","Account number doesn't exists!");
@@ -88,6 +103,7 @@ public class TransferController {
             transactionRequest.setCreated_at(new Timestamp(System.currentTimeMillis()));
             transactionRequest.setDescription("Fund Transfer || Comments: "+transfer.getDescription());
             transactionRequest.setType(Config.TRANSFER);
+            transactionRequest.setCritical(Config.CRITICAL_YES);
             request_id = transactionRequestService.saveOrUpdate(transactionRequest).getRequest_id();
             from_transaction.setRequest_id(request_id);
             from_transaction.setStatus(Config.PENDING);

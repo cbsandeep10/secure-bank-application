@@ -1,24 +1,20 @@
 package com.example.banking.bank_app.controller;
 
-import com.example.banking.bank_app.model.Account;
-import com.example.banking.bank_app.model.Config;
-import com.example.banking.bank_app.model.Transaction;
-import com.example.banking.bank_app.model.TransactionRequest;
-import com.example.banking.bank_app.service.AccountService;
-import com.example.banking.bank_app.service.TransactionRequestService;
-import com.example.banking.bank_app.service.TransactionService;
-import com.example.banking.bank_app.service.UserService;
+import com.example.banking.bank_app.model.*;
+import com.example.banking.bank_app.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -33,14 +29,28 @@ public class  AccountController {
     AccountService accountService;
 
     @Autowired
+    AccountRequestService accountRequestService;
+
+    @Autowired
     TransactionService transactionService;
 
     @Autowired
     TransactionRequestService transactionRequestService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
-    public ModelAndView list(@PathVariable("page") int page) {
-        ModelAndView modelAndView = new ModelAndView("account_list");
+    public ModelAndView list(@PathVariable("page") int page, Authentication authentication) {
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> roles = new ArrayList<String>();
+        for(GrantedAuthority a : authorities) {
+            roles.add(a.getAuthority());
+        }
+        ModelAndView modelAndView;
+        if(roles.contains("TIER1")){
+            modelAndView = new ModelAndView("account_list");
+        }else{
+            modelAndView = new ModelAndView("account_list_tier2");
+        }
+
         PageRequest pageable = PageRequest.of(page - 1, 15);
         Page<Account> accountPage = accountService.getPaginated(pageable);
         int totalPages = accountPage.getTotalPages();
@@ -52,6 +62,38 @@ public class  AccountController {
         Account account = new Account();
         modelAndView.addObject("account", account);
         return modelAndView;
+    }
+
+    @RequestMapping(value="/new", method= RequestMethod.POST)
+    public ModelAndView createAccount(Account account, RedirectAttributes redirectAttributes, Authentication authentication) {
+        Long id =  userService.findUserByEmail(authentication.getName());
+        redirectAttributes.addFlashAttribute("message", "Created account, pending with Bank authorities!");
+        SecureRandom random = new SecureRandom();
+        int routing = random.nextInt(100000);
+        AccountRequest accountRequest = new AccountRequest();
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("account_no",null);
+        attributes.put("user_id", id);
+        attributes.put("balance", 0);
+        attributes.put("account_type", account.getAccountType());
+        attributes.put("routing_no", routing);
+        attributes.put("interest",Config.DEFAULT_INTEREST);
+        attributes.put("created", new Timestamp(System.currentTimeMillis()));
+        attributes.put("updated", new Timestamp(System.currentTimeMillis()));
+        accountRequest.setDescription("New Account");
+        accountRequest.setAccount(attributes);
+        accountRequest.setCreated_by(id);
+        accountRequest.setStatus_id(Config.PENDING);
+        accountRequest.setCreated_at(new Timestamp(System.currentTimeMillis()));
+        accountRequest.setType(Config.ACCOUNT_TYPE);
+        try {
+            accountRequest.serializeaccount();
+        }
+        catch(Exception e){
+            System.out.println("Exception");
+        }
+        accountRequestService.saveOrUpdate(accountRequest);
+        return new ModelAndView("redirect:/user");
     }
 
     @RequestMapping(value="/get/{account_no}", method= RequestMethod.GET)
@@ -138,6 +180,7 @@ public class  AccountController {
             transactionRequest.setStatus_id(Config.PENDING);
             transactionRequest.setTransaction_amount(transaction.getTransaction_amount());
             transactionRequest.setCreated_at(new Timestamp(System.currentTimeMillis()));
+            transactionRequest.setCritical(Config.CRITICAL_YES);
             if (type == Config.DEBIT){
                 transactionRequest.setType(Config.WITHDRAW);
                 transactionRequest.setDescription(transaction.getDescription());

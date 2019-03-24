@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -40,10 +43,19 @@ public class TransactionRequestController {
     TransactionService transactionService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
-    public ModelAndView list(@PathVariable("page") int page) {
+    public ModelAndView list(@PathVariable("page") int page, Authentication authentication) {
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> roles = new ArrayList<String>();
+        for(GrantedAuthority a : authorities) {
+            roles.add(a.getAuthority());
+        }
+        int critical = 0;
+        if(roles.contains("TIER2")){
+            critical = 1;
+        }
         ModelAndView modelAndView = new ModelAndView("request_list");
         PageRequest pageable = PageRequest.of(page - 1, 10);
-        Page<TransactionRequest> requestPage = transactionRequestService.getPaginated(pageable);
+        Page<TransactionRequest> requestPage = transactionRequestService.getPaginated(pageable, critical);
         int totalPages = requestPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNums = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
@@ -106,7 +118,7 @@ public class TransactionRequestController {
     public ModelAndView decline(@PathVariable("id") int id) {
         TransactionRequest transactionRequest = transactionRequestService.getRequestByRequestId(new Long(id));
         transactionRequest.setApproved_at(new Timestamp(System.currentTimeMillis()));
-        transactionRequest.setApproved_by(1L);
+        transactionRequest.setApproved_by(1L); //Remeber to change this
         transactionRequest.setStatus_id(Config.DECLINED);
         transactionRequestService.saveOrUpdate(transactionRequest);
         return new ModelAndView("redirect:/request/list/1");

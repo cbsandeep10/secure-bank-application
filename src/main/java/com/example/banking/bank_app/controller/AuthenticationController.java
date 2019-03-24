@@ -1,5 +1,6 @@
 package com.example.banking.bank_app.controller;
 
+import com.example.banking.bank_app.model.Account;
 import com.example.banking.bank_app.model.Auth_user;
 import com.example.banking.bank_app.model.User;
 import com.example.banking.bank_app.service.UserService;
@@ -9,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -126,12 +128,15 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public ModelAndView user(Authentication authentication) {
+    public ModelAndView user(Authentication authentication, @ModelAttribute("message") String message) {
         Long id =  userService.findUserByEmail(authentication.getName());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user"); // resources/template/home.html
         User user = userService.getUserByUserId(id);
         modelAndView.addObject("user",user);
+        Account account = new Account();
+        modelAndView.addObject("account", account);
+        modelAndView.addObject("message", message);
         return modelAndView;
     }
 

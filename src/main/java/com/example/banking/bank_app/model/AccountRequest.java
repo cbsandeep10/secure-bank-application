@@ -1,12 +1,21 @@
 package com.example.banking.bank_app.model;
 
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.util.SerializationUtils;
+
+import javax.persistence.Convert;
 import javax.persistence.*;
+import java.io.IOException;
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
-@Table(name="transaction_request")
-
-public class TransactionRequest {
+@Table(name="account_request")
+public class AccountRequest implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,14 +30,8 @@ public class TransactionRequest {
     @Column(name="approved_at")
     private Timestamp approved_at;
 
-    @Column(name="transaction_amount")
-    private float transaction_amount;
-
-    @Column(name="from_account")
-    private Long from_account;
-
-    @Column(name="to_account")
-    private Long to_account;
+    @Column(name="type")
+    private int type;
 
     @Column(name="created_by")
     private Long created_by;
@@ -39,11 +42,11 @@ public class TransactionRequest {
     @Column(name="description")
     private String description;
 
-    @Column(name="type")
-    private int type;
+    @Column(name="account")
+    private String account;
 
-    @Column(name="critical")
-    private int critical;
+    @Column(name="user")
+    private String user;
 
     @ManyToOne
     @JoinColumn(name="approved_by", insertable = false, updatable = false)
@@ -52,6 +55,14 @@ public class TransactionRequest {
     @ManyToOne(optional=false)
     @JoinColumn(name="created_by",nullable=false, insertable = false, updatable = false)
     private User created_user;
+
+    @Transient
+    @Convert(converter = HashMapConverter.class)
+    private Map<String, Object> userJson;
+
+    @Transient
+    @Convert(converter = HashMapConverter.class)
+    private Map<String, Object> accountJson;
 
     public Long getRequest_id() {
         return request_id;
@@ -101,28 +112,46 @@ public class TransactionRequest {
         this.created_user = created_user;
     }
 
-    public float getTransaction_amount() {
-        return transaction_amount;
+    public int getType() {
+        return type;
     }
 
-    public void setTransaction_amount(float transaction_amount) {
-        this.transaction_amount = transaction_amount;
+    public void setType(int type) {
+        this.type = type;
     }
 
-    public Long getFrom_account() {
-        return from_account;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    public void serializeuser() throws JsonProcessingException {
+        this.user = objectMapper.writeValueAsString(userJson);
     }
 
-    public void setFrom_account(Long from_account) {
-        this.from_account = from_account;
+    public void deserializeuser() throws IOException {
+        this.userJson = objectMapper.readValue(user, Map.class);
     }
 
-    public Long getTo_account() {
-        return to_account;
+    public void serializeaccount() throws JsonProcessingException {
+        this.account = objectMapper.writeValueAsString(accountJson);
     }
 
-    public void setTo_account(Long to_account) {
-        this.to_account = to_account;
+    public void deserializeaccount() throws IOException {
+        this.accountJson = objectMapper.readValue(account, Map.class);
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(Map<String, Object> userJson) {
+        this.userJson = userJson;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(Map<String, Object> accountJson) {
+        this.accountJson = accountJson;
     }
 
     public Long getCreated_by() {
@@ -149,19 +178,11 @@ public class TransactionRequest {
         this.description = description;
     }
 
-    public int getType() {
-        return type;
+    public Map<String, Object> getUserJson() {
+        return userJson;
     }
 
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public int getCritical() {
-        return critical;
-    }
-
-    public void setCritical(int critical) {
-        this.critical = critical;
+    public Map<String, Object> getAccountJson() {
+        return accountJson;
     }
 }

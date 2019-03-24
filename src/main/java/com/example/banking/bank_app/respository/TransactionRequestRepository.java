@@ -12,7 +12,8 @@ import java.util.List;
 
 public interface TransactionRequestRepository extends CrudRepository<TransactionRequest, Long> {
 
-    Page<TransactionRequest> findAll(Pageable pageable);
+    @Query("SELECT t FROM TransactionRequest t WHERE t.critical = :critical")
+    Page<TransactionRequest> findAll(Pageable pageable, @Param("critical") int critical);
 
 }
 
