@@ -1,5 +1,6 @@
 package com.example.banking.bank_app.service;
 
+import com.example.banking.bank_app.model.AddUser;
 import com.example.banking.bank_app.model.Auth_user;
 import com.example.banking.bank_app.model.User;
 import org.springframework.data.domain.Page;
@@ -25,5 +26,8 @@ public interface UserService {
 
     public void saveOrUpdate(Auth_user user);
 
+    public void saveNewUser(User user);
+
     public void deleteUser(Long userId);
+
 }
