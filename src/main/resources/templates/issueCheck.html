@@ -19,7 +19,17 @@
         <ul class="nav navbar-nav">
             <li class="active"><a th:href="@{/home}">Home</a></li>
             <li><a th:href="@{/account/list/1}">Accounts</a></li>
-            <li><a th:href="@{/request/list/1}">Requests</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Request
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/request/list/1}">Transaction</a></li>
+                    <li><a th:href="@{/account-request/list/1}">Account</a></li>
+                </ul>
+            </li>
+            <li><a th:href="@{/account/deposit}">Deposit</a></li>
+            <li><a th:href="@{/account/withdraw}">Withdraw</a></li>
+            <li><a th:href="@{/checks/issue}">Issue</a></li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transfer
                     <span class="caret"></span></a>
@@ -29,7 +39,6 @@
                     <li><a th:href="@{/transfer/email}">By Email</a></li>
                 </ul>
             </li>
-            <li><a th:href="@{/log/list/1}">Logs</a></li>
         </ul>
         <div class="pull-right">
             <ul class="nav pull-right navbar-nav">
@@ -44,7 +53,7 @@
         <p th:text="${message}">
         </p>
     </div>
-    <form name="myForm" class="form-horizontal" th:object="${check}" th:action="@{/checks/issue}" method="post" novalidate>
+    <form name="myForm" class="form-horizontal" th:object="${check}" th:action="@{/checks/issue}" method="post">
         <div class="form-group">
             <label class="control-label col-sm-2" >Account No</label>
             <div class="col-sm-4">

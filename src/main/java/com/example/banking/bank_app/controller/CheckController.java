@@ -1,14 +1,17 @@
 package com.example.banking.bank_app.controller;
 
-import com.example.banking.bank_app.model.AddUser;
-import com.example.banking.bank_app.model.Check;
+import com.example.banking.bank_app.model.*;
+import com.example.banking.bank_app.service.AccountService;
 import com.example.banking.bank_app.service.CheckService;
+import com.example.banking.bank_app.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -19,6 +22,12 @@ public class CheckController {
 
     @Autowired
     CheckService checkService;
+
+    @Autowired
+    TransactionService transactionService;
+
+    @Autowired
+    AccountService accountService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
     public ModelAndView list(@PathVariable("page") int page) {
@@ -43,5 +52,31 @@ public class CheckController {
         modelAndView.setViewName("issueCheck"); // resources/template/register.html
         modelAndView.addObject("message",message);
         return modelAndView;
+    }
+
+    @RequestMapping(value="/issue", method= RequestMethod.POST)
+    public ModelAndView issue(Check check, RedirectAttributes redirectAttributes) {
+        Account account;
+        try{
+            account = accountService.getAccountByAccountNo(check.getAccountno());
+        }
+        catch(Exception e){
+            redirectAttributes.addFlashAttribute("message", "Account Number doesn't Exist!");
+            return new ModelAndView("redirect:/checks/issue");
+        }
+        check.setIssued_at(new Timestamp(System.currentTimeMillis()));
+        checkService.saveOrUpdate(check);
+        Transaction transaction = new Transaction();
+        transaction.setTransaction_amount(check.getAmount());
+        transaction.setTransaction_timestamp(new Timestamp(System.currentTimeMillis()));
+        transaction.setTransaction_type(Config.DEBIT);
+        transaction.setDescription("Issued check for :" + check.getAmount());
+        transaction.setStatus(Config.APPROVED);
+        transaction.setAccount_no(check.getAccountno());
+        transaction.setBalance(account.getBalance() - check.getAmount());
+        transactionService.saveOrUpdate(transaction);
+        account.setBalance(account.getBalance() - check.getAmount());
+        accountService.saveOrUpdate(account);
+        return new ModelAndView("redirect:/checks/list/1");
     }
 }
