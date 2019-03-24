@@ -36,6 +36,8 @@ public class Auth_user {
     @Column(name = "status")
     private String status;
 
+    private String contact;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "auth_user_role", joinColumns = @JoinColumn(name = "auth_user_id"), inverseJoinColumns = @JoinColumn(name = "auth_role_id"))
     private Set<Auth_role> roles;
@@ -96,5 +98,11 @@ public class Auth_user {
         this.roles = roles;
     }
 
+    public String getContact() {
+        return contact;
+    }
 
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
 }
