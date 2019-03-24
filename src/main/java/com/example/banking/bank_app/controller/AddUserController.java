@@ -46,6 +46,7 @@ public class AddUserController {
         new_user.setContact(adduser.getContact());
         new_user.setEmailId(adduser.getEmailId());
         new_user.setAddress(adduser.getAddress());
+        new_user.setUserType("1");
         userService.saveNewUser(new_user);
         System.out.println("The user added successfully");
         return "user_add_success";
