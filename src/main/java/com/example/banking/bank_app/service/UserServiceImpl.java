@@ -1,5 +1,6 @@
 package com.example.banking.bank_app.service;
 
+import com.example.banking.bank_app.model.AddUser;
 import com.example.banking.bank_app.model.Auth_role;
 import com.example.banking.bank_app.model.Auth_user;
 import com.example.banking.bank_app.model.User;
@@ -46,7 +47,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByPhone(phone);
     }
 
-
     @Override
     public List<Auth_user> getAllUsers() {
         return (List<Auth_user>) authUserRepository.findAll();
@@ -60,6 +60,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveOrUpdate(Auth_user user) {
         authUserRepository.save(user);
+    }
+
+    @Override
+    public void saveNewUser(User user) {
+        userRepository.save(user);
     }
 
     @Override
