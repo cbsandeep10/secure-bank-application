@@ -6,12 +6,12 @@ CREATE DATABASE bank;
 DROP TABLE IF EXISTS bank.user;
 CREATE TABLE bank.user (
   user_id int(11) unsigned NOT NULL AUTO_INCREMENT,
-  name varchar(256) NOT NULL,
+  name varchar(255) NOT NULL,
   gender varchar(2) NOT NULL,
   dob date NOT NULL,
   contact varchar(12) NOT NULL,
-  email_id varchar(256) NOT NULL,
-  address varchar(256) NOT NULL,
+  email_id varchar(255) NOT NULL,
+  address varchar(255) NOT NULL,
   user_type int(2) NOT NULL,
   created timestamp DEFAULT CURRENT_TIMESTAMP(),
   PRIMARY KEY (user_id)
@@ -23,14 +23,14 @@ DROP TABLE IF EXISTS bank.employee;
 CREATE TABLE bank.employee
 (
     employee_id int(11) unsigned NOT NULL AUTO_INCREMENT,
-    employee_name varchar(256) NOT NULL,
-    gender varchar(256) NOT NULL,
+    employee_name varchar(255) NOT NULL,
+    gender varchar(255) NOT NULL,
     age int(11) ,
     tier_level int(11) unsigned NOT NULL,
     designation_id int(11),
-    contact_no varchar(256),
-    email_id varchar(256),
-    address varchar(256),
+    contact_no varchar(255),
+    email_id varchar(255),
+    address varchar(255),
     created timestamp DEFAULT CURRENT_TIMESTAMP(),
     updated timestamp DEFAULT CURRENT_TIMESTAMP(),
     PRIMARY KEY (employee_id)
@@ -71,7 +71,7 @@ CREATE TABLE bank.transaction_request (
   approved_at timestamp,
   from_account int(11) unsigned NOT NULL,
   to_account int(11) unsigned,
-  description varchar(256),
+  description varchar(255),
   type int(2) NOT NULL,
   transaction_amount decimal(10,2) NOT NULL,
   PRIMARY KEY (request_id),
@@ -86,7 +86,7 @@ CREATE TABLE bank.transaction (
   transaction_amount decimal(10,2) NOT NULL,
   transaction_timestamp timestamp DEFAULT CURRENT_TIMESTAMP(),
   transaction_type int(1) NOT NULL,
-  description varchar(256),
+  description varchar(255),
   status int(1),
   account_no int(11) unsigned NOT NULL,
   balance decimal(10,2),
@@ -131,7 +131,7 @@ CREATE TABLE bank.auth_user (
   password varchar(255) NOT NULL,
   status varchar(255),
   PRIMARY KEY (auth_user_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE bank.auth_user_role (
   auth_user_id int(11) NOT NULL,
@@ -156,7 +156,7 @@ CREATE TABLE bank.admin_log (
   type_id int(11) NOT NULL,
   log_timestamp timestamp ,
   related_user_id int(11) unsigned NOT NULL,
-  message varchar(256),
+  message varchar(255),
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
