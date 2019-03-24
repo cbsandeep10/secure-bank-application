@@ -37,14 +37,19 @@
                 function processForm( e ){
                     $.ajax({
                         url: '/mobilenumbers/+12138338030/otp',
-                        dataType: 'json',
                         type: 'put',
                         contentType: 'application/json',
                         data:  JSON.stringify({ "otp": $('#otp').val() }),
                         processData: false,
-                        success:window.location='http://localhost:8080/home',
+                        success:function (data, textStatis, jQxhr) {
+                            $(document).ready(function(){
+                                $(location).attr('href','http://localhost:8080/home')
+                             })},
                         error: function( jqXhr, textStatus, errorThrown ){
-                            window.location='http://localhost:8080/login';
+                            console.log(errorThrown);
+                            $(document).ready(function(){
+                                $(location).attr('href','http://localhost:8080/login')
+                            })
                         }
                     });
 
