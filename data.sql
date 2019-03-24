@@ -191,7 +191,7 @@ CREATE TABLE bank.checks (
   check_id int(11) unsigned NOT NULL AUTO_INCREMENT,
   account_no int(11) unsigned NOT NULL,
   amount decimal(10,2) NOT NULL,
-  issue timestamp DEFAULT CURRENT_TIMESTAMP(),
+  issued_at timestamp DEFAULT CURRENT_TIMESTAMP(),
   PRIMARY KEY (check_id),
   FOREIGN KEY (account_no) REFERENCES bank.account(account_no)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
