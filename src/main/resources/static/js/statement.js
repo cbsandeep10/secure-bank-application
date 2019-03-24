@@ -3,6 +3,7 @@ $(document).ready( function () {
         "sAjaxSource": "/statement/list",
         "sAjaxDataProp": "",
         "order": [[ 0, "asc" ]],
+        "buttons": [ 'pdfHtml5'],
         "aoColumns": [
             { "mData": "account_no"},
             { "mData": "transaction_timestamp"},

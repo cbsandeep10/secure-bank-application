@@ -26,9 +26,16 @@ balance
 account type :{
     1 : Checking
     2 : Savings
+    3 : Credit card
+}
+
+card type: {
+    1 : Credit
+    2 : Debit
 }
 
 user type :{
+    0 : Employee
     1 : Individual
     2 : Merchant
 }

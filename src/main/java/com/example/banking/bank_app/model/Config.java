@@ -22,4 +22,9 @@ public final class Config {
     public static final String EMAIL = "email";
     public static final String PHONE = "phone";
 
+    //Request type
+    public static final int TRANSFER = 1;
+    public static final int DEPOSIT = 2;
+    public static final int WITHDRAW = 3;
+
 }

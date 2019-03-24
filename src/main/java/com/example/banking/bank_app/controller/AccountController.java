@@ -1,16 +1,20 @@
 package com.example.banking.bank_app.controller;
 
 import com.example.banking.bank_app.model.Account;
+import com.example.banking.bank_app.model.Config;
+import com.example.banking.bank_app.model.Transaction;
+import com.example.banking.bank_app.model.TransactionRequest;
 import com.example.banking.bank_app.service.AccountService;
+import com.example.banking.bank_app.service.TransactionRequestService;
 import com.example.banking.bank_app.service.TransactionService;
+import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.sql.Timestamp;
@@ -23,10 +27,16 @@ import java.util.stream.IntStream;
 public class  AccountController {
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     AccountService accountService;
 
     @Autowired
     TransactionService transactionService;
+
+    @Autowired
+    TransactionRequestService transactionRequestService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
     public ModelAndView list(@PathVariable("page") int page) {
@@ -64,5 +74,87 @@ public class  AccountController {
     public ModelAndView deleteAccount(@PathVariable("account_no") Long account_no) {
         accountService.deleteAccount(account_no);
         return new ModelAndView("redirect:/account/list/1");
+    }
+
+    @RequestMapping(value="/deposit", method= RequestMethod.GET)
+    public ModelAndView deposit(@ModelAttribute("message") String message) {
+        ModelAndView modelAndView = new ModelAndView("deposit");
+        Transaction transaction = new Transaction();
+        modelAndView.addObject("transaction", transaction);
+        modelAndView.addObject("message",message);
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/withdraw", method= RequestMethod.GET)
+    public ModelAndView withdraw(@ModelAttribute("message") String message) {
+        ModelAndView modelAndView = new ModelAndView("withdraw");
+        Transaction transaction = new Transaction();
+        modelAndView.addObject("transaction", transaction);
+        modelAndView.addObject("message",message);
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/deposit", method= RequestMethod.POST)
+    public ModelAndView depositPost(@Valid Transaction transaction, Authentication authentication,  RedirectAttributes redirectAttributes) {
+        String message = depositandwithdraw(Config.CREDIT, transaction, authentication.getName());
+        redirectAttributes.addFlashAttribute("message", message);
+        return new ModelAndView("redirect:/account/deposit");
+    }
+
+    @RequestMapping(value="/withdraw", method= RequestMethod.POST)
+    public ModelAndView withdrawPost(@Valid Transaction transaction,Authentication authentication,  RedirectAttributes redirectAttributes) {
+        String message = depositandwithdraw(Config.DEBIT, transaction, authentication.getName());
+        redirectAttributes.addFlashAttribute("message", message);
+        return new ModelAndView("redirect:/account/withdraw");
+    }
+
+    private String depositandwithdraw(int type, Transaction transaction, String name){
+        Long id =  userService.findUserByEmail(name);
+        transaction.setTransaction_timestamp(new Timestamp(System.currentTimeMillis()));
+        Account account;
+        try{
+            account = accountService.getAccountByAccountNo(transaction.getAccount_no());
+        }
+        catch(Exception e){
+            return "Account number doesn't exists!";
+        }
+        float balance = account.getBalance();
+        if (type == Config.DEBIT){
+            account.setBalance(account.getBalance() - transaction.getTransaction_amount());
+            transaction.setTransaction_type(Config.DEBIT);
+            transaction.setBalance(balance - transaction.getTransaction_amount());
+            transaction.setDescription("Withdraw "+transaction.getTransaction_amount()+ " || Comments: "+transaction.getDescription());
+        }else{
+            account.setBalance(account.getBalance() + transaction.getTransaction_amount());
+            transaction.setTransaction_type(Config.CREDIT);
+            transaction.setBalance(balance + transaction.getTransaction_amount());
+            transaction.setDescription("Deposit "+transaction.getTransaction_amount()+ " || Comments: "+transaction.getDescription());
+        }
+
+        if(transaction.getTransaction_amount() > Config.LIMIT){
+            TransactionRequest transactionRequest = new TransactionRequest();
+            transactionRequest.setCreated_by(id);
+            transactionRequest.setFrom_account(transaction.getAccount_no());
+            transactionRequest.setStatus_id(Config.PENDING);
+            transactionRequest.setTransaction_amount(transaction.getTransaction_amount());
+            transactionRequest.setCreated_at(new Timestamp(System.currentTimeMillis()));
+            if (type == Config.DEBIT){
+                transactionRequest.setType(Config.WITHDRAW);
+                transactionRequest.setDescription(transaction.getDescription());
+            }else{
+                transactionRequest.setType(Config.DEPOSIT);
+                transactionRequest.setDescription(transaction.getDescription());
+            }
+            account.setBalance(balance);
+            Long request_id = transactionRequestService.saveOrUpdate(transactionRequest).getRequest_id();
+            transaction.setRequest_id(request_id);
+            transaction.setStatus(Config.PENDING);
+            transaction.setBalance(balance);
+        }else{
+            transaction.setStatus(Config.APPROVED);
+            //accountService.saveOrUpdate(account);
+        }
+        transactionService.saveOrUpdate(transaction);
+        return "Success";
     }
 }

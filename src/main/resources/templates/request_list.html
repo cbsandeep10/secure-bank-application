@@ -51,6 +51,8 @@
                         <td><strong>TRANSACTION AMOUNT</strong></td>
                         <td><strong>FROM ACCOUNT</strong></td>
                         <td><strong>TO ACCOUNT</strong></td>
+                        <td><strong>DESCRIPTION</strong></td>
+                        <td><strong>TYPE</strong></td>
                         <td><strong>CREATED AT</strong></td>
                         <td><strong>STATUS</strong></td>
                     </tr>
@@ -62,6 +64,10 @@
                         <td th:text="${request.getTransaction_amount()}"></td>
                         <td th:text="${request.getFrom_account()}"></td>
                         <td th:text="${request.getTo_account()}"></td>
+                        <td th:text="${request.getDescription()}"></td>
+                        <td th:if="${request.getType() == 1}" th:text="'Transfer'"></td>
+                        <td th:if="${request.getType() == 2}" th:text="'Deposit'"></td>
+                        <td th:if="${request.getType() == 3}" th:text="'Withdraw'"></td>
                         <td th:text="${request.getCreated_at()}"></td>
                         <td th:if="${request.getStatus_id() == 0}" th:text="'Pending'"></td>
                         <td th:if="${request.getStatus_id() == 1}" th:text="'Approved'"></td>

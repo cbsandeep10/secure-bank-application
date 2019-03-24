@@ -67,6 +67,10 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public void saveOrUpdate(User user) {
+        userRepository.save(user);
+    }
 
     @Override
     public void deleteUser(Long userId) {

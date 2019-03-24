@@ -36,6 +36,12 @@ public class TransactionRequest {
     @Column(name="approved_by")
     private Long approved_by;
 
+    @Column(name="description")
+    private String description;
+
+    @Column(name="type")
+    private int type;
+
     @ManyToOne
     @JoinColumn(name="approved_by", insertable = false, updatable = false)
     private Employee approved_user;
@@ -130,5 +136,21 @@ public class TransactionRequest {
 
     public void setApproved_by(Long approved_by) {
         this.approved_by = approved_by;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

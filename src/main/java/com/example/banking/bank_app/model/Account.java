@@ -4,6 +4,7 @@ import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name="account")
@@ -36,6 +37,10 @@ public class Account {
 
     @Formula("(select user.name from user where user.user_id = user_id)")
     private String userName;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_no", nullable=false, insertable = false, updatable = false)
+    private List<Card> cards;
 
     public Long getAccountNo() {
         return accountNo;
@@ -107,5 +112,13 @@ public class Account {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
     }
 }

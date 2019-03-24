@@ -8,12 +8,14 @@ import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,5 +63,17 @@ public class UserController {
             }
         }
         return accounts;
+    }
+
+    @RequestMapping(value="/edit", method= RequestMethod.POST)
+    public ModelAndView editAccount(@Valid User user, Authentication authentication) {
+        Long id =  userService.findUserByEmail(authentication.getName());
+        User old_user = userService.getUserByUserId(id);
+        old_user.setAddress(user.getAddress());
+        old_user.setContact(user.getContact());
+        old_user.setEmailId(user.getEmailId());
+        old_user.setDob(user.getDob());
+        userService.saveOrUpdate(old_user);
+        return new ModelAndView("redirect:/home");
     }
 }
