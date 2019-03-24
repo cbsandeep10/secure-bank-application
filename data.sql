@@ -53,8 +53,8 @@ CREATE TABLE bank.account (
   routing_no int(11) NOT NULL,
   account_type int(2) NOT NULL,
   interest decimal(5,2),
-  created timestamp DEFAULT CURRENT_TIMESTAMP(),
-  updated timestamp DEFAULT CURRENT_TIMESTAMP(),
+  created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  updated timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   PRIMARY KEY (account_no),
   FOREIGN KEY (user_id) REFERENCES bank.user(user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

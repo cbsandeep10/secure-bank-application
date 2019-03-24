@@ -52,13 +52,25 @@
                 <span class="help-block" id="name-error"></span>
             </div>
         </div>
-        <div class="form-group">
+        <!--<div class="form-group">
             <label class="control-label col-sm-2" >Gender</label>
             <div class="col-sm-4">
                 <input type ="text" class="form-control" th:field="*{gender}" placeholder="Enter Gender(M/F)" name="Gender" id="gender" required>
                 <span class="help-block" id="gender-error"></span>
             </div>
         </div>
+-->
+        <div class="form-group">
+            <label class="control-label col-sm-2" >Gender</label>
+            <div class="col-sm-4">
+                <select th:field="*{gender}">
+                    <option th:value="M" th:text="Male"></option>
+                    <option th:value="F" th:text="Female"></option>
+                </select>
+                <span class="help-block" id="gender-error"></span>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="control-label col-sm-2" >DOB</label>
             <div class="col-sm-4">
@@ -87,31 +99,41 @@
                 <span class="help-block" id="address-error"></span>
             </div>
         </div>
+        <!--<div class="form-group">
+            <label class="control-label col-sm-2" >Account Type</label>
+            <div class="col-sm-4">
+                <input type ="text" class="form-control" th:field="*{accountType}" placeholder="Select Account Type" name="Address" id="accountType" required>
+                <span class="help-block" id="accounttype-error"></span>
+            </div>
+        </div> -->
         <div class="form-group">
             <label class="control-label col-sm-2" >Account Type</label>
             <div class="col-sm-4">
-                <input type ="text" class="form-control" th:field="*{accountType}" placeholder="Enter Address" name="Address" id="address" required>
-                <span class="help-block" id="accounttype-error"></span>
+                <select th:field="*{accountType}">
+                    <option th:value=1 th:text="checking"></option>
+                    <option th:value=2 th:text="savings"></option>
+                </select>
+                <span class="help-block" id="type-error"></span>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" >Balance</label>
             <div class="col-sm-4">
-                <input type ="text" class="form-control" th:field="*{balance}" placeholder="Enter Address" name="Address" id="address" required>
+                <input type ="text" class="form-control" th:field="*{balance}" placeholder="Enter balance" name="Balance" id="balance" required>
                 <span class="help-block" id="balance-error"></span>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" >Interest</label>
             <div class="col-sm-4">
-                <input type ="text" class="form-control" th:field="*{interest}" placeholder="Enter Address" name="Address" id="address" required>
+                <input type ="text" class="form-control" th:field="*{interest}" placeholder="Enter Interest" name="Address" id="interest" required>
                 <span class="help-block" id="intertest-error"></span>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" >Routing No</label>
             <div class="col-sm-4">
-                <input type ="text" class="form-control" th:field="*{routingNo}" placeholder="Enter Address" name="Address" id="address" required>
+                <input type ="text" class="form-control" th:field="*{routingNo}" placeholder="Enter routingNo" name="Address" id="routingNo" required>
                 <span class="help-block" id="routing-error"></span>
             </div>
         </div>
