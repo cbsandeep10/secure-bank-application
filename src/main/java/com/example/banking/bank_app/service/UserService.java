@@ -26,7 +26,7 @@ public interface UserService {
 
     public void saveOrUpdate(Auth_user user);
 
-    public void saveNewUser(User user);
+//    public void saveNewUser(User user);
 
     public void deleteUser(Long userId);
 

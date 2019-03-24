@@ -31,7 +31,7 @@ public class User {
     private String address;
 
     @Column(name="user_type")
-    private String userType;
+    private Integer userType;
 
     @Column(name="dob")
     @Temporal(TemporalType.DATE)
@@ -93,11 +93,11 @@ public class User {
         this.address = address;
     }
 
-    public String getUserType() {
+    public Integer getUserType() {
         return userType;
     }
 
-    public void setUserType(String userType) {
+    public void setUserType(Integer userType) {
         this.userType = userType;
     }
 
