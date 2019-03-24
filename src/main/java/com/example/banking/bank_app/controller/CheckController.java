@@ -40,7 +40,7 @@ public class CheckController {
             modelAndView.addObject("pageNumbers", pageNumbers);
         }
         modelAndView.addObject("activeCheckList", true);
-        modelAndView.addObject("CheckList", checkPage.getContent());
+        modelAndView.addObject("checkList", checkPage.getContent());
         return modelAndView;
     }
 
