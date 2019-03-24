@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Secure Bank - Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body style="background-color:#ededed;">
+<div style="background-color:#333;height:50px;"></div>
+<div class="container-fluid">
+    <div class="row col-lg-4 col-lg-offset-4" style="margin-top: 80px;background-color:#fff;padding:20px;border:solid 1px #ddd;">
+        <!-- <img th:src="@{/images/login.jpg}" class="img-responsive center-block" width="300" height="300" alt="Logo" /> -->
+        <!--<form th:action="@{'/mobilenumbers/'+'+12138338030'+'/otp'}" method="PUT" class="form-signin">-->
+            <!--<h3 class="form-signin-heading" th:text="OTP"></h3>-->
+            <!--<br />-->
+            <!--<input type="password" th:placeholder="OTP" id="otp" name="otp" class="form-control" /> <br />-->
+
+            <!--<div align="center" th:if="${param.error}">-->
+                <!--<p style="font-size:20px; color: #FF1C19;">Otp is invalid.</p>-->
+            <!--</div>-->
+            <!--<button class="btn btn-lg btn-primary" name="Submit1" value="OTP1" type="Submit" th:text="Verify" style="margin-right:10px;"></button>-->
+        <!--</form>-->
+
+
+        <form id="my-form">
+            <input type="password" id="otp" name="otp" placeholder="Verify OTP" />
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script>
+            (function($){
+                function processForm( e ){
+                    $.ajax({
+                        url: '/mobilenumbers/+12138338030/otp',
+                        dataType: 'json',
+                        type: 'put',
+                        contentType: 'application/json',
+                        data:  JSON.stringify({ "otp": $('#otp').val() }),
+                        processData: false,
+                        success:window.location='http://localhost:8080/home',
+                        error: function( jqXhr, textStatus, errorThrown ){
+                            window.location='http://localhost:8080/login';
+                        }
+                    });
+
+
+                    e.preventDefault();
+                }
+
+                $('#my-form').submit( processForm );
+            })(jQuery);
+        </script>
+
+    </div>
+</div>
+</body>
+</html>
