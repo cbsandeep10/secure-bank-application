@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/adduser.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -39,12 +40,12 @@
     </div>
 </nav>
 <div class="container">
-    <h2><strong>Add New User</strong></h2>
+    <h2><strong>Create New User & Account</strong></h2>
     <div class="alert alert-info" role="alert" th:if="${message!=''}">
         <p th:text="${message}">
         </p>
     </div>
-    <form name="myForm" class="form-horizontal" th:object="${user}" th:action="@{/addUser}" method="post" novalidate>
+    <form name="myForm" class="form-horizontal" th:object="${user}" th:action="@{/addUser}" method="post">
         <div class="form-group">
             <label class="control-label col-sm-2" >Name</label>
             <div class="col-sm-4">
@@ -63,7 +64,7 @@
         <div class="form-group">
             <label class="control-label col-sm-2" >Gender</label>
             <div class="col-sm-4">
-                <select th:field="*{gender}">
+                <select class="form-control" th:field="*{gender}" required>
                     <option th:value="M" th:text="Male"></option>
                     <option th:value="F" th:text="Female"></option>
                 </select>
@@ -109,9 +110,10 @@
         <div class="form-group">
             <label class="control-label col-sm-2" >Account Type</label>
             <div class="col-sm-4">
-                <select th:field="*{accountType}">
+                <select class="form-control" th:field="*{accountType}" required>
                     <option th:value=1 th:text="checking"></option>
                     <option th:value=2 th:text="savings"></option>
+                    <option th:value=3 th:text="|credit card|"></option>
                 </select>
                 <span class="help-block" id="type-error"></span>
             </div>

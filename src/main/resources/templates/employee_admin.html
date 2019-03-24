@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+    <title>Employee list</title>
+
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" th:href="@{/home}">Secure Bank</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a th:href="@{/home}">Home</a></li>
+                <li><a th:href="@{/account/list/1}">User Accounts</a></li>
+                <li><a th:href="@{/employee/list/1}">Employee Accounts</a></li>
+                <li><a th:href="@{/request/list/1}">Requests</a></li>
+            </ul>
+            <div class="pull-right">
+                <ul class="nav pull-right navbar-nav">
+                    <li><a th:href="@{/logout}">Log Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<div class="container">
+    <div class ="card">
+
+        <div class="card-block">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Employee Name</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Tier Level</th>
+                    <th>Designation ID</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="dar : ${EmployeeList}">
+                    <td th:text="${dar.getEmployee_id()}"></td>
+                    <td th:text="${dar.getEmployee_name()}"></td>
+                    <td th:text="${dar.getGender()}"></td>
+                    <td th:text="${dar.getAge()}"></td>
+                    <td th:text="${dar.getTier_level()}"></td>
+                    <td th:text="${dar.getDesignation_id()}"></td>
+                    <td th:text="${dar.getContact_no()}"></td>
+                    <td th:text="${dar.getEmail_id()}"></td>
+                    <td th:text="${dar.getAddress()}"></td>
+                    <td><a class="btn btn-primary eBtn">Edit</a></td>
+                    <td><a class="btn btn-primary eBtn">Delete</a></td>
+                </tr>
+
+                    </tbody>
+                </table>
+
+                <div class="row" th:fragment="pagination">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <nav aria-label="Pagination">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" th:each="pageNumber : ${pageNumbers}" >
+                                    <a class="page-link" th:href="@{|/log/list/page/${pageNumber}|}" th:text="${pageNumber}">1</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

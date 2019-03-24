@@ -1,4 +1,5 @@
 package com.example.banking.bank_app.service;
+import com.example.banking.bank_app.model.Account;
 import com.example.banking.bank_app.model.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,12 @@ public interface EmployeeService {
 
     public List<Employee> getAllEmployees();
 
-    public Page<Employee> getPaginated(Pageable pageable);
+    public Page<Employee> getPaginated(Pageable pageable, int tier);
+
+    public void deleteEmployee(Integer id);
+
+    public void saveOrUpdate(Employee employee);
+
+    public Employee getEmployeeById(Integer id);
 }
 

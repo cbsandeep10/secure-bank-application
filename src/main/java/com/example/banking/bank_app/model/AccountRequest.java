@@ -48,6 +48,9 @@ public class AccountRequest implements Serializable {
     @Column(name="user")
     private String user;
 
+    @Column(name="role")
+    private Integer role;
+
     @ManyToOne
     @JoinColumn(name="approved_by", insertable = false, updatable = false)
     private Employee approved_user;
@@ -184,5 +187,13 @@ public class AccountRequest implements Serializable {
 
     public Map<String, Object> getAccountJson() {
         return accountJson;
+    }
+
+    public Integer getRole() {
+        return role;
+    }
+
+    public void setRole(Integer role) {
+        this.role = role;
     }
 }

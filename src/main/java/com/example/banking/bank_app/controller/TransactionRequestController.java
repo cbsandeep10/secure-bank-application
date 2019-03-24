@@ -50,8 +50,10 @@ public class TransactionRequestController {
             roles.add(a.getAuthority());
         }
         int critical = 0;
+        String role = "0";
         if(roles.contains("TIER2")){
             critical = 1;
+            role = "1";
         }
         ModelAndView modelAndView = new ModelAndView("request_list");
         PageRequest pageable = PageRequest.of(page - 1, 10);
@@ -63,6 +65,7 @@ public class TransactionRequestController {
         }
         modelAndView.addObject("activeRequestList", true);
         modelAndView.addObject("requestList", requestPage.getContent());
+        modelAndView.addObject("role", role);
         return modelAndView;
     }
 

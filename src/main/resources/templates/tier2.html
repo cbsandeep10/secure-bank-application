@@ -20,19 +20,9 @@
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a th:href="@{/home}">Home</a></li>
-            <li><a th:href="@{/account/list/1}">Accounts</a></li>
+            <li><a th:href="@{/account/list/1}">User Accounts</a></li>
+            <li><a th:href="@{/employee/list/1}">Employee Accounts</a></li>
             <li><a th:href="@{/request/list/1}">Requests</a></li>
-            <li><a th:href="@{/statements}">Statements</a></li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transfer
-                    <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a th:href="@{/transfer/account}">By Account</a></li>
-                    <li><a th:href="@{/transfer/phone}">By Phone</a></li>
-                    <li><a th:href="@{/transfer/email}">By Email</a></li>
-                </ul>
-            </li>
-            <li><a th:href="@{/log/list/1}">Logs</a></li>
         </ul>
         <div class="pull-right">
             <ul class="nav pull-right navbar-nav">
@@ -55,15 +45,59 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="btn-group-vertical" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary">Left</button>
-                        <button type="button" class="btn btn-primary">Middle</button>
-                        <button type="button" class="btn btn-primary">Right</button>
+                        <button type="button" class="btn btn-primary">User Accounts</button>
+                        <button type="button" class="btn btn-primary">Employee Accounts</button>
+                        <button type="button" class="btn btn-primary">Requests</button>
                     </div>
                 </div>
             </div>
+            <div class="profileForm">
+                <form th:action="@{/user/edit}" method="post" id="edit" th:object="${user}" >
+                    <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="name" class="col-form-label">Name:</label>
+                                            <input type="text" class="form-control" id="name" th:field="*{name}" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="emailId" class="col-form-label">Email:</label>
+                                            <input type="text" class="form-control" id="emailId" required th:field="*{emailId}" >
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="contact" class="col-form-label">Contact:</label>
+                                            <input type="text" class="form-control" id="contact" required th:field="*{contact}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address" class="col-form-label">Address:</label>
+                                            <input type="text" class="form-control" id="address" required th:field="*{address}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dob" class="col-form-label">Date of Birth:</label>
+                                            <input type="date" class="form-control" id="dob" required th:field="*{dob}">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
+
     </div>
-</div>
 </div>
 </body>
 </html>
