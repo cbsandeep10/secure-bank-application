@@ -18,10 +18,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query("SELECT u.userId FROM User u WHERE u.contact =:phone")
     Long findUserByPhone(@Param("phone") String phone);
 
-//    @Override
-//    default <S extends User> S save(S s) {
-//        return null;
-//    }
 }
 
 

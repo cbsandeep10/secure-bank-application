@@ -30,5 +30,5 @@ public interface UserService {
 
     public void deleteUser(Long userId);
 
-    public void saveOrUpdate(User user);
+    public User saveOrUpdate(User user);
 }

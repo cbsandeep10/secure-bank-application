@@ -1,9 +1,12 @@
 package com.example.banking.bank_app.model;
 
+import org.hibernate.annotations.Formula;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class AddUser {
@@ -27,6 +30,14 @@ public class AddUser {
 
     @NotNull(message="Address cannot be empty")
     private String address;
+
+    private float balance;
+
+    private Integer routingNo;
+
+    private Integer accountType;
+
+    private float interest;
 
 
     public String getName() {
@@ -75,5 +86,37 @@ public class AddUser {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public float getBalance() {
+        return balance;
+    }
+
+    public void setBalance(float balance) {
+        this.balance = balance;
+    }
+
+    public Integer getRoutingNo() {
+        return routingNo;
+    }
+
+    public void setRoutingNo(Integer routingNo) {
+        this.routingNo = routingNo;
+    }
+
+    public Integer getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(Integer accountType) {
+        this.accountType = accountType;
+    }
+
+    public float getInterest() {
+        return interest;
+    }
+
+    public void setInterest(float interest) {
+        this.interest = interest;
     }
 }

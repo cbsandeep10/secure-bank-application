@@ -4,6 +4,7 @@ import com.example.banking.bank_app.model.*;
 import com.example.banking.bank_app.service.AccountService;
 import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -36,7 +37,7 @@ public class AddUserController {
     }
 
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
-    public String formSubmit(@Valid AddUser adduser, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+    public String formSubmit(@Valid AddUser adduser, BindingResult bindingResult, Model model,Authentication authentication, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("message","Please fix the errors");
             return "redirect:/addUser";
@@ -49,16 +50,18 @@ public class AddUserController {
         new_user.setEmailId(adduser.getEmailId());
         new_user.setAddress(adduser.getAddress());
         new_user.setUserType(1);
-        new_user.setCreated(new Timestamp(System.currentTimeMillis()));
-        userService.saveOrUpdate(new_user);
+        User user=userService.saveOrUpdate(new_user);
 
         Account account = new Account();
-        account.setUserId(1000L);
-        account.setBalance(10);
-        account.setRoutingNo(123);
-        account.setAccountType(1);
-
+        account.setUserId(user.getUserId());
+        account.setBalance(adduser.getBalance());
+        account.setRoutingNo(adduser.getRoutingNo());
+        account.setAccountType(adduser.getAccountType());
+        account.setInterest(adduser.getInterest());
+        account.setCreated(new Timestamp(System.currentTimeMillis()));
+        account.setUpdated(new Timestamp(System.currentTimeMillis()));
         accountService.saveOrUpdate(account);
+        System.out.println("The user & account added successfully");
         redirectAttributes.addFlashAttribute("message","Successfully created");
         return "redirect:/addUser";
     }

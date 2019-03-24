@@ -53,8 +53,8 @@ CREATE TABLE bank.account (
   routing_no int(11) NOT NULL,
   account_type int(2) NOT NULL,
   interest decimal(5,2),
-  created timestamp DEFAULT CURRENT_TIMESTAMP(),
-  updated timestamp DEFAULT CURRENT_TIMESTAMP(),
+  created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  updated timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   PRIMARY KEY (account_no),
   FOREIGN KEY (user_id) REFERENCES bank.user(user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -186,6 +186,19 @@ ALTER TABLE bank.cards AUTO_INCREMENT=8000000;
 
 INSERT INTO bank.cards(account_no ,balance,credit_limit, type) VALUES (1000000, 2500.0, 45622, 2);
 -- INSERT INTO bank.cards(account_no ,balance,limit, type) VALUES (10000000000, 2500.0, 45622, 2);
+
+DROP TABLE IF EXISTS bank.checks;
+CREATE TABLE bank.checks (
+  check_id int(11) unsigned NOT NULL AUTO_INCREMENT,
+  account_no int(11) unsigned NOT NULL,
+  amount decimal(10,2) NOT NULL,
+  issue timestamp DEFAULT CURRENT_TIMESTAMP(),
+  PRIMARY KEY (check_id),
+  FOREIGN KEY (account_no) REFERENCES bank.account(account_no)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `bank`.`checks`(`account_no`,`amount`)VALUES(1000000,500);
+INSERT INTO `bank`.`checks`(`account_no`,`amount`)VALUES(1000001,700);
 
 
 insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (2,'Tier 1','Tier 1','tier1@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
