@@ -19,7 +19,7 @@
             <div class="navbar-header">
                 <a class="navbar-brand" th:href="@{/home}">Secure Bank</a>
             </div>
-            <ul class="nav navbar-nav" th:if="${role == '0'}">
+            <ul class="nav navbar-nav" th:if="${role == 1}">
                 <li class="active"><a th:href="@{/home}">Home</a></li>
                 <li><a th:href="@{/account/list/1}">Accounts</a></li>
                 <li class="dropdown">
@@ -43,7 +43,7 @@
                     </ul>
                 </li>
             </ul>
-            <ul class="nav navbar-nav" th:if="${role == '1'}">
+            <ul class="nav navbar-nav" th:if="${role == 2}">
                 <li class="active"><a th:href="@{/home}">Home</a></li>
                 <li><a th:href="@{/account/list/1}">User Accounts</a></li>
                 <li><a th:href="@{/employee/list/1}">Employee Accounts</a></li>

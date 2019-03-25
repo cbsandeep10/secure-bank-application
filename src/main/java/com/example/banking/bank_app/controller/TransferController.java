@@ -42,11 +42,12 @@ public class TransferController {
         for(GrantedAuthority a : authorities) {
             roles.add(a.getAuthority());
         }
-        String role = "0";
+        int role;
         if(roles.contains("TIER1")){
-            role = "1";
+            role = Config.TIER1;
         }else{
             Long id =  userService.findUserByEmail(authentication.getName());
+            role = Config.USER;
             model.addAttribute("accounts",userService.getUserByUserId(id).getAccounts());
         }
         Transfer transfer = new Transfer();
@@ -106,7 +107,7 @@ public class TransferController {
         to_transaction.setBalance(to_balance+transfer.getTransaction_amount());
 
         Long request_id = 0L;
-        if(transfer.getTransaction_amount() > Config.LIMIT){
+        if(transfer.getTransaction_amount() > Config.LIMIT || roles.contains("USER")){
             TransactionRequest transactionRequest = new TransactionRequest();
             transactionRequest.setCreated_by(name);
             transactionRequest.setFrom_account(transfer.getFrom_account_no());

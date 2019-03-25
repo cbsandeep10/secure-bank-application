@@ -18,7 +18,7 @@
         <div class="navbar-header">
             <a class="navbar-brand" th:href="@{/home}">Secure Bank</a>
         </div>
-        <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav" th:if="${role == 1}">
             <li class="active"><a th:href="@{/home}">Home</a></li>
             <li><a th:href="@{/account/list/1}">Accounts</a></li>
             <li class="dropdown">
@@ -32,6 +32,21 @@
             <li><a th:href="@{/account/deposit}">Deposit</a></li>
             <li><a th:href="@{/account/withdraw}">Withdraw</a></li>
             <li><a th:href="@{/checks/issue}">Issue</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transfer
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/transfer/account}">By Account</a></li>
+                    <li><a th:href="@{/transfer/phone}">By Phone</a></li>
+                    <li><a th:href="@{/transfer/email}">By Email</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav" th:if="${role == 0}">
+            <li class="active"><a th:href="@{/home}">Home</a></li>
+            <li><a th:href="@{/statements}">Statements</a></li>
+            <li><a th:href="@{/account/deposit1}">Deposit</a></li>
+            <li><a th:href="@{/account/withdraw1}">Withdraw</a></li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transfer
                     <span class="caret"></span></a>
@@ -56,7 +71,7 @@
         </p>
     </div>
     <form name="myForm" class="form-horizontal" th:object="${transfer}" th:action="@{|/transfer/${type}|}" method="post" >
-        <div class="form-group" th:if="${role == '0'}">
+        <div class="form-group" th:if="${role == 0}">
             <label class="control-label col-sm-2" >Account Number</label>
             <div class="col-sm-4">
                <select class="form-control" th:field="*{from_account_no}" id="AccountNumber" required>
@@ -67,7 +82,7 @@
                 </select>
             </div>
         </div>
-        <div class="form-group" th:if="${role == '1'}">
+        <div class="form-group" th:if="${role == 1}">
             <label class="control-label col-sm-2" >From Account</label>
             <div class="col-sm-4"th:classappend="${#fields.hasErrors('from_account_no')} ? 'input-icon right' : ''">
                 <i th:if="${#fields.hasErrors('from_account_no')}" class="fa fa-exclamation tooltips" data-original-title="Valid Amount" data-container="body"></i>

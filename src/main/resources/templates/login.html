@@ -6,8 +6,21 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://mottie.github.io/Keyboard/js/jquery.keyboard.extension-typing.js"></script>
+    <script src="https://mottie.github.io/Keyboard/js/jquery.mousewheel.js"></script>
+    <script src="https://mottie.github.io/Keyboard/js/jquery.keyboard.js"></script>
     <script type="text/javascript" src="/js/prevent.js"></script>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <script>
+        $(document).ready(function() {
+            $('#password')
+                .keyboard({ layout: 'alpha' })
+                .addTyping();
+        });
+    </script>
 </head>
+
 <body style="background-color:#ededed;" oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 <div style="background-color:#333;height:50px;"></div>
 <div class="container-fluid">

@@ -46,11 +46,15 @@ public class TransactionRequestController {
         for(GrantedAuthority a : authorities) {
             roles.add(a.getAuthority());
         }
-        int critical = 0;
-        String role = "0";
+        int critical;
+        int role;
         if(roles.contains("TIER2")){
-            critical = 1;
-            role = "1";
+            critical = Config.CRITICAL_YES;
+            role = Config.TIER2;
+        }
+        else{//tier 1
+            critical = Config.CRITICAL_NO;
+            role = Config.TIER1;
         }
         ModelAndView modelAndView = new ModelAndView("request_list");
         PageRequest pageable = PageRequest.of(page - 1, 10);

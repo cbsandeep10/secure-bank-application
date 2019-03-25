@@ -38,12 +38,13 @@ public class EmployeeController {
             roles.add(a.getAuthority());
         }
         ModelAndView modelAndView;
-        int tier = 3;
+        int tier;
         if(roles.contains("ADMIN")){
             modelAndView = new ModelAndView("employee_admin");
-            tier = 0;
+            tier = -1; // so that admin can view all accounts
         }else{
             modelAndView = new ModelAndView("employee_list");
+            tier = Config.ADMIN; // tier2 can't view admin's details
         }
         PageRequest pageable = PageRequest.of(page - 1, 15);
         Page<Employee> employeePage = employeeService.getPaginated(pageable, tier);

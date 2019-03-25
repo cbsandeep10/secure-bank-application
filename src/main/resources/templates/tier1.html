@@ -63,11 +63,13 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary">Deposit Fund</button>
-                        <button type="button" class="btn btn-primary">Withdraw Fund</button>
-                        <button type="button" class="btn btn-primary">Issue Cashier Cheque</button>
-                        <button type="button" class="btn btn-primary">Transfer Fund</button>
-                        <button type="button" class="btn btn-primary">Customer Request</button>
+                        <a th:href="@{/account/list/1}" type="button" class="btn btn-primary">Accounts</a>
+                        <a th:href="@{/account/deposit}" type="button" class="btn btn-primary">Deposit Fund</a>
+                        <a th:href="@{/account/withdraw}" type="button" class="btn btn-primary">Withdraw Fund</a>
+                        <a th:href="@{/checks/issue}" type="button" class="btn btn-primary">Issue Cashier Cheque</a>
+                        <a th:href="@{/transfer/account}" type="button" class="btn btn-primary">Transfer Fund</a>
+                        <a th:href="@{/request/list/1}" type="button" class="btn btn-primary">Transaction Request</a>
+                        <a th:href="@{/account-request/list/1}" type="button" class="btn btn-primary">Customer Request</a>
                     </div>
                 </div>
             </div>

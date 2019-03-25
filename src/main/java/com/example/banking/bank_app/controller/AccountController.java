@@ -122,7 +122,7 @@ public class  AccountController {
         return new ModelAndView("redirect:/account/list/1");
     }
 
-    @RequestMapping(value="/deposit", method= RequestMethod.GET)
+    @RequestMapping(value="/deposit", method= RequestMethod.GET)//tier 1
     public ModelAndView deposit(@ModelAttribute("message") String message) {
         ModelAndView modelAndView = new ModelAndView("deposit");
         Transaction transaction = new Transaction();
@@ -131,9 +131,27 @@ public class  AccountController {
         return modelAndView;
     }
 
-    @RequestMapping(value="/withdraw", method= RequestMethod.GET)
+    @RequestMapping(value="/deposit1", method= RequestMethod.GET) //user
+    public ModelAndView deposit1(@ModelAttribute("message") String message) {
+        ModelAndView modelAndView = new ModelAndView("deposit_user");
+        Transaction transaction = new Transaction();
+        modelAndView.addObject("transaction", transaction);
+        modelAndView.addObject("message",message);
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/withdraw", method= RequestMethod.GET)//tier 1
     public ModelAndView withdraw(@ModelAttribute("message") String message) {
         ModelAndView modelAndView = new ModelAndView("withdraw");
+        Transaction transaction = new Transaction();
+        modelAndView.addObject("transaction", transaction);
+        modelAndView.addObject("message",message);
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/withdraw1", method= RequestMethod.GET) //user
+    public ModelAndView withdraw1(@ModelAttribute("message") String message) {
+        ModelAndView modelAndView = new ModelAndView("withdraw_user");
         Transaction transaction = new Transaction();
         modelAndView.addObject("transaction", transaction);
         modelAndView.addObject("message",message);
@@ -148,16 +166,22 @@ public class  AccountController {
             roles.add(a.getAuthority());
         }
         String name;
+        int role;
+        ModelAndView modelAndView;
         if(roles.contains("TIER1")){
             Long id = employeeService.findUserByEmail(authentication.getName());
             name = employeeService.getEmployeeById(id).getEmployee_name();
+            role = Config.TIER1;
+            modelAndView = new ModelAndView("redirect:/account/deposit");
         }else{
             Long id = userService.findUserByEmail(authentication.getName());
             name = userService.getUserByUserId(id).getName();
+            role = Config.USER;
+            modelAndView = new ModelAndView("redirect:/account/deposit1");
         }
-        String message = depositandwithdraw(Config.CREDIT, transaction,name);
+        String message = depositandwithdraw(Config.CREDIT, transaction,name, role);
         redirectAttributes.addFlashAttribute("message", message);
-        return new ModelAndView("redirect:/account/deposit");
+        return modelAndView;
     }
 
     @RequestMapping(value="/withdraw", method= RequestMethod.POST)
@@ -168,19 +192,25 @@ public class  AccountController {
             roles.add(a.getAuthority());
         }
         String name;
+        int role;
+        ModelAndView modelAndView;
         if(roles.contains("TIER1")){
             Long id = employeeService.findUserByEmail(authentication.getName());
             name = employeeService.getEmployeeById(id).getEmployee_name();
+            role = Config.TIER1;
+            modelAndView = new ModelAndView("redirect:/account/withdraw");
         }else{
             Long id = userService.findUserByEmail(authentication.getName());
             name = userService.getUserByUserId(id).getName();
+            role = Config.USER;
+            modelAndView = new ModelAndView("redirect:/account/withdraw1");
         }
-        String message = depositandwithdraw(Config.DEBIT, transaction, name);
+        String message = depositandwithdraw(Config.DEBIT, transaction, name, role);
         redirectAttributes.addFlashAttribute("message", message);
-        return new ModelAndView("redirect:/account/withdraw");
+        return modelAndView;
     }
 
-    private String depositandwithdraw(int type, Transaction transaction, String name){
+    private String depositandwithdraw(int type, Transaction transaction, String name, int role){
 //        Long id =  userService.findUserByEmail(name);
         transaction.setTransaction_timestamp(new Timestamp(System.currentTimeMillis()));
         Account account;
@@ -203,7 +233,7 @@ public class  AccountController {
             transaction.setDescription("Deposit "+transaction.getTransaction_amount()+ " || Comments: "+transaction.getDescription());
         }
 
-        if(transaction.getTransaction_amount() > Config.LIMIT){
+        if(transaction.getTransaction_amount() > Config.LIMIT || role == Config.USER){
             TransactionRequest transactionRequest = new TransactionRequest();
             transactionRequest.setCreated_by(name);
             transactionRequest.setFrom_account(transaction.getAccount_no());
@@ -225,6 +255,7 @@ public class  AccountController {
             transaction.setBalance(balance);
         }else{
             transaction.setStatus(Config.APPROVED);
+            accountService.saveOrUpdate(account);
         }
         transactionService.saveOrUpdate(transaction);
         return "Success";
