@@ -1,9 +1,6 @@
 package com.example.banking.bank_app.controller;
 
-import com.example.banking.bank_app.model.Account;
-import com.example.banking.bank_app.model.AccountRequest;
-import com.example.banking.bank_app.model.Config;
-import com.example.banking.bank_app.model.User;
+import com.example.banking.bank_app.model.*;
 import com.example.banking.bank_app.service.AccountRequestService;
 import com.example.banking.bank_app.service.AccountService;
 import com.example.banking.bank_app.service.EmployeeService;
@@ -90,13 +87,30 @@ public class AccountRequestController {
             double interest = (double)attributes.get("interest");
             account.setInterest((float)interest);
             account.setCreated(new Timestamp((Long) attributes.get("created")));
-            account.setUpdated(new Timestamp((Long) attributes.get("updated")));
+            account.setUpdated(new Timestamp(System.currentTimeMillis()));
             accountService.saveOrUpdate(account);
-        }else{
+        }else if (accountRequest.getType() == Config.USER_TYPE){
             accountRequest.deserializeuser();
             Map<String, Object> attributes = accountRequest.getUserJson();
             User user = new User();
 
+        }else if (accountRequest.getType() == Config.EMPLOYEE_TYPE){
+            accountRequest.deserializeemployee();
+            Map<String, Object> attributes = accountRequest.getEmployeeJson();
+            Employee employee = new Employee();
+            Integer employeeID = (Integer)attributes.get("employee_id");
+            employee.setEmployee_id(new Long(employeeID));
+            employee.setEmployee_name((String) attributes.get("employee_name"));
+            employee.setGender((String) attributes.get("gender"));
+            employee.setAge((Integer) attributes.get("age"));
+            employee.setAddress((String) attributes.get("address")) ;
+            employee.setContact_no((String) attributes.get("contact_no"));
+            employee.setDesignation_id((Integer) attributes.get("designation_id"));
+            employee.setTier_level((Integer) attributes.get("tier_level"));
+            employee.setEmail_id((String) attributes.get("email_id"));
+            employee.setCreated(new Timestamp(System.currentTimeMillis()));
+            employee.setUpdated(new Timestamp(System.currentTimeMillis()));
+            employeeService.saveOrUpdate(employee);
         }
         accountRequest.setApproved_at(new Timestamp(System.currentTimeMillis()));
         accountRequest.setApproved_by(name); //Remeber to change this

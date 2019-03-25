@@ -1,5 +1,6 @@
 package com.example.banking.bank_app.model;
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name="employee")
@@ -33,6 +34,12 @@ public class Employee {
 
     @Column(name="address")
     private String address;
+
+    @Column(name="created")
+    private Timestamp created;
+
+    @Column(name="updated")
+    private Timestamp updated;
 
     public Long getEmployee_id() {
         return employee_id;
@@ -104,5 +111,21 @@ public class Employee {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
+    }
+
+    public Timestamp getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Timestamp updated) {
+        this.updated = updated;
     }
 }

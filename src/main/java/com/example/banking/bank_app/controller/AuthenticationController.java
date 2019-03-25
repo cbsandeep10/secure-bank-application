@@ -123,12 +123,13 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/tier2", method = RequestMethod.GET)
-    public ModelAndView tier2(Authentication authentication) {
+    public ModelAndView tier2(Authentication authentication, @ModelAttribute("message") String message) {
         Long id =  employeeService.findUserByEmail(authentication.getName());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("tier2"); // resources/template/tier2.html
         Employee employee = employeeService.getEmployeeById(id);
         modelAndView.addObject("employee",employee);
+        modelAndView.addObject("message", message);
         return modelAndView;
     }
 
