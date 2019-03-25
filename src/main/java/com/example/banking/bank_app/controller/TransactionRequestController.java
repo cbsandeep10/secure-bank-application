@@ -1,13 +1,7 @@
 package com.example.banking.bank_app.controller;
 
-import com.example.banking.bank_app.model.Account;
-import com.example.banking.bank_app.model.Config;
-import com.example.banking.bank_app.model.Transaction;
-import com.example.banking.bank_app.model.TransactionRequest;
-import com.example.banking.bank_app.service.AccountService;
-import com.example.banking.bank_app.service.TransactionRequestService;
-import com.example.banking.bank_app.service.TransactionService;
-import com.example.banking.bank_app.service.UserService;
+import com.example.banking.bank_app.model.*;
+import com.example.banking.bank_app.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +26,9 @@ public class TransactionRequestController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    EmployeeService employeeService;
 
     @Autowired
     TransactionRequestService transactionRequestService;
@@ -71,10 +68,11 @@ public class TransactionRequestController {
 
     @RequestMapping(value="/approve/{id}", method= RequestMethod.POST)
     public ModelAndView approve(@PathVariable("id") int id, Authentication authentication) {
-        Long userId =  userService.findUserByEmail(authentication.getName());
+        Long userId =  employeeService.findUserByEmail(authentication.getName());
+        Employee employee = employeeService.getEmployeeById(userId);
         TransactionRequest transactionRequest = transactionRequestService.getRequestByRequestId(new Long(id));
         transactionRequest.setApproved_at(new Timestamp(System.currentTimeMillis()));
-        transactionRequest.setApproved_by(1L); //Remeber to change this
+        transactionRequest.setApproved_by(employee.getEmployee_name()); //Remeber to change this
         transactionRequest.setStatus_id(Config.APPROVED);
         transactionRequestService.saveOrUpdate(transactionRequest);
 
@@ -118,10 +116,12 @@ public class TransactionRequestController {
     }
 
     @RequestMapping(value="/decline/{id}", method= RequestMethod.POST)
-    public ModelAndView decline(@PathVariable("id") int id) {
+    public ModelAndView decline(@PathVariable("id") int id, Authentication authentication) {
+        Long userId =  employeeService.findUserByEmail(authentication.getName());
+        Employee employee = employeeService.getEmployeeById(userId);
         TransactionRequest transactionRequest = transactionRequestService.getRequestByRequestId(new Long(id));
         transactionRequest.setApproved_at(new Timestamp(System.currentTimeMillis()));
-        transactionRequest.setApproved_by(1L); //Remeber to change this
+        transactionRequest.setApproved_by(employee.getEmployee_name()); //Remeber to change this
         transactionRequest.setStatus_id(Config.DECLINED);
         transactionRequestService.saveOrUpdate(transactionRequest);
         return new ModelAndView("redirect:/request/list/1");

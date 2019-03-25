@@ -1,9 +1,6 @@
 package com.example.banking.bank_app.service;
 
-import com.example.banking.bank_app.model.Account;
 import com.example.banking.bank_app.model.AccountRequest;
-import com.example.banking.bank_app.model.TransactionRequest;
-import com.example.banking.bank_app.respository.AccountRepository;
 import com.example.banking.bank_app.respository.AccountRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,8 +40,8 @@ public class AccountRequestServiceImpl implements AccountRequestService {
     }
 
     @Override
-    public Page<AccountRequest> getPaginated(Pageable pageable) {
-        return accountRequestRepository.findAll(pageable);
+    public Page<AccountRequest> getPaginated(Pageable pageable, int role) {
+        return accountRequestRepository.findAll(pageable, role);
     }
 
 

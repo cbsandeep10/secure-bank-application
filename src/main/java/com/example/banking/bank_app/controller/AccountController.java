@@ -26,6 +26,9 @@ public class  AccountController {
     UserService userService;
 
     @Autowired
+    EmployeeService employeeService;
+
+    @Autowired
     AccountService accountService;
 
     @Autowired
@@ -67,6 +70,7 @@ public class  AccountController {
     @RequestMapping(value="/new", method= RequestMethod.POST)
     public ModelAndView createAccount(Account account, RedirectAttributes redirectAttributes, Authentication authentication) {
         Long id =  userService.findUserByEmail(authentication.getName());
+        String name = userService.getUserByUserId(id).getName();
         redirectAttributes.addFlashAttribute("message", "Created account, pending with Bank authorities!");
         SecureRandom random = new SecureRandom();
         int routing = random.nextInt(100000);
@@ -82,7 +86,7 @@ public class  AccountController {
         attributes.put("updated", new Timestamp(System.currentTimeMillis()));
         accountRequest.setDescription("New Account");
         accountRequest.setAccount(attributes);
-        accountRequest.setCreated_by(id);
+        accountRequest.setCreated_by(name);
         accountRequest.setStatus_id(Config.PENDING);
         accountRequest.setCreated_at(new Timestamp(System.currentTimeMillis()));
         accountRequest.setType(Config.ACCOUNT_TYPE);
@@ -138,20 +142,46 @@ public class  AccountController {
 
     @RequestMapping(value="/deposit", method= RequestMethod.POST)
     public ModelAndView depositPost(@Valid Transaction transaction, Authentication authentication,  RedirectAttributes redirectAttributes) {
-        String message = depositandwithdraw(Config.CREDIT, transaction, authentication.getName());
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> roles = new ArrayList<String>();
+        for(GrantedAuthority a : authorities) {
+            roles.add(a.getAuthority());
+        }
+        String name;
+        if(roles.contains("TIER1")){
+            Long id = employeeService.findUserByEmail(authentication.getName());
+            name = employeeService.getEmployeeById(id).getEmployee_name();
+        }else{
+            Long id = userService.findUserByEmail(authentication.getName());
+            name = userService.getUserByUserId(id).getName();
+        }
+        String message = depositandwithdraw(Config.CREDIT, transaction,name);
         redirectAttributes.addFlashAttribute("message", message);
         return new ModelAndView("redirect:/account/deposit");
     }
 
     @RequestMapping(value="/withdraw", method= RequestMethod.POST)
     public ModelAndView withdrawPost(@Valid Transaction transaction,Authentication authentication,  RedirectAttributes redirectAttributes) {
-        String message = depositandwithdraw(Config.DEBIT, transaction, authentication.getName());
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> roles = new ArrayList<String>();
+        for(GrantedAuthority a : authorities) {
+            roles.add(a.getAuthority());
+        }
+        String name;
+        if(roles.contains("TIER1")){
+            Long id = employeeService.findUserByEmail(authentication.getName());
+            name = employeeService.getEmployeeById(id).getEmployee_name();
+        }else{
+            Long id = userService.findUserByEmail(authentication.getName());
+            name = userService.getUserByUserId(id).getName();
+        }
+        String message = depositandwithdraw(Config.DEBIT, transaction, name);
         redirectAttributes.addFlashAttribute("message", message);
         return new ModelAndView("redirect:/account/withdraw");
     }
 
     private String depositandwithdraw(int type, Transaction transaction, String name){
-        Long id =  userService.findUserByEmail(name);
+//        Long id =  userService.findUserByEmail(name);
         transaction.setTransaction_timestamp(new Timestamp(System.currentTimeMillis()));
         Account account;
         try{
@@ -175,7 +205,7 @@ public class  AccountController {
 
         if(transaction.getTransaction_amount() > Config.LIMIT){
             TransactionRequest transactionRequest = new TransactionRequest();
-            transactionRequest.setCreated_by(id);
+            transactionRequest.setCreated_by(name);
             transactionRequest.setFrom_account(transaction.getAccount_no());
             transactionRequest.setStatus_id(Config.PENDING);
             transactionRequest.setTransaction_amount(transaction.getTransaction_amount());
@@ -195,7 +225,6 @@ public class  AccountController {
             transaction.setBalance(balance);
         }else{
             transaction.setStatus(Config.APPROVED);
-            //accountService.saveOrUpdate(account);
         }
         transactionService.saveOrUpdate(transaction);
         return "Success";

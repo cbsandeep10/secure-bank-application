@@ -2,7 +2,9 @@ package com.example.banking.bank_app.controller;
 
 import com.example.banking.bank_app.model.Account;
 import com.example.banking.bank_app.model.Auth_user;
+import com.example.banking.bank_app.model.Employee;
 import com.example.banking.bank_app.model.User;
+import com.example.banking.bank_app.service.EmployeeService;
 import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -25,6 +27,9 @@ public class AuthenticationController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    EmployeeService employeeService;
 
     @RequestMapping(value = { "/" }, method = RequestMethod.GET)
     public String main(Authentication authentication) { // resources/template/login.html
@@ -109,21 +114,21 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/tier1", method = RequestMethod.GET)
     public ModelAndView tier1(Authentication authentication) {
-        Long id =  userService.findUserByEmail(authentication.getName());
+        Long id =  employeeService.findUserByEmail(authentication.getName());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("tier1"); // resources/template/tier1.html
-        User user = userService.getUserByUserId(id);
-        modelAndView.addObject("user",user);
+        Employee employee = employeeService.getEmployeeById(id);
+        modelAndView.addObject("employee",employee);
         return modelAndView;
     }
 
     @RequestMapping(value = "/tier2", method = RequestMethod.GET)
     public ModelAndView tier2(Authentication authentication) {
-        Long id =  userService.findUserByEmail(authentication.getName());
+        Long id =  employeeService.findUserByEmail(authentication.getName());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("tier2"); // resources/template/tier2.html
-        User user = userService.getUserByUserId(id);
-        modelAndView.addObject("user",user);
+        Employee employee = employeeService.getEmployeeById(id);
+        modelAndView.addObject("employee",employee);
         return modelAndView;
     }
 

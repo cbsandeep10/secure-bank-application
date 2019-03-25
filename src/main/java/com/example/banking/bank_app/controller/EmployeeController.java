@@ -1,24 +1,22 @@
 package com.example.banking.bank_app.controller;
 
-import com.example.banking.bank_app.model.Account;
+import com.example.banking.bank_app.model.AccountRequest;
+import com.example.banking.bank_app.model.Config;
 import com.example.banking.bank_app.model.Employee;
+import com.example.banking.bank_app.service.AccountRequestService;
 import com.example.banking.bank_app.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -28,8 +26,11 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
+    @Autowired
+    AccountRequestService accountRequestService;
+
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
-    public ModelAndView list(@PathVariable("page") int page, Authentication authentication) {
+    public ModelAndView list(@PathVariable("page") int page, Authentication authentication, @ModelAttribute("message") String message) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> roles = new ArrayList<String>();
         for(GrantedAuthority a : authorities) {
@@ -54,23 +55,68 @@ public class EmployeeController {
         modelAndView.addObject("EmployeeList", employeePage.getContent());
         Employee employee= new Employee();
         modelAndView.addObject("employee", employee);
+        modelAndView.addObject("message", message);
         return modelAndView;
     }
 
 
     @RequestMapping(value="/get/{employee_id}", method= RequestMethod.GET)
-    public Employee getEmployee(@PathVariable("employee_id") Integer employee_id) {
+    public Employee getEmployee(@PathVariable("employee_id") Long employee_id) {
         return employeeService.getEmployeeById(employee_id);
     }
 
     @RequestMapping(value="/edit", method= RequestMethod.POST)
-    public ModelAndView editEmployee(@Valid Employee employee) {
-
+    public ModelAndView editEmployee(@Valid Employee employee, Authentication authentication, RedirectAttributes redirectAttributes) {
+        Long userId =  employeeService.findUserByEmail(authentication.getName());
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> roles = new ArrayList<String>();
+        for(GrantedAuthority a : authorities) {
+            roles.add(a.getAuthority());
+        }
+        String name = employeeService.getEmployeeById(userId).getEmployee_name();
+        AccountRequest accountRequest = new AccountRequest();
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("employee_id", null);
+        attributes.put("employee_name",employee.getEmployee_name());
+        attributes.put("gender", employee.getGender());
+        attributes.put("age", employee.getAge());
+        attributes.put("tier_level", employee.getTier_level());
+        attributes.put("designation_id", employee.getDesignation_id());
+        attributes.put("contact_no", employee.getContact_no());
+        attributes.put("email_id", employee.getEmail_id());
+        attributes.put("address", employee.getAddress());
+        attributes.put("created", new Timestamp(System.currentTimeMillis()));
+        attributes.put("updated", new Timestamp(System.currentTimeMillis()));
+        accountRequest.setDescription("New Account");
+        accountRequest.setAccount(attributes);
+        accountRequest.setCreated_by(name);
+        if (roles.contains("ADMIN")){
+            accountRequest.setRole(Config.ADMIN);
+            accountRequest.setStatus_id(Config.APPROVED);
+        }else{
+            accountRequest.setRole(Config.ADMIN);
+            accountRequest.setStatus_id(Config.PENDING);
+        }
+        accountRequest.setCreated_at(new Timestamp(System.currentTimeMillis()));
+        accountRequest.setType(Config.ACCOUNT_TYPE);
+        try {
+            accountRequest.serializeaccount();
+        }
+        catch(Exception e){
+            System.out.println("Exception");
+        }
+        accountRequestService.saveOrUpdate(accountRequest);
+        if(roles.contains("ADMIN")){
+            redirectAttributes.addFlashAttribute("message","Successfully saved!");
+        }
+        else{
+            redirectAttributes.addFlashAttribute("message","Successfully saved, pending approval!");
+        }
         return new ModelAndView("redirect:/employee/list/1");
     }
 
     @RequestMapping(value="/delete/{employee}", method= RequestMethod.POST)
-    public ModelAndView deleteAccount(@PathVariable("employee") Integer employeeId) {
+    public ModelAndView deleteAccount(@PathVariable("employee") Long employeeId) {
         employeeService.deleteEmployee(employeeId);
         return new ModelAndView("redirect:/account/list/1");
     }

@@ -1,7 +1,6 @@
 package com.example.banking.bank_app.service;
+
 import com.example.banking.bank_app.model.Account;
-import com.example.banking.bank_app.model.Card;
-import com.example.banking.bank_app.model.Config;
 import com.example.banking.bank_app.respository.AccountRepository;
 import com.example.banking.bank_app.respository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 

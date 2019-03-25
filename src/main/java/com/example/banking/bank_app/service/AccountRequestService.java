@@ -1,8 +1,6 @@
 package com.example.banking.bank_app.service;
 
-import com.example.banking.bank_app.model.Account;
 import com.example.banking.bank_app.model.AccountRequest;
-import com.example.banking.bank_app.model.TransactionRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,6 +15,6 @@ public interface AccountRequestService {
 
     public void deleteAccount(Long id);
 
-    public Page<AccountRequest> getPaginated(Pageable pageable);
+    public Page<AccountRequest> getPaginated(Pageable pageable, int role);
 
 }

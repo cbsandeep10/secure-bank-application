@@ -53,10 +53,10 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <p><strong>Welcome!</strong></p>
-            <p th:text="${user.getName()}"></p>
-            <p th:text="|Email: ${user.getEmailId()}|"></p>
-            <p th:text="|Phone: ${user.getContact()}|"></p>
-            <p th:text="|Address: ${user.getAddress()}|"></p>
+            <p th:text="${employee.getEmployee_name()}"></p>
+            <p th:text="|Email: ${employee.getEmail_id()}|"></p>
+            <p th:text="|Phone: ${employee.getContact_no()}|"></p>
+            <p th:text="|Address: ${employee.getAddress()}|"></p>
         </div>
         <div class="panel-body">
             <div class="row">

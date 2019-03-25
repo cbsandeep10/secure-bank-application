@@ -67,7 +67,7 @@
                     <tbody>
                     <tr th:each="request: ${requestList}">
                         <td th:text="${request.getRequest_id()}"></td>
-                        <td th:text="${request.getCreated_user().getName()}"></td>
+                        <td th:text="${request.getCreated_by()}"></td>
                         <td th:if="${request.getType() == 1}" th:text="${request.getAccount()}" ></td>
                         <td th:if="${request.getType() == 2}" th:text="${request.getUser()}"></td>
                         <td th:text="${request.getDescription()}"></td>

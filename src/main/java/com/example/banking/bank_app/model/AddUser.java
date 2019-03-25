@@ -1,12 +1,8 @@
 package com.example.banking.bank_app.model;
 
-import org.hibernate.annotations.Formula;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 import java.util.Date;
 
 public class AddUser {

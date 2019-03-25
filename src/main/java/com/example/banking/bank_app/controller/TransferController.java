@@ -1,10 +1,7 @@
 package com.example.banking.bank_app.controller;
 
 import com.example.banking.bank_app.model.*;
-import com.example.banking.bank_app.service.AccountService;
-import com.example.banking.bank_app.service.TransactionRequestService;
-import com.example.banking.bank_app.service.TransactionService;
-import com.example.banking.bank_app.service.UserService;
+import com.example.banking.bank_app.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +24,9 @@ public class TransferController {
     UserService userService;
 
     @Autowired
+    EmployeeService employeeService;
+
+    @Autowired
     TransactionService transactionService;
 
     @Autowired
@@ -45,13 +45,14 @@ public class TransferController {
         String role = "0";
         if(roles.contains("TIER1")){
             role = "1";
+        }else{
+            Long id =  userService.findUserByEmail(authentication.getName());
+            model.addAttribute("accounts",userService.getUserByUserId(id).getAccounts());
         }
         Transfer transfer = new Transfer();
         model.addAttribute("transfer", transfer);
         model.addAttribute("type", type);
         model.addAttribute("message",message);
-        Long id =  userService.findUserByEmail(authentication.getName());
-        model.addAttribute("accounts",userService.getUserByUserId(id).getAccounts());
         model.addAttribute("role", role);
         return "transaction";
     }
@@ -71,7 +72,19 @@ public class TransferController {
             return "redirect:/transfer/"+type;
         }
         //Dont delete the comment
-        Long id =  userService.findUserByEmail(authentication.getName());
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> roles = new ArrayList<String>();
+        for(GrantedAuthority a : authorities) {
+            roles.add(a.getAuthority());
+        }
+        String name;
+        if(roles.contains("TIER1")){
+            Long id = employeeService.findUserByEmail(authentication.getName());
+            name = employeeService.getEmployeeById(id).getEmployee_name();
+        }else{
+            Long id = userService.findUserByEmail(authentication.getName());
+            name = userService.getUserByUserId(id).getName();
+        }
         Transaction from_transaction = new Transaction();
         Transaction to_transaction = new Transaction();
         from_transaction.setTransaction_amount(transfer.getTransaction_amount());
@@ -95,7 +108,7 @@ public class TransferController {
         Long request_id = 0L;
         if(transfer.getTransaction_amount() > Config.LIMIT){
             TransactionRequest transactionRequest = new TransactionRequest();
-            transactionRequest.setCreated_by(id);
+            transactionRequest.setCreated_by(name);
             transactionRequest.setFrom_account(transfer.getFrom_account_no());
             transactionRequest.setTo_account(transfer.getTo_account_no());
             transactionRequest.setStatus_id(Config.PENDING);

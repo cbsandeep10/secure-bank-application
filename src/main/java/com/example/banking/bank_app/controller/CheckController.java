@@ -1,6 +1,9 @@
 package com.example.banking.bank_app.controller;
 
-import com.example.banking.bank_app.model.*;
+import com.example.banking.bank_app.model.Account;
+import com.example.banking.bank_app.model.Check;
+import com.example.banking.bank_app.model.Config;
+import com.example.banking.bank_app.model.Transaction;
 import com.example.banking.bank_app.service.AccountService;
 import com.example.banking.bank_app.service.CheckService;
 import com.example.banking.bank_app.service.TransactionService;

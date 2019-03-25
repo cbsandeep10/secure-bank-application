@@ -3,14 +3,11 @@ package com.example.banking.bank_app.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.util.SerializationUtils;
 
-import javax.persistence.Convert;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.Map;
 
 @Entity
@@ -34,10 +31,10 @@ public class AccountRequest implements Serializable {
     private int type;
 
     @Column(name="created_by")
-    private Long created_by;
+    private String created_by;
 
     @Column(name="approved_by")
-    private Long approved_by;
+    private String approved_by;
 
     @Column(name="description")
     private String description;
@@ -51,13 +48,8 @@ public class AccountRequest implements Serializable {
     @Column(name="role")
     private Integer role;
 
-    @ManyToOne
-    @JoinColumn(name="approved_by", insertable = false, updatable = false)
-    private Employee approved_user;
-
-    @ManyToOne(optional=false)
-    @JoinColumn(name="created_by",nullable=false, insertable = false, updatable = false)
-    private User created_user;
+    @Column(name="employee")
+    private String employee;
 
     @Transient
     @Convert(converter = HashMapConverter.class)
@@ -66,6 +58,10 @@ public class AccountRequest implements Serializable {
     @Transient
     @Convert(converter = HashMapConverter.class)
     private Map<String, Object> accountJson;
+
+    @Transient
+    @Convert(converter = HashMapConverter.class)
+    private Map<String, Object> employeeJson;
 
     public Long getRequest_id() {
         return request_id;
@@ -99,22 +95,6 @@ public class AccountRequest implements Serializable {
         this.approved_at = approved_at;
     }
 
-    public Employee getApproved_user() {
-        return approved_user;
-    }
-
-    public void setApproved_user(Employee approved_user) {
-        this.approved_user = approved_user;
-    }
-
-    public User getCreated_user() {
-        return created_user;
-    }
-
-    public void setCreated_user(User created_user) {
-        this.created_user = created_user;
-    }
-
     public int getType() {
         return type;
     }
@@ -141,6 +121,14 @@ public class AccountRequest implements Serializable {
         this.accountJson = objectMapper.readValue(account, Map.class);
     }
 
+    public void serializeemployee() throws JsonProcessingException {
+        this.employee = objectMapper.writeValueAsString(employeeJson);
+    }
+
+    public void deserializeemployee() throws IOException {
+        this.employeeJson = objectMapper.readValue(employee, Map.class);
+    }
+
     public String getUser() {
         return user;
     }
@@ -149,28 +137,20 @@ public class AccountRequest implements Serializable {
         this.userJson = userJson;
     }
 
+    public String getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Map<String, Object> employeeJson) {
+        this.employeeJson = employeeJson;
+    }
+
     public String getAccount() {
         return account;
     }
 
     public void setAccount(Map<String, Object> accountJson) {
         this.accountJson = accountJson;
-    }
-
-    public Long getCreated_by() {
-        return created_by;
-    }
-
-    public void setCreated_by(Long created_by) {
-        this.created_by = created_by;
-    }
-
-    public Long getApproved_by() {
-        return approved_by;
-    }
-
-    public void setApproved_by(Long approved_by) {
-        this.approved_by = approved_by;
     }
 
     public String getDescription() {
@@ -187,6 +167,26 @@ public class AccountRequest implements Serializable {
 
     public Map<String, Object> getAccountJson() {
         return accountJson;
+    }
+
+    public Map<String, Object> getEmployeeJson() {
+        return employeeJson;
+    }
+
+    public String getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(String created_by) {
+        this.created_by = created_by;
+    }
+
+    public String getApproved_by() {
+        return approved_by;
+    }
+
+    public void setApproved_by(String approved_by) {
+        this.approved_by = approved_by;
     }
 
     public Integer getRole() {
