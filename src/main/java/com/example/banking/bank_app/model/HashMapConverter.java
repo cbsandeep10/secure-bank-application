@@ -16,7 +16,7 @@ public class HashMapConverter implements AttributeConverter<Map<String, Object>,
 
         String customerInfoJson = null;
         try {
-            customerInfoJson = objectMapper.writeValueAsString(customerInfo);
+            customerInfoJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(customerInfo);
         } catch (final JsonProcessingException e) {
 //            logger.error("JSON writing error", e);
         }

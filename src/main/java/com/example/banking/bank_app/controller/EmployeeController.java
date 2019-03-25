@@ -87,9 +87,10 @@ public class EmployeeController {
         attributes.put("address", employee.getAddress());
         attributes.put("created", new Timestamp(System.currentTimeMillis()));
         attributes.put("updated", new Timestamp(System.currentTimeMillis()));
-        accountRequest.setDescription("New Account");
-        accountRequest.setAccount(attributes);
+        accountRequest.setDescription("Edit Account");
+        accountRequest.setEmployee(attributes);
         accountRequest.setCreated_by(name);
+        accountRequest.setType(Config.EMPLOYEE_TYPE);
         if (roles.contains("ADMIN")){
             accountRequest.setRole(Config.ADMIN);
             accountRequest.setStatus_id(Config.APPROVED);
@@ -98,13 +99,13 @@ public class EmployeeController {
             accountRequest.setStatus_id(Config.PENDING);
         }
         accountRequest.setCreated_at(new Timestamp(System.currentTimeMillis()));
-        accountRequest.setType(Config.ACCOUNT_TYPE);
         try {
-            accountRequest.serializeaccount();
+            accountRequest.serializeemployee();
         }
         catch(Exception e){
             System.out.println("Exception");
         }
+        System.out.println(accountRequest.getEmployee().length());
         accountRequestService.saveOrUpdate(accountRequest);
         if(roles.contains("ADMIN")){
             redirectAttributes.addFlashAttribute("message","Successfully saved!");

@@ -219,9 +219,9 @@ CREATE TABLE bank.account_request (
   approved_at timestamp null,
   description varchar(255),
   type int(2) NOT NULL,
-  account VARCHAR(255),
-  user VARCHAR(255),
-  employee VARCHAR(255),
+  account VARCHAR(1024),
+  user VARCHAR(1024),
+  employee VARCHAR(1024),
   role int(2) NOT NULL,
   PRIMARY KEY (request_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

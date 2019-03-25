@@ -106,7 +106,7 @@ public class AccountRequest implements Serializable {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public void serializeuser() throws JsonProcessingException {
-        this.user = objectMapper.writeValueAsString(userJson);
+        this.user = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(userJson);
     }
 
     public void deserializeuser() throws IOException {
@@ -114,7 +114,7 @@ public class AccountRequest implements Serializable {
     }
 
     public void serializeaccount() throws JsonProcessingException {
-        this.account = objectMapper.writeValueAsString(accountJson);
+        this.account = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(accountJson);
     }
 
     public void deserializeaccount() throws IOException {
@@ -122,7 +122,7 @@ public class AccountRequest implements Serializable {
     }
 
     public void serializeemployee() throws JsonProcessingException {
-        this.employee = objectMapper.writeValueAsString(employeeJson);
+        this.employee = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(employeeJson);
     }
 
     public void deserializeemployee() throws IOException {
