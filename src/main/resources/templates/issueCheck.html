@@ -48,6 +48,9 @@
     </div>
 </nav>
 <div class="container">
+    <div class="container">
+        <a th:href="@{/checks/list/1}" class="btn btn-primary">Checks List</a>
+        <div class ="card">
     <h2><strong>Issue New Check</strong></h2>
     <div class="alert alert-info" role="alert" th:if="${message!=''}">
         <p th:text="${message}">

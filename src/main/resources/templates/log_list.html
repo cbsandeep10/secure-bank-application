@@ -20,17 +20,8 @@
             </div>
             <ul class="nav navbar-nav">
                 <li class="active"><a th:href="@{/home}">Home</a></li>
-                <li><a th:href="@{/account/list/1}">Accounts</a></li>
+                <li><a th:href="@{/employee/list/1}">Employee</a></li>
                 <li><a th:href="@{/request/list/1}">Requests</a></li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transfer
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a th:href="@{/transfer/account}">By Account</a></li>
-                        <li><a th:href="@{/transfer/phone}">By Phone</a></li>
-                        <li><a th:href="@{/transfer/email}">By Email</a></li>
-                    </ul>
-                </li>
                 <li><a th:href="@{/log/list/1}">Logs</a></li>
             </ul>
             <div class="pull-right">

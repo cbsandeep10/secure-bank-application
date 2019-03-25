@@ -64,6 +64,10 @@ public class CheckController {
             redirectAttributes.addFlashAttribute("message", "Account Number doesn't Exist!");
             return new ModelAndView("redirect:/checks/issue");
         }
+        if(account.getBalance() - check.getAmount() < 0){
+            redirectAttributes.addFlashAttribute("message", "No Sufficient Balance");
+            return new ModelAndView("redirect:/checks/issue");
+        }
         check.setIssued_at(new Timestamp(System.currentTimeMillis()));
         checkService.saveOrUpdate(check);
         Transaction transaction = new Transaction();
