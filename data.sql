@@ -13,6 +13,7 @@ CREATE TABLE bank.user (
   email_id varchar(255) NOT NULL,
   address varchar(255) NOT NULL,
   user_type int(2) NOT NULL,
+  secret varchar (255) NOT NULL,
   created timestamp DEFAULT CURRENT_TIMESTAMP(),
   PRIMARY KEY (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -95,7 +96,7 @@ CREATE TABLE bank.transaction (
   FOREIGN KEY (request_id) REFERENCES bank.transaction_request(request_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO bank.user (name, gender,dob, contact,email_id, address,user_type) values('Sandeep Balaji', 'M', CURRENT_TIMESTAMP(), '4805775641', 'scbalaji@asu.edu', '2430 S MILL AVE, TEMPE',1 );
+INSERT INTO bank.user (name, gender,dob, contact,email_id, address,user_type, secret) values('Sandeep Balaji', 'M', CURRENT_TIMESTAMP(), '4805775641', 'scbalaji@asu.edu', '2430 S MILL AVE, TEMPE',1 ,'WIQEIOYT234TAWL4');
 INSERT INTO bank.account(user_id,balance ,routing_no,account_type, interest) VALUES (1000, 5000.0, 45612, 1, 5.0);
 INSERT INTO bank.account(user_id,balance ,routing_no,account_type, interest) VALUES (1000, 2500.0, 45622, 2, 12.0);
 

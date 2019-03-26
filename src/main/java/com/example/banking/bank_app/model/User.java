@@ -1,6 +1,7 @@
 package com.example.banking.bank_app.model;
 
 
+import org.jboss.aerogear.security.otp.api.Base32;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -40,6 +41,14 @@ public class User {
 
     @Column(name="created")
     private Timestamp created;
+
+    @Column(name="secret")
+    private String secret;
+
+    public User() {
+        super();
+        this.secret = Base32.random();
+    }
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable=false, insertable = false, updatable = false)
@@ -123,5 +132,13 @@ public class User {
 
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 }

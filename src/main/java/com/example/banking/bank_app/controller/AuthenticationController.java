@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -151,6 +152,28 @@ public class AuthenticationController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("merchant"); // resources/template/merchant.html
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/dfmnbsdhfb", method = RequestMethod.POST)
+    public Boolean auth(@RequestHeader(name = "X-COM-PERSIST", required = true) String email, @RequestHeader(name = "X-COM-LOCATION", required = true) String code) {
+        System.out.println("here");
+        if(email == null || code == null){
+            return false;
+        }
+        User user;
+        try{
+            Long id= userService.findUserByEmail(email);
+            user = userService.getUserByUserId(id);
+            qrGenerator qr = new qrGenerator();
+            if (!qr.authenticate(user, code)){
+                return false;
+            }
+        }
+        catch (Exception e){
+            return false;
+        }
+
+        return true;
     }
 
 }
