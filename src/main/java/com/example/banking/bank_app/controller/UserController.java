@@ -1,8 +1,10 @@
 package com.example.banking.bank_app.controller;
 
 import com.example.banking.bank_app.model.Account;
+import com.example.banking.bank_app.model.AccountRequest;
 import com.example.banking.bank_app.model.Config;
 import com.example.banking.bank_app.model.User;
+import com.example.banking.bank_app.service.AccountRequestService;
 import com.example.banking.bank_app.service.AccountService;
 import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -31,6 +33,9 @@ public class UserController {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    AccountRequestService accountRequestService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
     public ModelAndView list(@PathVariable("page") int page) {
@@ -70,12 +75,49 @@ public class UserController {
     public ModelAndView editAccount(@Valid User user, Authentication authentication, RedirectAttributes redirectAttributes) {
         Long id =  userService.findUserByEmail(authentication.getName());
         User old_user = userService.getUserByUserId(id);
-        old_user.setAddress(user.getAddress());
-        old_user.setContact(user.getContact());
-        old_user.setEmailId(user.getEmailId());
-        old_user.setDob(user.getDob());
-        userService.saveOrUpdate(old_user);
-        redirectAttributes.addFlashAttribute("message","Successfully saved data!");
+//        old_user.setAddress(user.getAddress());
+//        old_user.setContact(user.getContact());
+//        old_user.setEmailId(user.getEmailId());
+//        old_user.setDob(user.getDob());
+        if(!user.getEmailId().equals(old_user.getEmailId()) || !user.getName().equals(old_user.getName())){
+            redirectAttributes.addFlashAttribute("message","Cannot change name or email!");
+            return new ModelAndView("redirect:/user");
+        }
+        if(user.getContact() == null || !user.getContact().matches("-?\\d+(\\.\\d+)?") || user.getContact().length() != 10){
+            redirectAttributes.addFlashAttribute("message","Contact Number not valid!");
+            return new ModelAndView("redirect:/user");
+        }
+        Date today = new Date();
+        if(user.getDob().after(today)){
+            redirectAttributes.addFlashAttribute("message","Date Cannot be greater than today!");
+            return new ModelAndView("redirect:/user");
+        }
+//        userService.saveOrUpdate(old_user);
+        AccountRequest accountRequest = new AccountRequest();
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("user_id",old_user.getUserId());
+        attributes.put("name", old_user.getName());
+        attributes.put("gender", old_user.getGender());
+        attributes.put("dob", user.getDob());
+        attributes.put("contact", user.getContact());
+        attributes.put("email_id",old_user.getEmailId());
+        attributes.put("address", user.getAddress());
+        accountRequest.setDescription("Profile Edit for "+ user.getName() +" : "+user.getEmailId() );
+        accountRequest.setUser(attributes);
+        accountRequest.setCreated_by(old_user.getName());
+        accountRequest.setStatus_id(Config.PENDING);
+        accountRequest.setCreated_at(new Timestamp(System.currentTimeMillis()));
+        accountRequest.setType(Config.USER_TYPE);
+        accountRequest.setRole(Config.TIER1);
+        try {
+            accountRequest.serializeuser();
+        }
+        catch(Exception e){
+            System.out.println("Exception");
+        }
+        accountRequestService.saveOrUpdate(accountRequest);
+
+        redirectAttributes.addFlashAttribute("message","Successfully saved data! Pending approval with authorities!");
         return new ModelAndView("redirect:/user");
     }
 }

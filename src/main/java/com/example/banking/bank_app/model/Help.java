@@ -1,6 +1,8 @@
 package com.example.banking.bank_app.model;
+
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="help_page")
@@ -15,14 +17,14 @@ public class Help {
     private Long auth_user_id;
 
     @Column(name="mobile")
-    @NotNull
-    @Pattern(regexp = "^[2-9]\\d{2}-\\d{3}-\\d{4}$", message="Phone Number Format is XXX-YYY-ZZZZ")
+//    @NotNull
+//    @Pattern(regexp = "^[2-9]\\d{2}-\\d{3}-\\d{4}$", message="Phone Number Format is XXX-YYY-ZZZZ")
     private String mobile;
 
 
     @Column(name="email")
-    @NotNull
-    @Pattern(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message="Email address is invalid")
+//    @NotNull
+//    @Pattern(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message="Email address is invalid")
     private String email;
 
     @Column(name="shortdescription")

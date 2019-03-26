@@ -41,6 +41,9 @@ public class Employee {
     @Column(name="updated")
     private Timestamp updated;
 
+    @Transient
+    private String password;
+
     public Long getEmployee_id() {
         return employee_id;
     }
@@ -127,5 +130,13 @@ public class Employee {
 
     public void setUpdated(Timestamp updated) {
         this.updated = updated;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

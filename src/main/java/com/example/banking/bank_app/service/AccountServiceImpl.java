@@ -33,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void saveOrUpdate(Account account) {
+    public Account saveOrUpdate(Account account) {
 //        Account test;
 //        try{
 //            getAccountByAccountNo(account.getAccountNo());
@@ -52,7 +52,7 @@ public class AccountServiceImpl implements AccountService {
 //            }
 //            return;
 //        }
-        accountRepository.save(account);
+        return accountRepository.save(account);
     }
 
     @Override

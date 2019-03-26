@@ -11,7 +11,7 @@ public interface AccountService {
 
     public Account getAccountByAccountNo(Long accountNo);
 
-    public void saveOrUpdate(Account account);
+    public Account saveOrUpdate(Account account);
 
     public void deleteAccount(Long id);
 

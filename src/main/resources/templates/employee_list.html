@@ -112,6 +112,10 @@
                                             <input type="text" class="form-control" id="name" th:field="*{employee_name}" readonly>
                                         </div>
                                         <div class="form-group">
+                                            <label for="email" class="col-form-label">Email:</label>
+                                            <input type="text" class="form-control" id="email" readonly th:field="*{email_id}">
+                                        </div>
+                                        <div class="form-group">
                                             <label for="gender" class="col-form-label">Gender:</label>
                                             <select class="form-control"  id="gender" required th:field="*{gender}">
                                                 <option value="M">Male</option>
@@ -125,10 +129,6 @@
                                         <div class="form-group">
                                             <label for="contact" class="col-form-label">Contact:</label>
                                             <input type="text" class="form-control" id="contact" required th:field="*{contact_no}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="email" class="col-form-label">Email:</label>
-                                            <input type="text" class="form-control" id="email" required th:field="*{email_id}">
                                         </div>
                                         <div class="form-group">
                                             <label for="address" class="col-form-label">Address:</label>

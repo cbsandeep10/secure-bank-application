@@ -20,7 +20,11 @@ $(document).ready(function() {
                 document.getElementById("address").value = data.address;
                 document.getElementById("designation").value = data.designation_id;
             }
-        })
+        });
         $('.employeeForm #exampleModal').modal();
+    });
+    $('#create').on('click',function (event) {
+        event.preventDefault();
+        $('.employeeForm1 #exampleModal1').modal();
     });
 });

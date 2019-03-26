@@ -35,6 +35,7 @@ public class AddUser {
 
     private float interest;
 
+    private String password;
 
     public String getName() {
         return name;
@@ -114,5 +115,13 @@ public class AddUser {
 
     public void setInterest(float interest) {
         this.interest = interest;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

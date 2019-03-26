@@ -64,12 +64,22 @@ public class TransferController {
             redirectAttributes.addFlashAttribute("message","Please correct the errors!");
             return "redirect:/transfer/"+type;
         }
+        Account from_account;
+        Account to_account;
         try{
-            accountService.getAccountByAccountNo(transfer.getTo_account_no());
-            accountService.getAccountByAccountNo(transfer.getFrom_account_no());
+            to_account = accountService.getAccountByAccountNo(transfer.getTo_account_no());
+            from_account = accountService.getAccountByAccountNo(transfer.getFrom_account_no());
         }
         catch (Exception e){
             redirectAttributes.addFlashAttribute("message","Account number doesn't exists!");
+            return "redirect:/transfer/"+type;
+        }
+        if(transfer.getTransaction_amount() < 0){
+            redirectAttributes.addFlashAttribute("message","Amount cannot be negative!");
+            return "redirect:/transfer/"+type;
+        }
+        if(from_account.getBalance() - transfer.getTransaction_amount() < 0){
+            redirectAttributes.addFlashAttribute("message","Insufficient balance!");
             return "redirect:/transfer/"+type;
         }
         //Dont delete the comment
@@ -127,10 +137,8 @@ public class TransferController {
             to_transaction.setStatus(Config.PENDING);
             to_transaction.setBalance(to_balance);
         }else{
-            Account from_account = accountService.getAccountByAccountNo(transfer.getFrom_account_no());
             from_account.setBalance(from_balance-transfer.getTransaction_amount());
 
-            Account to_account = accountService.getAccountByAccountNo(transfer.getTo_account_no());
             to_account.setBalance(to_balance+transfer.getTransaction_amount());
 
             accountService.saveOrUpdate(from_account);

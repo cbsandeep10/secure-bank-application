@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css">
     <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript" src="/js/account.js"></script>
     <script type="text/javascript" src="/js/prevent.js"></script>
     <title>Account list</title>
 </head>
@@ -92,81 +91,6 @@
                     </nav>
                 </div>
                 <div class="col-md-2"></div>
-            </div>
-
-            <div class="accountForm">
-                <form th:action="@{/account/edit}" method="post" id="edit" th:object="${account}" >
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Edit Account</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="accountno" class="col-form-label">Account No:</label>
-                                            <input type="text" class="form-control" id="accountno" th:field="*{accountNo}" readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="name" class="col-form-label">Name:</label>
-                                            <input type="text" class="form-control" id="name" th:field="*{userName}" readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="balance" class="col-form-label">Balance:</label>
-                                            <input type="number" step="0.01" class="form-control" id="balance" required th:field="*{balance}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="account-type" class="col-form-label">Type:</label>
-                                            <select class="form-control"  id="account-type" required th:field="*{accountType}">
-                                                <option value="">Select account</option>
-                                                <option value="1">Checkings</option>
-                                                <option value="2">Savings</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="interest" class="col-form-label">Interest:</label>
-                                            <input type="number" step="0.01" class="form-control" id="interest" required th:field="*{interest}">
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="deleteForm">
-                <form th:action="@{/account/delete/}" method="post" id="delete">
-                    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <label class="col-form-label">Are you sure to delete the account?</label>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Yes</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     </div>

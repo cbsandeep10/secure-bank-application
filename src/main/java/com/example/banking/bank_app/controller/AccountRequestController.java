@@ -1,10 +1,7 @@
 package com.example.banking.bank_app.controller;
 
 import com.example.banking.bank_app.model.*;
-import com.example.banking.bank_app.service.AccountRequestService;
-import com.example.banking.bank_app.service.AccountService;
-import com.example.banking.bank_app.service.EmployeeService;
-import com.example.banking.bank_app.service.UserService;
+import com.example.banking.bank_app.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +33,9 @@ public class AccountRequestController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    CardService cardService;
 
     @Autowired
     AccountRequestService accountRequestService;
@@ -86,19 +86,43 @@ public class AccountRequestController {
             account.setAccountType((Integer)attributes.get("account_type"));
             double interest = (double)attributes.get("interest");
             account.setInterest((float)interest);
-            account.setCreated(new Timestamp((Long) attributes.get("created")));
+            account.setCreated(new Timestamp(System.currentTimeMillis()));
             account.setUpdated(new Timestamp(System.currentTimeMillis()));
-            accountService.saveOrUpdate(account);
+            Account new_account = accountService.saveOrUpdate(account);
+            if(account.getAccountType() == Config.CREDITCARD){
+                Card card = new Card();
+                card.setAccountNo(new_account.getAccountNo());
+                card.setBalance(0f);
+                card.setCreditLimit(Config.DEFAULT_CREDIT_LIMIT);
+                card.setType(Config.CREDIT);
+                card.setCreated(new Timestamp(System.currentTimeMillis()));
+                card.setUpdated(new Timestamp(System.currentTimeMillis()));
+                cardService.saveOrUpdate(card);
+            }
         }else if (accountRequest.getType() == Config.USER_TYPE){
             accountRequest.deserializeuser();
             Map<String, Object> attributes = accountRequest.getUserJson();
             User user = new User();
+            Integer d =(Integer) attributes.get("user_id");
+            User old_user = userService.getUserByUserId(new Long(d));
+            user.setUserId(old_user.getUserId());
+            user.setName((String)attributes.get("name"));
+            user.setGender((String) attributes.get("gender"));
+            Long dob = (Long) attributes.get("dob");
+            user.setDob(new Timestamp(dob));
+            user.setContact((String) attributes.get("contact"));
+            user.setEmailId((String) attributes.get("email_id"));
+            user.setAddress((String) attributes.get("address"));
+            user.setUserType(old_user.getUserType());
+            user.setCreated(old_user.getCreated());
+            userService.saveOrUpdate(user);
 
         }else if (accountRequest.getType() == Config.EMPLOYEE_TYPE){
             accountRequest.deserializeemployee();
             Map<String, Object> attributes = accountRequest.getEmployeeJson();
             Employee employee = new Employee();
             Integer employeeID = (Integer)attributes.get("employee_id");
+            Employee old_employee = employeeService.getEmployeeById(new Long(employeeID));
             employee.setEmployee_id(new Long(employeeID));
             employee.setEmployee_name((String) attributes.get("employee_name"));
             employee.setGender((String) attributes.get("gender"));
@@ -108,7 +132,7 @@ public class AccountRequestController {
             employee.setDesignation_id((Integer) attributes.get("designation_id"));
             employee.setTier_level((Integer) attributes.get("tier_level"));
             employee.setEmail_id((String) attributes.get("email_id"));
-            employee.setCreated(new Timestamp(System.currentTimeMillis()));
+            employee.setCreated(old_employee.getCreated());
             employee.setUpdated(new Timestamp(System.currentTimeMillis()));
             employeeService.saveOrUpdate(employee);
         }

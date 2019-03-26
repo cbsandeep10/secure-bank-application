@@ -39,11 +39,11 @@ CREATE TABLE bank.employee
 ALTER TABLE bank.employee AUTO_INCREMENT=1000;
 
 INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
-VALUES (1,"Tier 1","M",23,1,1,"452-345-6789","tier1@gmail.com","Tempe,AZ");
+VALUES (1,"Tier 1","M",23,1,1,"4523456789","tier1@gmail.com","Tempe,AZ");
 INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
-VALUES (2,"Tier 2","M",25,2,2,"408-345-6789","tier2@gmail.com","Tempe,AZ");
+VALUES (2,"Tier 2","M",25,2,2,"4083456789","tier2@gmail.com","Tempe,AZ");
 INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
-VALUES (3,"Admin","M",24,3,1,"402-345-6789","admin@gmail.com","Tempe,AZ");
+VALUES (3,"Admin","M",24,3,1,"4023456789","admin@gmail.com","Tempe,AZ");
 
 DROP TABLE IF EXISTS bank.account;
 CREATE TABLE bank.account (
@@ -143,10 +143,6 @@ CREATE TABLE bank.auth_user_role (
 
 insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (1,'Admin','admin','admin@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','1');
-insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','2');
-insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','3');
-insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','4');
-insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','5');
 
 
 DROP TABLE IF EXISTS bank.admin_log;

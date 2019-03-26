@@ -69,6 +69,10 @@ public class  AccountController {
 
     @RequestMapping(value="/new", method= RequestMethod.POST)
     public ModelAndView createAccount(Account account, RedirectAttributes redirectAttributes, Authentication authentication) {
+        if(account.getAccountType() < Config.CHECKINGS || account.getAccountType() > Config.CREDITCARD){
+            redirectAttributes.addFlashAttribute("message", "Please select appropriate account type!");
+            return new ModelAndView("redirect:/user");
+        }
         Long id =  userService.findUserByEmail(authentication.getName());
         String name = userService.getUserByUserId(id).getName();
         redirectAttributes.addFlashAttribute("message", "Created account, pending with Bank authorities!");
@@ -82,14 +86,13 @@ public class  AccountController {
         attributes.put("account_type", account.getAccountType());
         attributes.put("routing_no", routing);
         attributes.put("interest",Config.DEFAULT_INTEREST);
-        attributes.put("created", new Timestamp(System.currentTimeMillis()));
-        attributes.put("updated", new Timestamp(System.currentTimeMillis()));
-        accountRequest.setDescription("New Account");
+        accountRequest.setDescription("New Account for "+name+" : " +authentication.getName());
         accountRequest.setAccount(attributes);
         accountRequest.setCreated_by(name);
         accountRequest.setStatus_id(Config.PENDING);
         accountRequest.setCreated_at(new Timestamp(System.currentTimeMillis()));
         accountRequest.setType(Config.ACCOUNT_TYPE);
+        accountRequest.setRole(Config.TIER1);
         try {
             accountRequest.serializeaccount();
         }
@@ -220,8 +223,14 @@ public class  AccountController {
         catch(Exception e){
             return "Account number doesn't exists!";
         }
+        if(transaction.getTransaction_amount() < 0){
+            return "Amount cannot be negative!";
+        }
         float balance = account.getBalance();
         if (type == Config.DEBIT){
+            if (account.getBalance() - transaction.getTransaction_amount() < 0){
+                return "Insufficient balance!";
+            }
             account.setBalance(account.getBalance() - transaction.getTransaction_amount());
             transaction.setTransaction_type(Config.DEBIT);
             transaction.setBalance(balance - transaction.getTransaction_amount());

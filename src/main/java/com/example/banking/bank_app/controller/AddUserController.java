@@ -1,9 +1,9 @@
 package com.example.banking.bank_app.controller;
 
-import com.example.banking.bank_app.model.Account;
-import com.example.banking.bank_app.model.AddUser;
-import com.example.banking.bank_app.model.User;
+import com.example.banking.bank_app.model.*;
+import com.example.banking.bank_app.respository.AuthUserRoleRepository;
 import com.example.banking.bank_app.service.AccountService;
+import com.example.banking.bank_app.service.CardService;
 import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -17,7 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Controller
 
@@ -25,6 +27,9 @@ public class AddUserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    CardService cardService;
 
     @Autowired
     AccountService accountService;
@@ -45,6 +50,39 @@ public class AddUserController {
             redirectAttributes.addFlashAttribute("message","Please fix the errors");
             return "redirect:/addUser";
         }
+        Auth_user auth_user = new Auth_user();
+        auth_user.setEmail(adduser.getEmailId());
+        if(userService.userAlreadyExist(auth_user)) {
+            redirectAttributes.addFlashAttribute("message", "Email already exists!");
+            return "redirect:/addUser";
+        }
+        Date today = new Date();
+        if(adduser.getDob().after(today)){
+            redirectAttributes.addFlashAttribute("message","Date Cannot be greater than today!");
+            return "redirect:/addUser";
+        }
+        if(!adduser.getGender().equals("M")&&!adduser.getGender().equals("F")){
+            redirectAttributes.addFlashAttribute("message","Invalid Gender!");
+            return "redirect:/addUser";
+        }
+        if(adduser.getContact() == null || !adduser.getContact().matches("-?\\d+(\\.\\d+)?") || adduser.getContact().length() != 10){
+            redirectAttributes.addFlashAttribute("message","Contact Number not valid!");
+            return "redirect:/addUser";
+        }
+        if(adduser.getBalance() < 0){
+            redirectAttributes.addFlashAttribute("message","Balance cannot be negative!");
+            return "redirect:/addUser";
+        }
+        if(adduser.getInterest() < 0){
+            redirectAttributes.addFlashAttribute("message","Interest cannot be negative!");
+            return "redirect:/addUser";
+        }
+        if(adduser.getAccountType() < Config.CHECKINGS || adduser.getAccountType() > Config.CREDITCARD){
+            redirectAttributes.addFlashAttribute("message","Invalid Account type!");
+            return "redirect:/addUser";
+        }
+
+
         User new_user = new User();
         new_user.setName(adduser.getName());
         new_user.setGender(adduser.getGender());
@@ -54,16 +92,36 @@ public class AddUserController {
         new_user.setAddress(adduser.getAddress());
         new_user.setUserType(1);
         User user=userService.saveOrUpdate(new_user);
-
+        SecureRandom random = new SecureRandom();
+        int routing = random.nextInt(100000);
         Account account = new Account();
         account.setUserId(user.getUserId());
         account.setBalance(adduser.getBalance());
-        account.setRoutingNo(adduser.getRoutingNo());
+        account.setRoutingNo(routing);
         account.setAccountType(adduser.getAccountType());
         account.setInterest(adduser.getInterest());
         account.setCreated(new Timestamp(System.currentTimeMillis()));
         account.setUpdated(new Timestamp(System.currentTimeMillis()));
-        accountService.saveOrUpdate(account);
+        Account new_account = accountService.saveOrUpdate(account);
+        if(account.getAccountType() == Config.CREDITCARD){
+            Card card = new Card();
+            card.setAccountNo(new_account.getAccountNo());
+            card.setBalance(0f);
+            card.setCreditLimit(Config.DEFAULT_CREDIT_LIMIT);
+            card.setType(Config.CREDIT);
+            card.setCreated(new Timestamp(System.currentTimeMillis()));
+            card.setUpdated(new Timestamp(System.currentTimeMillis()));
+            cardService.saveOrUpdate(card);
+        }
+        auth_user.setPassword(adduser.getPassword());
+        auth_user.setName(adduser.getName());
+        auth_user.setLastName("");
+        Auth_user newAuthUser = userService.saveUser(auth_user);
+
+        AuthUserRole authUserRole = new AuthUserRole();
+        authUserRole.setAuth_user_id(new Long(newAuthUser.getId()));
+        authUserRole.setAuth_role_id(new Long(4));
+        userService.save(authUserRole);
         System.out.println("The user & account added successfully");
         redirectAttributes.addFlashAttribute("message","Successfully created");
         return "redirect:/addUser";

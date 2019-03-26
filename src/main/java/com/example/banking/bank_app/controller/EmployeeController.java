@@ -1,16 +1,14 @@
 package com.example.banking.bank_app.controller;
 
-import com.example.banking.bank_app.model.AccountRequest;
-import com.example.banking.bank_app.model.Config;
-import com.example.banking.bank_app.model.Employee;
+import com.example.banking.bank_app.model.*;
 import com.example.banking.bank_app.service.AccountRequestService;
 import com.example.banking.bank_app.service.EmployeeService;
+import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -26,6 +24,9 @@ import java.util.stream.IntStream;
 public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     AccountRequestService accountRequestService;
@@ -76,6 +77,26 @@ public class EmployeeController {
         }
         if (roles.contains("ADMIN")) {
             Employee newEmployee = employeeService.getEmployeeById(employee.getEmployee_id());
+            if(newEmployee.getTier_level() == Config.ADMIN && employee.getTier_level() != Config.ADMIN){
+                redirectAttributes.addFlashAttribute("message","Cannot change tier level of Admin!");
+                return new ModelAndView("redirect:/employee/list/1");
+            }
+            if(!employee.getEmployee_id().equals(newEmployee.getEmployee_id()) || !employee.getEmail_id().equals(newEmployee.getEmail_id()) | !employee.getEmployee_name().equals(newEmployee.getEmployee_name())){
+                redirectAttributes.addFlashAttribute("message","Cannot edit Id, name & Email!");
+                return new ModelAndView("redirect:/employee/list/1");
+            }
+            if(!employee.getGender().equals("M")&&!employee.getGender().equals("F")){
+                redirectAttributes.addFlashAttribute("message","Invalid Gender!");
+                return new ModelAndView("redirect:/employee/list/1");
+            }
+            if(employee.getAge() <0|| employee.getAge() > 150){
+                redirectAttributes.addFlashAttribute("message","Age should be between 1 and 150!");
+                return new ModelAndView("redirect:/employee/list/1");
+            }
+            if(employee.getContact_no() == null || !employee.getContact_no().matches("-?\\d+(\\.\\d+)?") || employee.getContact_no().length() != 10){
+                redirectAttributes.addFlashAttribute("message","Contact Number not valid!");
+                return new ModelAndView("redirect:/employee/list/1");
+            }
             employee.setCreated(newEmployee.getCreated());
             employee.setUpdated(new Timestamp(System.currentTimeMillis()));
             employeeService.saveOrUpdate(employee);
@@ -94,6 +115,22 @@ public class EmployeeController {
         }
         String name = employeeService.getEmployeeById(userId).getEmployee_name();
         Employee newEmployee = employeeService.getEmployeeById(employee.getEmployee_id());
+        if(!employee.getEmployee_id().equals(newEmployee.getEmployee_id()) || !employee.getEmail_id().equals(newEmployee.getEmail_id()) | !employee.getEmployee_name().equals(newEmployee.getEmployee_name())){
+            redirectAttributes.addFlashAttribute("message","Cannot edit Id, name & Email!");
+            return new ModelAndView("redirect:/tier2");
+        }
+        if(!employee.getGender().equals("M")&&!employee.getGender().equals("F")){
+            redirectAttributes.addFlashAttribute("message","Invalid Gender!");
+            return new ModelAndView("redirect:/tier2");
+        }
+        if(employee.getAge() <0|| employee.getAge() > 150){
+            redirectAttributes.addFlashAttribute("message","Age should be between 1 and 150!");
+            return new ModelAndView("redirect:/tier2");
+        }
+        if(employee.getContact_no() == null || !employee.getContact_no().matches("-?\\d+(\\.\\d+)?") || employee.getContact_no().length() != 10){
+            redirectAttributes.addFlashAttribute("message","Contact Number not valid!");
+            return new ModelAndView("redirect:/tier2");
+        }
         AccountRequest accountRequest = new AccountRequest();
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("employee_id", employee.getEmployee_id());
@@ -105,7 +142,7 @@ public class EmployeeController {
         attributes.put("contact_no", employee.getContact_no());
         attributes.put("email_id", employee.getEmail_id());
         attributes.put("address", employee.getAddress());
-        accountRequest.setDescription("Edit Account");
+        accountRequest.setDescription("Edit Account for" +name+" : "+employee.getEmployee_name());
         accountRequest.setEmployee(attributes);
         accountRequest.setCreated_by(name);
         accountRequest.setType(Config.EMPLOYEE_TYPE);
@@ -143,6 +180,22 @@ public class EmployeeController {
         }
         String name = employeeService.getEmployeeById(userId).getEmployee_name();
         Employee newEmployee = employeeService.getEmployeeById(employee.getEmployee_id());
+        if(!employee.getEmployee_id().equals(newEmployee.getEmployee_id()) || !employee.getEmail_id().equals(newEmployee.getEmail_id()) | !employee.getEmployee_name().equals(newEmployee.getEmployee_name())){
+            redirectAttributes.addFlashAttribute("message","Cannot edit Id, name & Email!");
+            return new ModelAndView("redirect:/employee/list/1");
+        }
+        if(!employee.getGender().equals("M")&&!employee.getGender().equals("F")){
+            redirectAttributes.addFlashAttribute("message","Invalid Gender!");
+            return new ModelAndView("redirect:/employee/list/1");
+        }
+        if(employee.getAge() <0|| employee.getAge() > 150){
+            redirectAttributes.addFlashAttribute("message","Age should be between 1 and 150!");
+            return new ModelAndView("redirect:/employee/list/1");
+        }
+        if(employee.getContact_no() == null || !employee.getContact_no().matches("-?\\d+(\\.\\d+)?") || employee.getContact_no().length() != 10){
+            redirectAttributes.addFlashAttribute("message","Contact Number not valid!");
+            return new ModelAndView("redirect:/employee/list/1");
+        }
         AccountRequest accountRequest = new AccountRequest();
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("employee_id", employee.getEmployee_id());
@@ -154,7 +207,7 @@ public class EmployeeController {
         attributes.put("contact_no", employee.getContact_no());
         attributes.put("email_id", employee.getEmail_id());
         attributes.put("address", employee.getAddress());
-        accountRequest.setDescription("Edit Account");
+        accountRequest.setDescription("Edit Profile for" +name+" : "+employee.getEmployee_name());
         accountRequest.setEmployee(attributes);
         accountRequest.setCreated_by(name);
         accountRequest.setType(Config.EMPLOYEE_TYPE);
@@ -186,6 +239,61 @@ public class EmployeeController {
     public ModelAndView deleteAccount(@PathVariable("employee") Long employeeId) {
         employeeService.deleteEmployee(employeeId);
         return new ModelAndView("redirect:/account/list/1");
+    }
+
+
+    @RequestMapping(value="/create", method= RequestMethod.POST) //admin
+    public ModelAndView createEmployee(@Valid Employee employee, Authentication authentication, RedirectAttributes redirectAttributes) {
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> roles = new ArrayList<String>();
+        for(GrantedAuthority a : authorities) {
+            roles.add(a.getAuthority());
+        }
+        if (roles.contains("ADMIN")) {
+            Employee newEmployee = employeeService.getEmployeeById(employee.getEmployee_id());
+            Auth_user auth_user = new Auth_user();
+            auth_user.setEmail(employee.getEmail_id());
+            if(userService.userAlreadyExist(auth_user)){
+                redirectAttributes.addFlashAttribute("message","Email already exists!");
+                return new ModelAndView("redirect:/employee/list/1");
+            }
+            if(!employee.getGender().equals("M")&&!employee.getGender().equals("F")){
+                redirectAttributes.addFlashAttribute("message","Invalid Gender!");
+                return new ModelAndView("redirect:/employee/list/1");
+            }
+            if(employee.getAge() <0|| employee.getAge() > 150){
+                redirectAttributes.addFlashAttribute("message","Age should be between 1 and 150!");
+                return new ModelAndView("redirect:/employee/list/1");
+            }
+            if(employee.getContact_no() == null || !employee.getContact_no().matches("-?\\d+(\\.\\d+)?") || employee.getContact_no().length() != 10){
+                redirectAttributes.addFlashAttribute("message","Contact Number not valid!");
+                return new ModelAndView("redirect:/employee/list/1");
+            }
+            employee.setCreated(newEmployee.getCreated());
+            employee.setUpdated(new Timestamp(System.currentTimeMillis()));
+            employeeService.saveOrUpdate(employee);
+            auth_user.setName(employee.getEmployee_name());
+            auth_user.setPassword(employee.getPassword());
+            auth_user.setLastName("");
+            Auth_user newAuthUser = userService.saveUser(auth_user);
+
+
+            Long role;
+            if(employee.getTier_level() == Config.TIER1){
+                role = 2L;
+            }
+            else if(employee.getTier_level() == Config.TIER2){
+                role = 3L;
+            }else{
+                role = 1L;
+            }
+            AuthUserRole authUserRole = new AuthUserRole();
+            authUserRole.setAuth_user_id(new Long(newAuthUser.getId()));
+            authUserRole.setAuth_role_id(role);
+            userService.save(authUserRole);
+            redirectAttributes.addFlashAttribute("message","Successfully saved!");
+        }
+        return new ModelAndView("redirect:/employee/list/1");
     }
 
 }

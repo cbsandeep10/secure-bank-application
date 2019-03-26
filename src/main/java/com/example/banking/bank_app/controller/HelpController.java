@@ -3,12 +3,11 @@ package com.example.banking.bank_app.controller;
 import com.example.banking.bank_app.model.Help;
 import com.example.banking.bank_app.model.User;
 import com.example.banking.bank_app.service.HelpService;
-import net.bytebuddy.asm.Advice;
+import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,7 +25,8 @@ public class HelpController {
     @Autowired
     HelpService helpService;
 
-
+    @Autowired
+    UserService userService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
     public ModelAndView list(@PathVariable("page") int page) {
@@ -55,15 +55,28 @@ public class HelpController {
 
 
     @RequestMapping(value="/helpform", method= RequestMethod.POST)
-    public ModelAndView issue(@Valid Help help,BindingResult bindingResult,RedirectAttributes redirectAttributes) {
+    public ModelAndView issue(@Valid Help help, BindingResult bindingResult, RedirectAttributes redirectAttributes, Authentication authentication) {
         if(bindingResult.hasErrors())
         {
-            return new ModelAndView("help");
+            redirectAttributes.addFlashAttribute("message","Please correct the errors!");
+            return new ModelAndView("redirect:/help/helpform");
         }
-        User user = new User();
+        Long id =  userService.findUserByEmail(authentication.getName());
+        User user = userService.getUserByUserId(id);
+        help.setEmail(user.getEmailId());
+        help.setMobile(user.getContact());
         help.setAuth_user_id(user.getUserId());
+        if(help.getShortdescription() == null || help.getShortdescription().equals("")){
+            redirectAttributes.addFlashAttribute("message","Description cannot be empty!");
+            return new ModelAndView("redirect:/help/helpform");
+        }
+        if(help.getTitle() == null || help.getTitle().equals("")){
+            redirectAttributes.addFlashAttribute("message","Title cannot be empty!");
+            return new ModelAndView("redirect:/help/helpform");
+        }
         helpService.saveOrUpdate(help);
-        return new ModelAndView("redirect:/help/list/1");
+        redirectAttributes.addFlashAttribute("message","Submitted! Bank representative will get back you soon!");
+        return new ModelAndView("redirect:/help/helpform");
     }
 
 //    @GetMapping("/helps")

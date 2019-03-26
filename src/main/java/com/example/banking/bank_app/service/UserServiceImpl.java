@@ -1,9 +1,11 @@
 package com.example.banking.bank_app.service;
 
+import com.example.banking.bank_app.model.AuthUserRole;
 import com.example.banking.bank_app.model.Auth_role;
 import com.example.banking.bank_app.model.Auth_user;
 import com.example.banking.bank_app.model.User;
 import com.example.banking.bank_app.respository.AuthUserRepository;
+import com.example.banking.bank_app.respository.AuthUserRoleRepository;
 import com.example.banking.bank_app.respository.RoleRepository;
 import com.example.banking.bank_app.respository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class UserServiceImpl implements UserService {
     RoleRepository roleRepository;
     @Autowired
     BCryptPasswordEncoder encoder;
+
+    @Autowired
+    AuthUserRoleRepository authUserRoleRepository;
 
 
     @Override
@@ -78,12 +83,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser (Auth_user user) {
+    public Auth_user saveUser (Auth_user user) {
         user.setPassword(encoder.encode(user.getPassword()));
         user.setStatus ("VERIFIED");
         Auth_role userRole = roleRepository.findByRole("xxxxxx");    // SITE_USER or what not
         user.setRoles (new HashSet<Auth_role>(Arrays.asList(userRole)));
-        authUserRepository.save(user);
+        return authUserRepository.save(user);
     }
 
 
@@ -92,5 +97,10 @@ public class UserServiceImpl implements UserService {
 
         // no sol......
         return false;
+    }
+
+    @Override
+    public void save(AuthUserRole authUserRole){
+        authUserRoleRepository.save(authUserRole);
     }
 }
