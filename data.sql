@@ -204,3 +204,17 @@ insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('4','4');
 
 INSERT INTO bank.user (name, gender,dob, contact,email_id, address,user_type) values('Tier 1', 'M', CURRENT_TIMESTAMP(), '4805775642', 'tier1@gmail.com', 'TEMPE',0 );
 INSERT INTO bank.user (name, gender,dob, contact,email_id, address,user_type) values('Tier 2', 'M', CURRENT_TIMESTAMP(), '4805775643', 'tier2@gmail.com', 'TEMPE',0 );
+
+DROP TABLE IF EXISTS bank.help_page;
+CREATE TABLE bank.help_page (
+  help_id int(11) unsigned NOT NULL AUTO_INCREMENT,
+  auth_user_id int(11),
+  mobile varchar(255) NOT NULL,
+  email varchar(255) NOT NULL,
+  title varchar(255) NOT NULL,
+  shortdescription varchar(255) NOT NULL,
+  PRIMARY KEY (help_id)
+);
+
+
+INSERT INTO bank.help_page(help_id, auth_user_id, mobile, email, title, shortdescription) values(1,1,'480-452-4823','abc@gmail.com','Error Page','Error in help page');
