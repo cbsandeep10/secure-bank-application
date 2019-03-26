@@ -27,4 +27,24 @@ public final class Config {
     public static final int DEPOSIT = 2;
     public static final int WITHDRAW = 3;
 
+    public static final int CHECKINGS = 1;
+    public static final int SAVINGS = 2;
+    public static final int CREDITCARD = 3;
+
+    public static final int ACCOUNT_TYPE = 1;
+    public static final int USER_TYPE = 2;
+    public static final int EMPLOYEE_TYPE = 3;
+
+    public static final float DEFAULT_INTEREST = 5;
+
+    public static final float DEFAULT_CREDIT_LIMIT = 1000;
+
+    public static final int CRITICAL_YES = 1;
+    public static final int CRITICAL_NO = 0;
+
+    public static final int TIER1 = 1;
+    public static final int TIER2 = 2;
+    public static final int ADMIN = 3;
+    public static final int USER = 0;
+
 }

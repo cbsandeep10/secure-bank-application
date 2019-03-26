@@ -15,6 +15,6 @@ public interface TransactionRequestService {
 
     public void deleteRequest(Long request_id);
 
-    public Page<TransactionRequest> getPaginated(Pageable pageable);
+    public Page<TransactionRequest> getPaginated(Pageable pageable, int critical);
 
 }

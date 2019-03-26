@@ -10,9 +10,10 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
     <script type="text/javascript" src="/js/account.js"></script>
+    <script type="text/javascript" src="/js/prevent.js"></script>
     <title>Home</title>
 </head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -20,18 +21,8 @@
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a th:href="@{/home}">Home</a></li>
-            <li><a th:href="@{/account/list/1}">Accounts</a></li>
-            <li><a th:href="@{/request/list/1}">Requests</a></li>
-            <li><a th:href="@{/statements}">Statements</a></li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transfer
-                    <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a th:href="@{/transfer/account}">By Account</a></li>
-                    <li><a th:href="@{/transfer/phone}">By Phone</a></li>
-                    <li><a th:href="@{/transfer/email}">By Email</a></li>
-                </ul>
-            </li>
+            <li><a th:href="@{/employee/list/1}">Employee</a></li>
+            <li><a th:href="@{/account-request/list/1}">Requests</a></li>
             <li><a th:href="@{/log/list/1}">Logs</a></li>
         </ul>
         <div class="pull-right">
@@ -49,10 +40,10 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="btn-group-vertical" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary">Left</button>
-                        <button type="button" class="btn btn-primary">Middle</button>
-                        <button type="button" class="btn btn-primary">Right</button>
+                    <div role="group" aria-label="Basic example">
+                        <a th:href="@{/employee/list/1}" type="button" class="btn btn-primary">Employee Accounts</a>
+                        <a th:href="@{/account-request/list/1}" type="button" class="btn btn-primary">Requests</a>
+                        <a th:href="@{/log/list/1}" type="button" class="btn btn-primary">Logs</a>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,5 @@
 package com.example.banking.bank_app.respository;
 
-import com.example.banking.bank_app.model.Auth_user;
 import com.example.banking.bank_app.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +17,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query("SELECT u.userId FROM User u WHERE u.contact =:phone")
     Long findUserByPhone(@Param("phone") String phone);
 
-//    @Override
-//    default <S extends User> S save(S s) {
-//        return null;
-//    }
 }
 
 

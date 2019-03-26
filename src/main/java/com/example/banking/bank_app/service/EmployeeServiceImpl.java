@@ -23,9 +23,26 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Page<Employee> getPaginated(Pageable pageable) {
-        return employeeRespository.findAll(pageable);
+    public Page<Employee> getPaginated(Pageable pageable, int tier) {
+        return employeeRespository.findAll(pageable, tier);
+    }
+    @Override
+    public void deleteEmployee(Long id){
+        employeeRespository.deleteById(id);
     }
 
+    @Override
+    public void saveOrUpdate(Employee employee){
+        employeeRespository.save(employee);
+    }
 
+    @Override
+    public Employee getEmployeeById(Long id){
+        return employeeRespository.findById(id).get();
+    }
+
+    @Override
+    public Long findUserByEmail(String email){
+        return employeeRespository.findUserByEmail(email);
+    }
 }

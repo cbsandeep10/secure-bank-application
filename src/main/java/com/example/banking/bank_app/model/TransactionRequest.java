@@ -31,10 +31,10 @@ public class TransactionRequest {
     private Long to_account;
 
     @Column(name="created_by")
-    private Long created_by;
+    private String created_by;
 
     @Column(name="approved_by")
-    private Long approved_by;
+    private String approved_by;
 
     @Column(name="description")
     private String description;
@@ -42,13 +42,8 @@ public class TransactionRequest {
     @Column(name="type")
     private int type;
 
-    @ManyToOne
-    @JoinColumn(name="approved_by", insertable = false, updatable = false)
-    private Employee approved_user;
-
-    @ManyToOne(optional=false)
-    @JoinColumn(name="created_by",nullable=false, insertable = false, updatable = false)
-    private User created_user;
+    @Column(name="critical")
+    private int critical;
 
     public Long getRequest_id() {
         return request_id;
@@ -82,22 +77,6 @@ public class TransactionRequest {
         this.approved_at = approved_at;
     }
 
-    public Employee getApproved_user() {
-        return approved_user;
-    }
-
-    public void setApproved_user(Employee approved_user) {
-        this.approved_user = approved_user;
-    }
-
-    public User getCreated_user() {
-        return created_user;
-    }
-
-    public void setCreated_user(User created_user) {
-        this.created_user = created_user;
-    }
-
     public float getTransaction_amount() {
         return transaction_amount;
     }
@@ -122,22 +101,6 @@ public class TransactionRequest {
         this.to_account = to_account;
     }
 
-    public Long getCreated_by() {
-        return created_by;
-    }
-
-    public void setCreated_by(Long created_by) {
-        this.created_by = created_by;
-    }
-
-    public Long getApproved_by() {
-        return approved_by;
-    }
-
-    public void setApproved_by(Long approved_by) {
-        this.approved_by = approved_by;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -152,5 +115,29 @@ public class TransactionRequest {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getCritical() {
+        return critical;
+    }
+
+    public void setCritical(int critical) {
+        this.critical = critical;
+    }
+
+    public String getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(String created_by) {
+        this.created_by = created_by;
+    }
+
+    public String getApproved_by() {
+        return approved_by;
+    }
+
+    public void setApproved_by(String approved_by) {
+        this.approved_by = approved_by;
     }
 }

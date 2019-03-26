@@ -3,6 +3,7 @@ package com.example.banking.bank_app;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -55,7 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/admin/**").hasAnyAuthority("ADMIN")
 				.antMatchers("/tier1/**").hasAnyAuthority("TIER1")
 				.antMatchers("/tier2/**").hasAnyAuthority("TIER2")
-				.antMatchers("/user/**").hasAnyAuthority("USER")
+//				.antMatchers("/user/**").hasAnyAuthority("USER")
 				.antMatchers("/merchant/**").hasAnyAuthority("MERCHANT")
 				.anyRequest().authenticated()
 				.and()

@@ -10,18 +10,29 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
     <script type="text/javascript" src="/js/request.js"></script>
+    <script type="text/javascript" src="/js/prevent.js"></script>
     <title>Request list</title>
 </head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" th:href="@{/home}">Secure Bank</a>
             </div>
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav" th:if="${role == 1}">
                 <li class="active"><a th:href="@{/home}">Home</a></li>
                 <li><a th:href="@{/account/list/1}">Accounts</a></li>
-                <li><a th:href="@{/request/list/1}">Requests</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Request
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/request/list/1}">Transaction</a></li>
+                        <li><a th:href="@{/account-request/list/1}">Account</a></li>
+                    </ul>
+                </li>
+                <li><a th:href="@{/account/deposit}">Deposit</a></li>
+                <li><a th:href="@{/account/withdraw}">Withdraw</a></li>
+                <li><a th:href="@{/checks/issue}">Issue</a></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transfer
                         <span class="caret"></span></a>
@@ -31,7 +42,12 @@
                         <li><a th:href="@{/transfer/email}">By Email</a></li>
                     </ul>
                 </li>
-                <li><a th:href="@{/log/list/1}">Logs</a></li>
+            </ul>
+            <ul class="nav navbar-nav" th:if="${role == 2}">
+                <li class="active"><a th:href="@{/home}">Home</a></li>
+                <li><a th:href="@{/account/list/1}">User Accounts</a></li>
+                <li><a th:href="@{/employee/list/1}">Employee Accounts</a></li>
+                <li><a th:href="@{/request/list/1}">Requests</a></li>
             </ul>
             <div class="pull-right">
                 <ul class="nav pull-right navbar-nav">
@@ -60,7 +76,7 @@
                     <tbody>
                     <tr th:each="request: ${requestList}">
                         <td th:text="${request.getRequest_id()}"></td>
-                        <td th:text="${request.getCreated_user().getName()}"></td>
+                        <td th:text="${request.getCreated_by()}"></td>
                         <td th:text="${request.getTransaction_amount()}"></td>
                         <td th:text="${request.getFrom_account()}"></td>
                         <td th:text="${request.getTo_account()}"></td>

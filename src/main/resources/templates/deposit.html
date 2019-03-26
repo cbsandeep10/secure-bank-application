@@ -10,8 +10,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/deposit.js"></script>
+    <script type="text/javascript" src="/js/prevent.js"></script>
 </head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -20,7 +21,17 @@
         <ul class="nav navbar-nav">
             <li class="active"><a th:href="@{/home}">Home</a></li>
             <li><a th:href="@{/account/list/1}">Accounts</a></li>
-            <li><a th:href="@{/request/list/1}">Requests</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Request
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/request/list/1}">Transaction</a></li>
+                    <li><a th:href="@{/account-request/list/1}">Account</a></li>
+                </ul>
+            </li>
+            <li><a th:href="@{/account/deposit}">Deposit</a></li>
+            <li><a th:href="@{/account/withdraw}">Withdraw</a></li>
+            <li><a th:href="@{/checks/issue}">Issue</a></li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transfer
                     <span class="caret"></span></a>
@@ -30,7 +41,6 @@
                     <li><a th:href="@{/transfer/email}">By Email</a></li>
                 </ul>
             </li>
-            <li><a th:href="@{/log/list/1}">Logs</a></li>
         </ul>
         <div class="pull-right">
             <ul class="nav pull-right navbar-nav">
@@ -68,8 +78,8 @@
         <div class="form-group" id="account-id" style="display:none;">
             <label class="control-label col-sm-2" >Account No</label>
             <div class="col-sm-4">
-                <select id="account-select" required th:field="*{account_no}">
-                    <option selected disabled value="0">Select Account</option>
+                <select class="form-control" id="account-select" required th:field="*{account_no}">
+                    <option selected disabled value="">Select Account</option>
                 </select>
             </div>
         </div>

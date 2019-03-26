@@ -25,12 +25,12 @@ CREATE TABLE bank.employee
     employee_id int(11) unsigned NOT NULL AUTO_INCREMENT,
     employee_name varchar(255) NOT NULL,
     gender varchar(255) NOT NULL,
-    age int(11) ,
+    age int(11) NOT NULL,
     tier_level int(11) unsigned NOT NULL,
-    designation_id int(11),
-    contact_no varchar(255),
-    email_id varchar(255),
-    address varchar(255),
+    designation_id int(11) NOT NULL,
+    contact_no varchar(255) NOT NULL,
+    email_id varchar(255) NOT NULL,
+    address varchar(255) NOT NULL,
     created timestamp DEFAULT CURRENT_TIMESTAMP(),
     updated timestamp DEFAULT CURRENT_TIMESTAMP(),
     PRIMARY KEY (employee_id)
@@ -39,11 +39,11 @@ CREATE TABLE bank.employee
 ALTER TABLE bank.employee AUTO_INCREMENT=1000;
 
 INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
-VALUES (1,"abc","M",23,1,1,"452-345-6789","abc@gmail.com","Tempe,AZ");
+VALUES (1,"Tier 1","M",23,1,1,"452-345-6789","tier1@gmail.com","Tempe,AZ");
 INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
-VALUES (2,"def","M",25,2,2,"408-345-6789","def@gmail.com","Tempe,AZ");
+VALUES (2,"Tier 2","M",25,2,2,"408-345-6789","tier2@gmail.com","Tempe,AZ");
 INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
-VALUES (3,"inter","M",24,3,1,"402-345-6789","inter@gmail.com","Tempe,AZ");
+VALUES (3,"Admin","M",24,3,1,"402-345-6789","admin@gmail.com","Tempe,AZ");
 
 DROP TABLE IF EXISTS bank.account;
 CREATE TABLE bank.account (
@@ -53,8 +53,8 @@ CREATE TABLE bank.account (
   routing_no int(11) NOT NULL,
   account_type int(2) NOT NULL,
   interest decimal(5,2),
-  created timestamp DEFAULT CURRENT_TIMESTAMP(),
-  updated timestamp DEFAULT CURRENT_TIMESTAMP(),
+  created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  updated timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   PRIMARY KEY (account_no),
   FOREIGN KEY (user_id) REFERENCES bank.user(user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -66,17 +66,16 @@ CREATE TABLE bank.transaction_request (
   request_id int(11) NOT NULL AUTO_INCREMENT,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP(),
   status_id int(11) NOT NULL,
-  created_by int(11) unsigned NOT NULL,
-  approved_by int(11) unsigned,
-  approved_at timestamp,
+  created_by varchar(255) NOT NULL,
+  approved_by varchar(255),
+  approved_at timestamp null,
   from_account int(11) unsigned NOT NULL,
   to_account int(11) unsigned,
   description varchar(255),
   type int(2) NOT NULL,
   transaction_amount decimal(10,2) NOT NULL,
+  critical int(2) NOT NULL DEFAULT 0,
   PRIMARY KEY (request_id),
-  FOREIGN KEY (approved_by) REFERENCES bank.employee(employee_id),
-  FOREIGN KEY (created_by) REFERENCES bank.user(user_id),
   FOREIGN KEY (from_account) REFERENCES bank.account(account_no)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -186,21 +185,43 @@ ALTER TABLE bank.cards AUTO_INCREMENT=8000000;
 INSERT INTO bank.cards(account_no ,balance,credit_limit, type) VALUES (1000000, 2500.0, 45622, 2);
 -- INSERT INTO bank.cards(account_no ,balance,limit, type) VALUES (10000000000, 2500.0, 45622, 2);
 
+DROP TABLE IF EXISTS bank.checks;
+CREATE TABLE bank.checks (
+  check_id int(11) unsigned NOT NULL AUTO_INCREMENT,
+  account_no int(11) unsigned NOT NULL,
+  amount decimal(10,2) NOT NULL,
+  issued_at timestamp DEFAULT CURRENT_TIMESTAMP(),
+  PRIMARY KEY (check_id),
+  FOREIGN KEY (account_no) REFERENCES bank.account(account_no)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `bank`.`checks`(`account_no`,`amount`)VALUES(1000000,500);
+INSERT INTO `bank`.`checks`(`account_no`,`amount`)VALUES(1000001,700);
+
 
 insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (2,'Tier 1','Tier 1','tier1@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('2','2');
-insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('2','3');
-insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('2','4');
-insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('2','5');
 
 insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (3,'Tier 2','Tier 2','tier2@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('3','3');
-insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('3','4');
-insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('3','5');
 
 insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (4,'Sandeep','Balaji','scbalaji@asu.edu','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('4','4');
 
 
-INSERT INTO bank.user (name, gender,dob, contact,email_id, address,user_type) values('Tier 1', 'M', CURRENT_TIMESTAMP(), '4805775642', 'tier1@gmail.com', 'TEMPE',0 );
-INSERT INTO bank.user (name, gender,dob, contact,email_id, address,user_type) values('Tier 2', 'M', CURRENT_TIMESTAMP(), '4805775643', 'tier2@gmail.com', 'TEMPE',0 );
+DROP TABLE IF EXISTS  bank.account_request;
+CREATE TABLE bank.account_request (
+  request_id int(11) NOT NULL AUTO_INCREMENT,
+  created_at timestamp DEFAULT CURRENT_TIMESTAMP(),
+  status_id int(11) NOT NULL,
+  created_by varchar(255) NOT NULL,
+  approved_by varchar(255),
+  approved_at timestamp null,
+  description varchar(255),
+  type int(2) NOT NULL,
+  account VARCHAR(1024),
+  user VARCHAR(1024),
+  employee VARCHAR(1024),
+  role int(2) NOT NULL,
+  PRIMARY KEY (request_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -7,4 +7,9 @@ $(document).ready(function() {
         event.preventDefault();
         $('.profileForm #profileModal').modal();
     });
+
+    $('#new-account').on('click',function (event) {
+        event.preventDefault();
+        $('.profileForm #newaccountModal').modal();
+    });
 });

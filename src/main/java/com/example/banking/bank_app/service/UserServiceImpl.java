@@ -1,6 +1,5 @@
 package com.example.banking.bank_app.service;
 
-import com.example.banking.bank_app.model.AddUser;
 import com.example.banking.bank_app.model.Auth_role;
 import com.example.banking.bank_app.model.Auth_user;
 import com.example.banking.bank_app.model.User;
@@ -68,8 +67,9 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
-    public void saveOrUpdate(User user) {
-        userRepository.save(user);
+    public User saveOrUpdate(User user) {
+        return userRepository.save(user);
+
     }
 
     @Override

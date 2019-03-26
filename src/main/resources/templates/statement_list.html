@@ -15,10 +15,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
     <script src="/js/statement.js"></script>
+    <script type="text/javascript" src="/js/prevent.js"></script>
     <title>Statement list</title>
 
 </head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -26,8 +27,9 @@
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a th:href="@{/home}">Home</a></li>
-            <li><a th:href="@{/account/list/1}">Accounts</a></li>
-            <li><a th:href="@{/request/list/1}">Requests</a></li>
+            <li><a th:href="@{/statements}">Statements</a></li>
+            <li><a th:href="@{/account/deposit1}">Deposit</a></li>
+            <li><a th:href="@{/account/withdraw1}">Withdraw</a></li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transfer
                     <span class="caret"></span></a>
@@ -37,7 +39,6 @@
                     <li><a th:href="@{/transfer/email}">By Email</a></li>
                 </ul>
             </li>
-            <li><a th:href="@{/log/list/1}">Logs</a></li>
         </ul>
         <div class="pull-right">
             <ul class="nav pull-right navbar-nav">

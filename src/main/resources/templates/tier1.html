@@ -10,9 +10,10 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
     <script type="text/javascript" src="/js/account.js"></script>
+    <script type="text/javascript" src="/js/prevent.js"></script>
     <title>Home</title>
 </head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -21,8 +22,17 @@
         <ul class="nav navbar-nav">
             <li class="active"><a th:href="@{/home}">Home</a></li>
             <li><a th:href="@{/account/list/1}">Accounts</a></li>
-            <li><a th:href="@{/request/list/1}">Requests</a></li>
-            <li><a th:href="@{/statements}">Statements</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Request
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/request/list/1}">Transaction</a></li>
+                    <li><a th:href="@{/account-request/list/1}">Account</a></li>
+                </ul>
+            </li>
+            <li><a th:href="@{/account/deposit}">Deposit</a></li>
+            <li><a th:href="@{/account/withdraw}">Withdraw</a></li>
+            <li><a th:href="@{/checks/issue}">Issue</a></li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transfer
                     <span class="caret"></span></a>
@@ -32,7 +42,6 @@
                     <li><a th:href="@{/transfer/email}">By Email</a></li>
                 </ul>
             </li>
-            <li><a th:href="@{/log/list/1}">Logs</a></li>
         </ul>
         <div class="pull-right">
             <ul class="nav pull-right navbar-nav">
@@ -45,19 +54,22 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <p><strong>Welcome!</strong></p>
-            <p th:text="${user.getName()}"></p>
-            <p th:text="|Email: ${user.getEmailId()}|"></p>
-            <p th:text="|Phone: ${user.getContact()}|"></p>
-            <p th:text="|Address: ${user.getAddress()}|"></p>
-            <a class="btn btn-info" id="edit-profile">Edit Profile</a>
+            <p th:text="${employee.getEmployee_name()}"></p>
+            <p th:text="|Email: ${employee.getEmail_id()}|"></p>
+            <p th:text="|Phone: ${employee.getContact_no()}|"></p>
+            <p th:text="|Address: ${employee.getAddress()}|"></p>
         </div>
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="btn-group-vertical" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary">Left</button>
-                        <button type="button" class="btn btn-primary">Middle</button>
-                        <button type="button" class="btn btn-primary">Right</button>
+                    <div role="group" aria-label="Basic example">
+                        <a th:href="@{/account/list/1}" type="button" class="btn btn-primary">Accounts</a>
+                        <a th:href="@{/account/deposit}" type="button" class="btn btn-primary">Deposit Fund</a>
+                        <a th:href="@{/account/withdraw}" type="button" class="btn btn-primary">Withdraw Fund</a>
+                        <a th:href="@{/checks/issue}" type="button" class="btn btn-primary">Issue Cashier Cheque</a>
+                        <a th:href="@{/transfer/account}" type="button" class="btn btn-primary">Transfer Fund</a>
+                        <a th:href="@{/request/list/1}" type="button" class="btn btn-primary">Transaction Request</a>
+                        <a th:href="@{/account-request/list/1}" type="button" class="btn btn-primary">Customer Request</a>
                     </div>
                 </div>
             </div>

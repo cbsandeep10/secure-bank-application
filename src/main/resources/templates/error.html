@@ -10,29 +10,15 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/error.css}">
+    <script type="text/javascript" src="/js/prevent.js"></script>
     <title>Home</title>
 </head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" th:href="@{/home}">Secure Bank</a>
         </div>
-        <ul class="nav navbar-nav">
-            <li class="active"><a th:href="@{/home}">Home</a></li>
-            <li><a th:href="@{/account/list/1}">Accounts</a></li>
-            <li><a th:href="@{/request/list/1}">Requests</a></li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transfer
-                    <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a th:href="@{/transfer/account}">By Account</a></li>
-                    <li><a th:href="@{/transfer/phone}">By Phone</a></li>
-                    <li><a th:href="@{/transfer/email}">By Email</a></li>
-                </ul>
-            </li>
-            <li><a th:href="@{/log/list/1}">Logs</a></li>
-        </ul>
         <div class="pull-right">
             <ul class="nav pull-right navbar-nav">
                 <li><a th:href="@{/logout}">Log Out</a></li>
