@@ -7,37 +7,33 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://mottie.github.io/Keyboard/js/jquery.keyboard.extension-typing.js"></script>
-    <script src="https://mottie.github.io/Keyboard/js/jquery.mousewheel.js"></script>
-    <script src="https://mottie.github.io/Keyboard/js/jquery.keyboard.js"></script>
-    <script type="text/javascript" src="/js/prevent.js"></script>
+    <!--<script type="text/javascript" src="/js/prevent.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css">
     <link rel="stylesheet" th:href="@{/css/login.css}">
-    <script>
-        $(document).ready(function() {
-            $('#password')
-                .keyboard({ layout: 'alpha' })
-                .addTyping();
-        });
-    </script>
+
 </head>
 
 <body style="background-color:#ededed;" oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 <div style="background-color:#333;height:50px;"></div>
 <div class="container-fluid">
-    <div class="row col-lg-4 col-lg-offset-4" style="margin-top: 80px;background-color:#fff;padding:20px;border:solid 1px #ddd;">
+    <div class="row col-lg-6 col-lg-offset-3" style="margin-top: 80px;background-color:#fff;padding:20px;border:solid 1px #ddd;">
         <!-- <img th:src="@{/images/login.jpg}" class="img-responsive center-block" width="300" height="300" alt="Logo" /> -->
         <form th:action="@{/login}" method="POST" class="form-signin">
             <h3 class="form-signin-heading" th:text="Login"></h3>
             <br /> <input type="text" id="email" name="email" th:placeholder="Email" class="form-control" /> <br />
-            <input type="password" th:placeholder="Password" id="password" name="password" class="form-control" /> <br />
-
+            <input type="password" th:placeholder="Password" id="password" name="password" class="form-control input" /> <br />
+            <div class="simple-keyboard"></div>
             <div align="center" th:if="${param.error}">
                 <p style="font-size:20px; color: #FF1C19;">Email or Password is invalid.</p>
             </div>
-            <button class="btn btn-lg btn-primary" name="Submit" value="Login" type="Submit" th:text="Login" style="margin-right:10px;"></button>
-            <a href="/recover-password">Forgot password?</a>
+            <div align="center">
+                <button class="btn btn-lg btn-primary" name="Submit" value="Login" type="Submit" th:text="Login" ></button>
+                <a href="/register">New User?</a>
+            </div>
         </form>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.min.js"></script>
+<script src="/js/login.js"></script>
 </body>
 </html>
