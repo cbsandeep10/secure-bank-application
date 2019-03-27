@@ -38,6 +38,9 @@ public class AccountRequestController {
     CardService cardService;
 
     @Autowired
+    LogService logService;
+
+    @Autowired
     AccountRequestService accountRequestService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
@@ -140,6 +143,7 @@ public class AccountRequestController {
         accountRequest.setApproved_by(name); //Remeber to change this
         accountRequest.setStatus_id(Config.APPROVED);
         accountRequestService.saveOrUpdate(accountRequest);
+//        logService.saveLog(authentication.getName(), "Approved Request");
         return new ModelAndView("redirect:/account-request/list/1");
     }
 

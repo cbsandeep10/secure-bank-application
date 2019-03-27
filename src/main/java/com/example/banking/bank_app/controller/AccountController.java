@@ -32,6 +32,9 @@ public class  AccountController {
     AccountService accountService;
 
     @Autowired
+    LogService logService;
+
+    @Autowired
     AccountRequestService accountRequestService;
 
     @Autowired
@@ -100,6 +103,7 @@ public class  AccountController {
             System.out.println("Exception");
         }
         accountRequestService.saveOrUpdate(accountRequest);
+        logService.saveLog(authentication.getName(), "Created new account");
         return new ModelAndView("redirect:/user");
     }
 
@@ -187,6 +191,9 @@ public class  AccountController {
             modelAndView = new ModelAndView("redirect:/account/deposit1");
         }
         String message = depositandwithdraw(Config.CREDIT, transaction,name, role);
+        if(message.contains("Success")){
+            logService.saveLog(authentication.getName(), "Deposited money");
+        }
         redirectAttributes.addFlashAttribute("message", message);
         return modelAndView;
     }
@@ -213,6 +220,9 @@ public class  AccountController {
             modelAndView = new ModelAndView("redirect:/account/withdraw1");
         }
         String message = depositandwithdraw(Config.DEBIT, transaction, name, role);
+        if(message.contains("Success")){
+            logService.saveLog(authentication.getName(), "Deposited money");
+        }
         redirectAttributes.addFlashAttribute("message", message);
         return modelAndView;
     }
