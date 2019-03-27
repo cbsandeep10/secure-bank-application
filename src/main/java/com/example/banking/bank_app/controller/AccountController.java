@@ -103,7 +103,7 @@ public class  AccountController {
             System.out.println("Exception");
         }
         accountRequestService.saveOrUpdate(accountRequest);
-        logService.saveLog(authentication.getName(), "Created new account");
+        logService.saveLog(authentication.getName(), "Created new account for "+authentication.getName());
         return new ModelAndView("redirect:/user");
     }
 
@@ -192,7 +192,7 @@ public class  AccountController {
         }
         String message = depositandwithdraw(Config.CREDIT, transaction,name, role);
         if(message.contains("Success")){
-            logService.saveLog(authentication.getName(), "Deposited money");
+            logService.saveLog(authentication.getName(), "Deposited money for account "+transaction.getAccount_no()+" $"+transaction.getTransaction_amount());
         }
         redirectAttributes.addFlashAttribute("message", message);
         return modelAndView;
@@ -221,7 +221,7 @@ public class  AccountController {
         }
         String message = depositandwithdraw(Config.DEBIT, transaction, name, role);
         if(message.contains("Success")){
-            logService.saveLog(authentication.getName(), "Deposited money");
+            logService.saveLog(authentication.getName(), "Withdraw money "+transaction.getAccount_no()+" $"+transaction.getTransaction_amount());
         }
         redirectAttributes.addFlashAttribute("message", message);
         return modelAndView;

@@ -3,6 +3,7 @@ package com.example.banking.bank_app.controller;
 import com.example.banking.bank_app.model.*;
 import com.example.banking.bank_app.service.AccountRequestService;
 import com.example.banking.bank_app.service.EmployeeService;
+import com.example.banking.bank_app.service.LogService;
 import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,9 @@ public class EmployeeController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    LogService logService;
 
     @Autowired
     AccountRequestService accountRequestService;
@@ -100,6 +104,7 @@ public class EmployeeController {
             employee.setCreated(newEmployee.getCreated());
             employee.setUpdated(new Timestamp(System.currentTimeMillis()));
             employeeService.saveOrUpdate(employee);
+            logService.saveLog(authentication.getName(),"Changed employee profile for "+employee.getEmail_id());
             redirectAttributes.addFlashAttribute("message","Successfully saved!");
         }
         return new ModelAndView("redirect:/employee/list/1");
@@ -167,6 +172,7 @@ public class EmployeeController {
         else{
             redirectAttributes.addFlashAttribute("message","Successfully saved, pending approval!");
         }
+        logService.saveLog(authentication.getName(),"Changed employee profile for "+employee.getEmail_id());
         return new ModelAndView("redirect:/tier2");
     }
 
@@ -232,12 +238,14 @@ public class EmployeeController {
         else{
             redirectAttributes.addFlashAttribute("message","Successfully saved, pending approval!");
         }
+        logService.saveLog(authentication.getName(),"Changed employee profile for "+employee.getEmail_id());
         return new ModelAndView("redirect:/employee/list/1");
     }
 
     @RequestMapping(value="/delete/{employee}", method= RequestMethod.POST)
-    public ModelAndView deleteAccount(@PathVariable("employee") Long employeeId) {
+    public ModelAndView deleteAccount(@PathVariable("employee") Long employeeId, Authentication authentication) {
         employeeService.deleteEmployee(employeeId);
+        logService.saveLog(authentication.getName(),"Deleted employee profile of "+employeeId);
         return new ModelAndView("redirect:/account/list/1");
     }
 
@@ -281,6 +289,7 @@ public class EmployeeController {
             authUserRole.setAuth_role_id(new Long(employee.getTier_level()));
             userService.save(authUserRole);
             redirectAttributes.addFlashAttribute("message","Successfully saved!");
+            logService.saveLog(authentication.getName(),"Created new employee profile for "+employee.getEmail_id());
         }
         return new ModelAndView("redirect:/employee/list/1");
     }

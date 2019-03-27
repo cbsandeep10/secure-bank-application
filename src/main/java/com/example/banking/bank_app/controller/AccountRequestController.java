@@ -143,7 +143,7 @@ public class AccountRequestController {
         accountRequest.setApproved_by(name); //Remeber to change this
         accountRequest.setStatus_id(Config.APPROVED);
         accountRequestService.saveOrUpdate(accountRequest);
-//        logService.saveLog(authentication.getName(), "Approved Request");
+        logService.saveLog(authentication.getName(), "Approved Request for id:"+id);
         return new ModelAndView("redirect:/account-request/list/1");
     }
 
@@ -156,6 +156,7 @@ public class AccountRequestController {
         accountRequest.setApproved_by(name); //Remeber to change this
         accountRequest.setStatus_id(Config.DECLINED);
         accountRequestService.saveOrUpdate(accountRequest);
+        logService.saveLog(authentication.getName(), "Declined Request for id:"+id);
         return new ModelAndView("redirect:/account-request/list/1");
     }
 

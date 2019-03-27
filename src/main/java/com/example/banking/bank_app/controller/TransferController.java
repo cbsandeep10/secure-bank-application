@@ -27,6 +27,9 @@ public class TransferController {
     EmployeeService employeeService;
 
     @Autowired
+    LogService logService;
+
+    @Autowired
     TransactionService transactionService;
 
     @Autowired
@@ -147,6 +150,7 @@ public class TransferController {
         transactionService.saveOrUpdate(from_transaction);
         transactionService.saveOrUpdate(to_transaction);
         redirectAttributes.addFlashAttribute("message","Successfully transferred");
+        logService.saveLog(authentication.getName(),"Transferred money from "+transfer.getFrom_account_no()+" to "+transfer.getTo_account_no()+ " for $"+transfer.getTransaction_amount());
         return "redirect:/transfer/"+type;
     }
 }

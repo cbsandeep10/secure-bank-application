@@ -6,10 +6,12 @@ import com.example.banking.bank_app.model.Config;
 import com.example.banking.bank_app.model.Transaction;
 import com.example.banking.bank_app.service.AccountService;
 import com.example.banking.bank_app.service.CheckService;
+import com.example.banking.bank_app.service.LogService;
 import com.example.banking.bank_app.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -25,6 +27,9 @@ public class CheckController {
 
     @Autowired
     CheckService checkService;
+
+    @Autowired
+    LogService logService;
 
     @Autowired
     TransactionService transactionService;
@@ -58,7 +63,7 @@ public class CheckController {
     }
 
     @RequestMapping(value="/issue", method= RequestMethod.POST)
-    public ModelAndView issue(Check check, RedirectAttributes redirectAttributes) {
+    public ModelAndView issue(Check check, RedirectAttributes redirectAttributes, Authentication authentication) {
         Account account;
         try{
             account = accountService.getAccountByAccountNo(check.getAccountno());
@@ -84,6 +89,7 @@ public class CheckController {
         transactionService.saveOrUpdate(transaction);
         account.setBalance(account.getBalance() - check.getAmount());
         accountService.saveOrUpdate(account);
+        logService.saveLog(authentication.getName(),"Issued check for "+check.getAccountno()+" of amount $"+check.getAmount());
         return new ModelAndView("redirect:/checks/list/1");
     }
 }

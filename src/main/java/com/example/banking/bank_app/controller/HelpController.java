@@ -3,6 +3,7 @@ package com.example.banking.bank_app.controller;
 import com.example.banking.bank_app.model.Help;
 import com.example.banking.bank_app.model.User;
 import com.example.banking.bank_app.service.HelpService;
+import com.example.banking.bank_app.service.LogService;
 import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,9 @@ public class HelpController {
 
     @Autowired
     HelpService helpService;
+
+    @Autowired
+    LogService logService;
 
     @Autowired
     UserService userService;
@@ -76,6 +80,7 @@ public class HelpController {
         }
         helpService.saveOrUpdate(help);
         redirectAttributes.addFlashAttribute("message","Submitted! Bank representative will get back you soon!");
+        logService.saveLog(authentication.getName(),"Submitted help query");
         return new ModelAndView("redirect:/help/helpform");
     }
 

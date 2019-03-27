@@ -6,6 +6,7 @@ import com.example.banking.bank_app.model.Config;
 import com.example.banking.bank_app.model.User;
 import com.example.banking.bank_app.service.AccountRequestService;
 import com.example.banking.bank_app.service.AccountService;
+import com.example.banking.bank_app.service.LogService;
 import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,6 +34,9 @@ public class UserController {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    LogService logService;
 
     @Autowired
     AccountRequestService accountRequestService;
@@ -118,6 +122,7 @@ public class UserController {
         accountRequestService.saveOrUpdate(accountRequest);
 
         redirectAttributes.addFlashAttribute("message","Successfully saved data! Pending approval with authorities!");
+        logService.saveLog(authentication.getName(),"Changed User profile for "+old_user.getEmailId());
         return new ModelAndView("redirect:/user");
     }
 }

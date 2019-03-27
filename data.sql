@@ -155,12 +155,12 @@ CREATE TABLE bank.admin_log (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-INSERT INTO bank.admin_log (id,log_timestamp,related_user_id,message)
-VALUES (1,'2019-03-02 00:00:00',3,"Transaction Success");
-INSERT INTO bank.admin_log (id,log_timestamp,related_user_id,message)
-VALUES (2,'2019-03-02 00:00:00',4,"Transaction Failure");
-INSERT INTO bank.admin_log (id,log_timestamp,related_user_id,message)
-VALUES (3,'2019-03-02 00:00:00',5,"Transaction Success");
+-- INSERT INTO bank.admin_log (id,log_timestamp,related_user_id,message)
+-- VALUES (1,'2019-03-02 00:00:00',3,"Transaction Success");
+-- INSERT INTO bank.admin_log (id,log_timestamp,related_user_id,message)
+-- VALUES (2,'2019-03-02 00:00:00',4,"Transaction Failure");
+-- INSERT INTO bank.admin_log (id,log_timestamp,related_user_id,message)
+-- VALUES (3,'2019-03-02 00:00:00',5,"Transaction Success");
 
 DROP TABLE IF EXISTS bank.cards;
 CREATE TABLE bank.cards (

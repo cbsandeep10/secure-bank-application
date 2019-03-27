@@ -4,6 +4,7 @@ import com.example.banking.bank_app.model.*;
 import com.example.banking.bank_app.respository.AuthUserRoleRepository;
 import com.example.banking.bank_app.service.AccountService;
 import com.example.banking.bank_app.service.CardService;
+import com.example.banking.bank_app.service.LogService;
 import com.example.banking.bank_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -30,6 +31,9 @@ public class AddUserController {
 
     @Autowired
     CardService cardService;
+
+    @Autowired
+    LogService logService;
 
     @Autowired
     AccountService accountService;
@@ -125,6 +129,7 @@ public class AddUserController {
         userService.save(authUserRole);
         System.out.println("The user & account added successfully");
         redirectAttributes.addFlashAttribute("message","Successfully created");
+        logService.saveLog(authentication.getName(),"New User & Account created for "+adduser.getEmailId());
         return "redirect:/addUser";
     }
 }

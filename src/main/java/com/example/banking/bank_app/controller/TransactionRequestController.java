@@ -31,6 +31,9 @@ public class TransactionRequestController {
     EmployeeService employeeService;
 
     @Autowired
+    LogService logService;
+
+    @Autowired
     TransactionRequestService transactionRequestService;
 
     @Autowired
@@ -115,7 +118,7 @@ public class TransactionRequestController {
                 transactionService.saveOrUpdate(transactions.get(i));
             }
         }
-
+        logService.saveLog(authentication.getName(),"Approved transaction request for id:"+id);
         return new ModelAndView("redirect:/request/list/1");
     }
 
@@ -128,6 +131,7 @@ public class TransactionRequestController {
         transactionRequest.setApproved_by(employee.getEmployee_name()); //Remeber to change this
         transactionRequest.setStatus_id(Config.DECLINED);
         transactionRequestService.saveOrUpdate(transactionRequest);
+        logService.saveLog(authentication.getName(),"Declined transaction request for id:"+id);
         return new ModelAndView("redirect:/request/list/1");
     }
 
