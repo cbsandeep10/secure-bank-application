@@ -8,6 +8,9 @@ public class AuthUserRolePK implements Serializable {
 
     private Long auth_role_id;
 
+    public AuthUserRolePK() {
+    }
+
     public AuthUserRolePK(Long auth_user_id, Long auth_role_id) {
         this.auth_user_id = auth_user_id;
         this.auth_role_id = auth_role_id;

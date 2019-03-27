@@ -48,30 +48,14 @@
         </p>
     </div>
     <form name="myForm" class="form-horizontal" th:object="${transaction}" th:action="@{/account/withdraw}" method="post" >
-        <!--Account-->
-        <!--Phone-->
-        <div class="form-group" >
-            <label class="control-label col-sm-2" >Phone</label>
-            <div class="col-sm-4">
-                <input type ="number" class="form-control"  placeholder="Enter Phone" name="phone" id="phone" required>
-                <span class="help-block" id="phone-error"></span>
-            </div>
-            <button class="btn btn-primary" id="phone-btn"><i class="fa fa-search"></i></button>
-        </div>
-        <!--Email-->
         <div class="form-group">
-            <label class="control-label col-sm-2" >Email</label>
+            <label class="control-label col-sm-2" >Account Number</label>
             <div class="col-sm-4">
-                <input type ="email" class="form-control" placeholder="Enter Email" name="Email" id="email" required>
-                <span class="help-block" id="email-error"></span>
-            </div>
-            <button class="btn btn-primary" id="email-btn"><i class="fa fa-search"></i></button>
-        </div>
-        <div class="form-group" id="account-id" style="display:none;">
-            <label class="control-label col-sm-2" >Account No</label>
-            <div class="col-sm-4">
-                <select class="form-control" id="account-select" required th:field="*{account_no}">
-                    <option selected disabled value="">Select Account</option>
+                <select class="form-control" th:field="*{account_no}" id="AccountNumber" required>
+                    <option value="">Select account</option>
+                    <option th:each="account : ${accounts}"
+                            th:value="${account.getAccountNo()}"
+                            th:text="${account.getAccountNo()}+' : '+( ${account.getAccountType() ==1} ? 'Checkings' : ( ${account.getAccountType() ==2} ? 'Savings' : 'Credit Card' ) )"></option>
                 </select>
             </div>
         </div>

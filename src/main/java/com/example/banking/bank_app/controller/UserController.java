@@ -89,7 +89,7 @@ public class UserController {
         }
         Date today = new Date();
         if(user.getDob().after(today)){
-            redirectAttributes.addFlashAttribute("message","Date Cannot be greater than today!");
+            redirectAttributes.addFlashAttribute("message","Date of Birth Cannot be greater than today!");
             return new ModelAndView("redirect:/user");
         }
 //        userService.saveOrUpdate(old_user);

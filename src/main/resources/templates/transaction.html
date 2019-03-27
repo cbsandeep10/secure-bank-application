@@ -18,7 +18,7 @@
         <div class="navbar-header">
             <a class="navbar-brand" th:href="@{/home}">Secure Bank</a>
         </div>
-        <ul class="nav navbar-nav" th:if="${role == 1}">
+        <ul class="nav navbar-nav" th:if="${role == 2}">
             <li class="active"><a th:href="@{/home}">Home</a></li>
             <li><a th:href="@{/account/list/1}">Accounts</a></li>
             <li class="dropdown">
@@ -42,7 +42,7 @@
                 </ul>
             </li>
         </ul>
-        <ul class="nav navbar-nav" th:if="${role == 0}">
+        <ul class="nav navbar-nav" th:if="${role == 4}">
             <li class="active"><a th:href="@{/home}">Home</a></li>
             <li><a th:href="@{/statements}">Statements</a></li>
             <li><a th:href="@{/account/deposit1}">Deposit</a></li>
@@ -72,18 +72,18 @@
         </p>
     </div>
     <form name="myForm" class="form-horizontal" th:object="${transfer}" th:action="@{|/transfer/${type}|}" method="post" >
-        <div class="form-group" th:if="${role == 0}">
+        <div class="form-group" th:if="${role == 4}">
             <label class="control-label col-sm-2" >Account Number</label>
             <div class="col-sm-4">
                <select class="form-control" th:field="*{from_account_no}" id="AccountNumber" required>
                     <option value="">Select account</option>
                     <option th:each="account : ${accounts}"
                             th:value="${account.getAccountNo()}"
-                            th:text="${account.getAccountNo()}+' : '+${account.getAccountType()==1 ? 'Checkings' : 'Savings'}"></option>
+                            th:text="${account.getAccountNo()}+' : '+( ${account.getAccountType() ==1} ? 'Checkings' : ( ${account.getAccountType() ==2} ? 'Savings' : 'Credit Card' ) )"></option>
                 </select>
             </div>
         </div>
-        <div class="form-group" th:if="${role == 1}">
+        <div class="form-group" th:if="${role == 2}">
             <label class="control-label col-sm-2" >From Account</label>
             <div class="col-sm-4"th:classappend="${#fields.hasErrors('from_account_no')} ? 'input-icon right' : ''">
                 <i th:if="${#fields.hasErrors('from_account_no')}" class="fa fa-exclamation tooltips" data-original-title="Valid Amount" data-container="body"></i>

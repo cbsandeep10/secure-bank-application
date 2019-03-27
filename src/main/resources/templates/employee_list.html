@@ -63,9 +63,9 @@
                     <td th:if="${dar.getGender() == 'M'}" th:text="Male"></td>
                     <td th:if="${dar.getGender() == 'F'}" th:text="Female"></td>
                     <td th:text="${dar.getAge()}"></td>
-                    <td th:if="${dar.getTier_level() == 1}" th:text="|Tier 1|"></td>
-                    <td th:if="${dar.getTier_level() == 2}" th:text="|Tier 2|"></td>
-                    <td th:if="${dar.getTier_level() == 3}" th:text="|Admin|"></td>
+                    <td th:if="${dar.getTier_level() == 2}" th:text="|Tier 1|"></td>
+                    <td th:if="${dar.getTier_level() == 3}" th:text="|Tier 2|"></td>
+                    <td th:if="${dar.getTier_level() == 1}" th:text="|Admin|"></td>
                     <td th:text="${dar.getDesignation_id()}"></td>
                     <td th:text="${dar.getContact_no()}"></td>
                     <td th:text="${dar.getEmail_id()}"></td>

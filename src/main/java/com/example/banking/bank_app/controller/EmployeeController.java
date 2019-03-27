@@ -250,7 +250,6 @@ public class EmployeeController {
             roles.add(a.getAuthority());
         }
         if (roles.contains("ADMIN")) {
-            Employee newEmployee = employeeService.getEmployeeById(employee.getEmployee_id());
             Auth_user auth_user = new Auth_user();
             auth_user.setEmail(employee.getEmail_id());
             if(userService.userAlreadyExist(auth_user)){
@@ -269,7 +268,7 @@ public class EmployeeController {
                 redirectAttributes.addFlashAttribute("message","Contact Number not valid!");
                 return new ModelAndView("redirect:/employee/list/1");
             }
-            employee.setCreated(newEmployee.getCreated());
+            employee.setCreated(new Timestamp(System.currentTimeMillis()));
             employee.setUpdated(new Timestamp(System.currentTimeMillis()));
             employeeService.saveOrUpdate(employee);
             auth_user.setName(employee.getEmployee_name());
@@ -277,19 +276,9 @@ public class EmployeeController {
             auth_user.setLastName("");
             Auth_user newAuthUser = userService.saveUser(auth_user);
 
-
-            Long role;
-            if(employee.getTier_level() == Config.TIER1){
-                role = 2L;
-            }
-            else if(employee.getTier_level() == Config.TIER2){
-                role = 3L;
-            }else{
-                role = 1L;
-            }
             AuthUserRole authUserRole = new AuthUserRole();
             authUserRole.setAuth_user_id(new Long(newAuthUser.getId()));
-            authUserRole.setAuth_role_id(role);
+            authUserRole.setAuth_role_id(new Long(employee.getTier_level()));
             userService.save(authUserRole);
             redirectAttributes.addFlashAttribute("message","Successfully saved!");
         }

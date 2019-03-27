@@ -39,11 +39,11 @@ CREATE TABLE bank.employee
 ALTER TABLE bank.employee AUTO_INCREMENT=1000;
 
 INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
-VALUES (1,"Tier 1","M",23,1,1,"4523456789","tier1@gmail.com","Tempe,AZ");
+VALUES (1000,"Tier 1","M",23,2,1,"4523456789","tier1@gmail.com","Tempe,AZ");
 INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
-VALUES (2,"Tier 2","M",25,2,2,"4083456789","tier2@gmail.com","Tempe,AZ");
+VALUES (1001,"Tier 2","M",25,3,2,"4083456789","tier2@gmail.com","Tempe,AZ");
 INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
-VALUES (3,"Admin","M",24,3,1,"4023456789","admin@gmail.com","Tempe,AZ");
+VALUES (1002,"Admin","M",24,1,1,"4023456789","admin@gmail.com","Tempe,AZ");
 
 DROP TABLE IF EXISTS bank.account;
 CREATE TABLE bank.account (
@@ -221,9 +221,6 @@ CREATE TABLE bank.account_request (
   role int(2) NOT NULL,
   PRIMARY KEY (request_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO bank.user (name, gender,dob, contact,email_id, address,user_type) values('Tier 1', 'M', CURRENT_TIMESTAMP(), '4805775642', 'tier1@gmail.com', 'TEMPE',0 );
-INSERT INTO bank.user (name, gender,dob, contact,email_id, address,user_type) values('Tier 2', 'M', CURRENT_TIMESTAMP(), '4805775643', 'tier2@gmail.com', 'TEMPE',0 );
 
 DROP TABLE IF EXISTS bank.help_page;
 CREATE TABLE bank.help_page (

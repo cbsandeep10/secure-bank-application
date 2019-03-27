@@ -94,9 +94,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean userAlreadyExist (Auth_user user) {
-
-        // no sol......
-        return false;
+        if(authUserRepository.findUserByEmail(user.getEmail()) == null){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     @Override

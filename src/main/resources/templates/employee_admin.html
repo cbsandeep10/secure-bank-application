@@ -65,9 +65,9 @@
                         <td th:if="${dar.getGender() == 'M'}" th:text="Male"></td>
                         <td th:if="${dar.getGender() == 'F'}" th:text="Female"></td>
                         <td th:text="${dar.getAge()}"></td>
-                        <td th:if="${dar.getTier_level() == 1}" th:text="|Tier 1|"></td>
-                        <td th:if="${dar.getTier_level() == 2}" th:text="|Tier 2|"></td>
-                        <td th:if="${dar.getTier_level() == 3}" th:text="|Admin|"></td>
+                        <td th:if="${dar.getTier_level() == 2}" th:text="|Tier 1|"></td>
+                        <td th:if="${dar.getTier_level() == 3}" th:text="|Tier 2|"></td>
+                        <td th:if="${dar.getTier_level() == 1}" th:text="|Admin|"></td>
                         <td th:text="${dar.getDesignation_id()}"></td>
                         <td th:text="${dar.getContact_no()}"></td>
                         <td th:text="${dar.getEmail_id()}"></td>
@@ -136,9 +136,9 @@
                                             <div class="form-group">
                                                 <label for="tier_level" class="col-form-label">Tier Level:</label>
                                                 <select class="form-control"  id="tier_level" required th:field="*{tier_level}">
-                                                    <option value="1">Tier 1</option>
-                                                    <option value="2">Tier 2</option>
-                                                    <option value="3">Admin</option>
+                                                    <option value="1">Admin</option>
+                                                    <option value="2">Tier 1</option>
+                                                    <option value="3">Tier 2</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -232,9 +232,9 @@
                                             <div class="form-group">
                                                 <label for="tier_level" class="col-form-label">Tier Level:</label>
                                                 <select class="form-control"  required th:field="*{tier_level}">
-                                                    <option value="1">Tier 1</option>
-                                                    <option value="2">Tier 2</option>
-                                                    <option value="3">Admin</option>
+                                                    <option value="1">Admin</option>
+                                                    <option value="2">Tier 1</option>
+                                                    <option value="3">Tier 2</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">

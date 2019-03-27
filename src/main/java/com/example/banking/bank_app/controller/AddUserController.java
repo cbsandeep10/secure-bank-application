@@ -52,13 +52,13 @@ public class AddUserController {
         }
         Auth_user auth_user = new Auth_user();
         auth_user.setEmail(adduser.getEmailId());
-        if(userService.userAlreadyExist(auth_user)) {
+        if(userService.userAlreadyExist(auth_user)){
             redirectAttributes.addFlashAttribute("message", "Email already exists!");
             return "redirect:/addUser";
         }
         Date today = new Date();
         if(adduser.getDob().after(today)){
-            redirectAttributes.addFlashAttribute("message","Date Cannot be greater than today!");
+            redirectAttributes.addFlashAttribute("message","Date of Birth Cannot be greater than today!");
             return "redirect:/addUser";
         }
         if(!adduser.getGender().equals("M")&&!adduser.getGender().equals("F")){
@@ -73,8 +73,8 @@ public class AddUserController {
             redirectAttributes.addFlashAttribute("message","Balance cannot be negative!");
             return "redirect:/addUser";
         }
-        if(adduser.getInterest() < 0){
-            redirectAttributes.addFlashAttribute("message","Interest cannot be negative!");
+        if(adduser.getInterest() <= 0){
+            redirectAttributes.addFlashAttribute("message","Interest Should be greater than 0!");
             return "redirect:/addUser";
         }
         if(adduser.getAccountType() < Config.CHECKINGS || adduser.getAccountType() > Config.CREDITCARD){
@@ -91,6 +91,7 @@ public class AddUserController {
         new_user.setEmailId(adduser.getEmailId());
         new_user.setAddress(adduser.getAddress());
         new_user.setUserType(1);
+        new_user.setCreated(new Timestamp(System.currentTimeMillis()));
         User user=userService.saveOrUpdate(new_user);
         SecureRandom random = new SecureRandom();
         int routing = random.nextInt(100000);

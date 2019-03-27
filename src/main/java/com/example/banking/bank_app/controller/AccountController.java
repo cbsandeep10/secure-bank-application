@@ -135,11 +135,13 @@ public class  AccountController {
     }
 
     @RequestMapping(value="/deposit1", method= RequestMethod.GET) //user
-    public ModelAndView deposit1(@ModelAttribute("message") String message) {
+    public ModelAndView deposit1(@ModelAttribute("message") String message, Authentication authentication) {
         ModelAndView modelAndView = new ModelAndView("deposit_user");
         Transaction transaction = new Transaction();
         modelAndView.addObject("transaction", transaction);
         modelAndView.addObject("message",message);
+        Long id =  userService.findUserByEmail(authentication.getName());
+        modelAndView.addObject("accounts",userService.getUserByUserId(id).getAccounts());
         return modelAndView;
     }
 
@@ -153,11 +155,13 @@ public class  AccountController {
     }
 
     @RequestMapping(value="/withdraw1", method= RequestMethod.GET) //user
-    public ModelAndView withdraw1(@ModelAttribute("message") String message) {
+    public ModelAndView withdraw1(@ModelAttribute("message") String message, Authentication authentication) {
         ModelAndView modelAndView = new ModelAndView("withdraw_user");
         Transaction transaction = new Transaction();
         modelAndView.addObject("transaction", transaction);
         modelAndView.addObject("message",message);
+        Long id =  userService.findUserByEmail(authentication.getName());
+        modelAndView.addObject("accounts",userService.getUserByUserId(id).getAccounts());
         return modelAndView;
     }
 
@@ -249,7 +253,12 @@ public class  AccountController {
             transactionRequest.setStatus_id(Config.PENDING);
             transactionRequest.setTransaction_amount(transaction.getTransaction_amount());
             transactionRequest.setCreated_at(new Timestamp(System.currentTimeMillis()));
-            transactionRequest.setCritical(Config.CRITICAL_YES);
+            if(transaction.getTransaction_amount() > Config.LIMIT ){
+                transactionRequest.setCritical(Config.CRITICAL_YES);
+            }
+            else{
+                transactionRequest.setCritical(Config.CRITICAL_NO);
+            }
             if (type == Config.DEBIT){
                 transactionRequest.setType(Config.WITHDRAW);
                 transactionRequest.setDescription(transaction.getDescription());
@@ -267,6 +276,9 @@ public class  AccountController {
             accountService.saveOrUpdate(account);
         }
         transactionService.saveOrUpdate(transaction);
+        if(role == Config.USER){
+            return "Success! Pending approval from Bank authorities!";
+        }
         return "Success";
     }
 }

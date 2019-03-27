@@ -42,9 +42,12 @@ $(document).ready( function () {
         var url = '/user/accounts/phone/'+phone;
         $.getJSON(url, function (data) {
             $.each(data, function (key, entry) {
-                var type = 'Savings';
                 if (entry.accountType === 1){
                     type='Checkings';
+                }else if(entry.accountType === 2){
+                    type='Savings';
+                }else{
+                    type='Credit card';
                 }
                 dropdown.append($('<option></option>').attr('value', entry.accountNo).text(type+': '+entry.accountNo));
             })
@@ -68,9 +71,12 @@ $(document).ready( function () {
 
         $.getJSON(url, function (data) {
             $.each(data, function (key, entry) {
-                var type = 'Savings';
                 if (entry.accountType === 1){
                     type='Checkings';
+                }else if(entry.accountType === 2){
+                    type='Savings';
+                }else{
+                    type='Credit card';
                 }
                 dropdown.append($('<option></option>').attr('value', entry.accountNo).text(type+': '+entry.accountNo));
             })

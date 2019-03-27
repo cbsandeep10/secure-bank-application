@@ -9,10 +9,10 @@ import java.io.Serializable;
 public class AuthUserRole implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "auth_user_id")
     private Long auth_user_id;
 
+    @Id
     @Column(name = "auth_role_id")
     private Long auth_role_id;
 
