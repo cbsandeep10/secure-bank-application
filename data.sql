@@ -148,20 +148,19 @@ insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','1');
 DROP TABLE IF EXISTS bank.admin_log;
 CREATE TABLE bank.admin_log (
   id int(11) unsigned NOT NULL AUTO_INCREMENT,
-  type_id int(11) NOT NULL,
   log_timestamp timestamp ,
-  related_user_id int(11) unsigned NOT NULL,
+  related_user_id varchar(255) NOT NULL,
   message varchar(255),
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-INSERT INTO bank.admin_log (id, type_id,log_timestamp,related_user_id,message)
-VALUES (1,2,'2019-03-02 00:00:00',3,"Transaction Success");
-INSERT INTO bank.admin_log (id, type_id,log_timestamp,related_user_id,message)
-VALUES (2,3,'2019-03-02 00:00:00',4,"Transaction Failure");
-INSERT INTO bank.admin_log (id, type_id,log_timestamp,related_user_id,message)
-VALUES (3,4,'2019-03-02 00:00:00',5,"Transaction Success");
+INSERT INTO bank.admin_log (id,log_timestamp,related_user_id,message)
+VALUES (1,'2019-03-02 00:00:00',3,"Transaction Success");
+INSERT INTO bank.admin_log (id,log_timestamp,related_user_id,message)
+VALUES (2,'2019-03-02 00:00:00',4,"Transaction Failure");
+INSERT INTO bank.admin_log (id,log_timestamp,related_user_id,message)
+VALUES (3,'2019-03-02 00:00:00',5,"Transaction Success");
 
 DROP TABLE IF EXISTS bank.cards;
 CREATE TABLE bank.cards (

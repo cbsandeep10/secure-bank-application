@@ -40,7 +40,6 @@
                     <thead>
                     <tr>
                         <th><strong>ID</strong></th>
-                        <th><strong>TYPE ID</strong></th>
                         <th><strong>LOG TIMESTAMP</strong></th>
                         <th><strong>RELATED USER ID</strong></th>
                         <th><strong>MESSAGE</strong></th>
@@ -49,7 +48,6 @@
                     <tbody>
                         <tr th:each="dar : ${LogList}">
                             <td th:text="${dar.getId()}"></td>
-                            <td th:text="${dar.getTypeID()}"></td>
                             <td th:text="${dar.getLogTimeStamp()}"></td>
                             <td th:text="${dar.getRelatedUserID()}"></td>
                             <td th:text="${dar.getMessage()}"></td>

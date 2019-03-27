@@ -9,8 +9,10 @@ import java.util.List;
 
 public interface LogService {
 
-    public List<Log> getAllLogs();
+    List<Log> getAllLogs();
 
-    public Page<Log> getPaginated(Pageable pageable);
+    Page<Log> getPaginated(Pageable pageable);
+
+    void saveLog(String email, String message);
 
 }

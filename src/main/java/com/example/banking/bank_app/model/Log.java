@@ -11,15 +11,11 @@ public class Log {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name="type_id")
-    private Integer typeID;
-
-
     @Column(name="log_timestamp")
     private Timestamp logTimeStamp;
 
     @Column(name="related_user_id")
-    private Integer relatedUserID;
+    private String relatedUserID;
 
     @Column(name="message")
     private String message;
@@ -32,14 +28,6 @@ public class Log {
         this.id = id;
     }
 
-    public Integer getTypeID() {
-        return typeID;
-    }
-
-    public void setTypeID(Integer typeID) {
-        this.typeID = typeID;
-    }
-
     public Timestamp getLogTimeStamp() {
         return logTimeStamp;
     }
@@ -48,11 +36,11 @@ public class Log {
         this.logTimeStamp = logTimeStamp;
     }
 
-    public Integer getRelatedUserID() {
+    public String getRelatedUserID() {
         return relatedUserID;
     }
 
-    public void setRelatedUserID(Integer relatedUserID) {
+    public void setRelatedUserID(String relatedUserID) {
         this.relatedUserID = relatedUserID;
     }
 

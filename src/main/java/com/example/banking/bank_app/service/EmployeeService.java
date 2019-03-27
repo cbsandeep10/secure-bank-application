@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface EmployeeService {
 
-    public List<Employee> getAllEmployees();
+    List<Employee> getAllEmployees();
 
-    public Page<Employee> getPaginated(Pageable pageable, int tier);
+    Page<Employee> getPaginated(Pageable pageable, int tier);
 
-    public void deleteEmployee(Long id);
+    void deleteEmployee(Long id);
 
-    public void saveOrUpdate(Employee employee);
+    void saveOrUpdate(Employee employee);
 
-    public Employee getEmployeeById(Long id);
+    Employee getEmployeeById(Long id);
 
     Long findUserByEmail(String email);
 }

@@ -7,14 +7,14 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface AccountRequestService {
-    public List<AccountRequest> getAllAccounts();
+    List<AccountRequest> getAllAccounts();
 
-    public AccountRequest getAccountByAccountNo(Long requestid);
+    AccountRequest getAccountByAccountNo(Long requestid);
 
-    public void saveOrUpdate(AccountRequest accountRequest);
+    void saveOrUpdate(AccountRequest accountRequest);
 
-    public void deleteAccount(Long id);
+    void deleteAccount(Long id);
 
-    public Page<AccountRequest> getPaginated(Pageable pageable, int role);
+    Page<AccountRequest> getPaginated(Pageable pageable, int role);
 
 }

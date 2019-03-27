@@ -10,27 +10,27 @@ import java.util.List;
 
 public interface UserService {
 
-    public Page<User> getPaginated(Pageable pageable);
+    Page<User> getPaginated(Pageable pageable);
 
-    public Long findUserByEmail(String email);
+    Long findUserByEmail(String email);
 
-    public Long findUserByPhone(String phone);
+    Long findUserByPhone(String phone);
 
-    public Auth_user saveUser (Auth_user user);
+    Auth_user saveUser (Auth_user user);
 
-    public boolean userAlreadyExist (Auth_user user);
+    boolean userAlreadyExist (Auth_user user);
 
-    public List<Auth_user> getAllUsers();
+    List<Auth_user> getAllUsers();
 
-    public User getUserByUserId(Long userId);
+    User getUserByUserId(Long userId);
 
-    public void saveOrUpdate(Auth_user user);
+    void saveOrUpdate(Auth_user user);
 
-//    public void saveNewUser(User user);
+//    void saveNewUser(User user);
 
-    public void deleteUser(Long userId);
+    void deleteUser(Long userId);
 
-    public User saveOrUpdate(User user);
+    User saveOrUpdate(User user);
 
-    public void save(AuthUserRole authUserRole);
+    void save(AuthUserRole authUserRole);
 }

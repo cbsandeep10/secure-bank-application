@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -19,8 +20,6 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public List<Log> getAllLogs() {
-
-        //System.out.println((List<Log>) logRepository.findAll());
         return (List<Log>) logRepository.findAll();
     }
 
@@ -29,7 +28,14 @@ public class LogServiceImpl implements LogService {
         return logRepository.findAll(pageable);
     }
 
+    @Override
+    public void saveLog(String email, String message){
+        Log log = new Log();
+        log.setLogTimeStamp(new Timestamp(System.currentTimeMillis()));
+        log.setMessage(message);
+        log.setRelatedUserID(email);
+        logRepository.save(log);
+    }
+
 }
 
-
-//   http://zetcode.com/springboot/mysql/

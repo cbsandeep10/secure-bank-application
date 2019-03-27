@@ -7,14 +7,14 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface TransactionRequestService {
-    public List<TransactionRequest> getAllRequests();
+    List<TransactionRequest> getAllRequests();
 
-    public TransactionRequest getRequestByRequestId(Long request_id);
+    TransactionRequest getRequestByRequestId(Long request_id);
 
-    public TransactionRequest saveOrUpdate(TransactionRequest request);
+    TransactionRequest saveOrUpdate(TransactionRequest request);
 
-    public void deleteRequest(Long request_id);
+    void deleteRequest(Long request_id);
 
-    public Page<TransactionRequest> getPaginated(Pageable pageable, int critical);
+    Page<TransactionRequest> getPaginated(Pageable pageable, int critical);
 
 }
