@@ -21,22 +21,25 @@ import java.util.List;
 public class TransferController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    EmployeeService employeeService;
+    private EmployeeService employeeService;
 
     @Autowired
-    LogService logService;
+    private LogService logService;
 
     @Autowired
-    TransactionService transactionService;
+    private TransactionService transactionService;
 
     @Autowired
-    TransactionRequestService transactionRequestService;
+    private TransactionRequestService transactionRequestService;
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
+
+    @Autowired
+    private OtpService otpService;
 
     @GetMapping("/transfer/{type}")
     public String transactionForm(Model model, @PathVariable String type, Authentication authentication, @ModelAttribute("message") String message) {
@@ -65,6 +68,10 @@ public class TransferController {
     public String formSubmit(@Valid Transfer transfer,  @PathVariable String type, BindingResult bindingResult, Authentication authentication, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("message","Please correct the errors!");
+            return "redirect:/transfer/"+type;
+        }
+        if(!otpService.validateOtp(transfer.getOtp(), authentication.getName())){
+            redirectAttributes.addFlashAttribute("message","Invalid OTP!");
             return "redirect:/transfer/"+type;
         }
         Account from_account;

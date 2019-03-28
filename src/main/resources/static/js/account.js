@@ -16,7 +16,7 @@ $(document).ready(function() {
                 document.getElementById("account-type").value = data.accountType;
                 document.getElementById("interest").value = data.interest;
             }
-        })
+        });
         $('.accountForm #exampleModal').modal();
     });
     $('.table .eBtn2').on('click',function (event) {

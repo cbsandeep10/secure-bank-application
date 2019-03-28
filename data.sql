@@ -39,11 +39,11 @@ CREATE TABLE bank.employee
 ALTER TABLE bank.employee AUTO_INCREMENT=1000;
 
 INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
-VALUES (1000,"Tier 1","M",23,2,1,"4523456789","tier1@gmail.com","Tempe,AZ");
+VALUES (1000,"Tier 1","M",23,2,1,"4523456789","user.tier1.sb@gmail.com","Tempe,AZ");
 INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
-VALUES (1001,"Tier 2","M",25,3,2,"4083456789","tier2@gmail.com","Tempe,AZ");
+VALUES (1001,"Tier 2","M",25,3,2,"4083456789","user.tier2.sb@gmail.com","Tempe,AZ");
 INSERT INTO bank.employee (employee_id, employee_name,gender,age, tier_level, designation_id,contact_no,email_id,address)
-VALUES (1002,"Admin","M",24,1,1,"4023456789","admin@gmail.com","Tempe,AZ");
+VALUES (1002,"Admin","M",24,1,1,"4023456789","user.tier3.sb@gmail.com","Tempe,AZ");
 
 DROP TABLE IF EXISTS bank.account;
 CREATE TABLE bank.account (
@@ -95,7 +95,7 @@ CREATE TABLE bank.transaction (
   FOREIGN KEY (request_id) REFERENCES bank.transaction_request(request_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO bank.user (name, gender,dob, contact,email_id, address,user_type) values('Sandeep Balaji', 'M', CURRENT_TIMESTAMP(), '4805775641', 'scbalaji@asu.edu', '2430 S MILL AVE, TEMPE',1 );
+INSERT INTO bank.user (name, gender,dob, contact,email_id, address,user_type) values('User 1', 'M', CURRENT_TIMESTAMP(), '4805775641', 'user.tier3.sb@gmail.com', '2430 S MILL AVE, TEMPE',1 );
 INSERT INTO bank.account(user_id,balance ,routing_no,account_type, interest) VALUES (1000, 5000.0, 45612, 1, 5.0);
 INSERT INTO bank.account(user_id,balance ,routing_no,account_type, interest) VALUES (1000, 2500.0, 45622, 2, 12.0);
 
@@ -129,6 +129,8 @@ CREATE TABLE bank.auth_user (
   email varchar(255) NOT NULL,
   password varchar(255) NOT NULL,
   status varchar(255),
+  otp int(11),
+  expiry timestamp,
   PRIMARY KEY (auth_user_id)
 );
 
@@ -141,7 +143,7 @@ CREATE TABLE bank.auth_user_role (
   CONSTRAINT FK_auth_user_role FOREIGN KEY (auth_role_id) REFERENCES auth_role (auth_role_id)
 ) ;
 
-insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (1,'Admin','admin','admin@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
+insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (1,'Admin','admin','user.tier3.sb@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','1');
 
 
@@ -177,7 +179,7 @@ CREATE TABLE bank.cards (
 
 ALTER TABLE bank.cards AUTO_INCREMENT=8000000;
 
-INSERT INTO bank.cards(account_no ,balance,credit_limit, type) VALUES (1000000, 2500.0, 45622, 2);
+-- INSERT INTO bank.cards(account_no ,balance,credit_limit, type) VALUES (1000000, 2500.0, 45622, 2);
 -- INSERT INTO bank.cards(account_no ,balance,limit, type) VALUES (10000000000, 2500.0, 45622, 2);
 
 DROP TABLE IF EXISTS bank.checks;
@@ -194,13 +196,13 @@ INSERT INTO `bank`.`checks`(`account_no`,`amount`)VALUES(1000000,500);
 INSERT INTO `bank`.`checks`(`account_no`,`amount`)VALUES(1000001,700);
 
 
-insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (2,'Tier 1','Tier 1','tier1@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
+insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (2,'Tier 1','Tier 1','user.tier1.sb@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('2','2');
 
-insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (3,'Tier 2','Tier 2','tier2@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
+insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (3,'Tier 2','Tier 2','user.tier2.sb@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('3','3');
 
-insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (4,'Sandeep','Balaji','scbalaji@asu.edu','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
+insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (4,'User','1','user.user1.sb@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('4','4');
 
 
@@ -233,5 +235,5 @@ CREATE TABLE bank.help_page (
 );
 
 
-INSERT INTO bank.help_page(help_id, auth_user_id, mobile, email, title, shortdescription) values(1,1,'480-452-4823','abc@gmail.com','Error Page','Error in help page');
+-- INSERT INTO bank.help_page(help_id, auth_user_id, mobile, email, title, shortdescription) values(1,1,'480-452-4823','abc@gmail.com','Error Page','Error in help page');
 

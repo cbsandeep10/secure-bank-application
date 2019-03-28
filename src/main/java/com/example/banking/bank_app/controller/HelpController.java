@@ -24,13 +24,13 @@ import java.util.stream.IntStream;
 public class HelpController {
 
     @Autowired
-    HelpService helpService;
+    private HelpService helpService;
 
     @Autowired
-    LogService logService;
+    private LogService logService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
     public ModelAndView list(@PathVariable("page") int page) {

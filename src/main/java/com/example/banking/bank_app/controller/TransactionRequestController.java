@@ -25,22 +25,22 @@ import java.util.stream.IntStream;
 public class TransactionRequestController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    EmployeeService employeeService;
+    private EmployeeService employeeService;
 
     @Autowired
-    LogService logService;
+    private LogService logService;
 
     @Autowired
-    TransactionRequestService transactionRequestService;
+    private TransactionRequestService transactionRequestService;
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     @Autowired
-    TransactionService transactionService;
+    private TransactionService transactionService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
     public ModelAndView list(@PathVariable("page") int page, Authentication authentication) {

@@ -33,4 +33,6 @@ public interface UserService {
     User saveOrUpdate(User user);
 
     void save(AuthUserRole authUserRole);
+
+    Auth_user findByEmail(String email);
 }

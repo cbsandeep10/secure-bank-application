@@ -1,5 +1,7 @@
 package com.example.banking.bank_app;
 
+import com.example.banking.bank_app.service.LogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,11 +19,13 @@ import java.util.List;
 @Configuration
 public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    @Autowired
+    private LogService logService;
+
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authntication) throws IOException {
-
         String targetUrl = determineTargetUrl(authntication);
-
+        logService.saveLog(authntication.getName(), "User logged in!");
         if(response.isCommitted()) {
             return;
         }

@@ -30,16 +30,16 @@ import java.util.stream.IntStream;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     @Autowired
-    LogService logService;
+    private LogService logService;
 
     @Autowired
-    AccountRequestService accountRequestService;
+    private AccountRequestService accountRequestService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
     public ModelAndView list(@PathVariable("page") int page) {

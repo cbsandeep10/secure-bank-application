@@ -24,17 +24,19 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepository userRepository;
-    @Autowired
-    AuthUserRepository authUserRepository;
-    @Autowired
-    RoleRepository roleRepository;
-    @Autowired
-    BCryptPasswordEncoder encoder;
+    private UserRepository userRepository;
 
     @Autowired
-    AuthUserRoleRepository authUserRoleRepository;
+    private  AuthUserRepository authUserRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
+    @Autowired
+    private AuthUserRoleRepository authUserRoleRepository;
 
     @Override
     public Page<User> getPaginated(Pageable pageable) {
@@ -65,11 +67,6 @@ public class UserServiceImpl implements UserService {
     public void saveOrUpdate(Auth_user user) {
         authUserRepository.save(user);
     }
-
-//    @Override
-//    public void saveNewUser(User user) {
-//        userRepository.save(user);
-//    }
 
     @Override
     public User saveOrUpdate(User user) {
@@ -104,5 +101,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(AuthUserRole authUserRole){
         authUserRoleRepository.save(authUserRole);
+    }
+
+    @Override
+    public Auth_user findByEmail(String email){
+        return authUserRepository.findUserByEmail(email);
     }
 }

@@ -26,16 +26,16 @@ import java.util.stream.IntStream;
 public class CheckController {
 
     @Autowired
-    CheckService checkService;
+    private CheckService checkService;
 
     @Autowired
-    LogService logService;
+    private LogService logService;
 
     @Autowired
-    TransactionService transactionService;
+    private TransactionService transactionService;
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
     public ModelAndView list(@PathVariable("page") int page) {

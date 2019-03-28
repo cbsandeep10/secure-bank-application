@@ -13,7 +13,7 @@ import java.util.List;
 public class CheckServiceImpl implements CheckService {
 
     @Autowired
-    CheckRepository checkRepository;
+    private CheckRepository checkRepository;
 
     @Override
     public List<Check> getAllChecks() {

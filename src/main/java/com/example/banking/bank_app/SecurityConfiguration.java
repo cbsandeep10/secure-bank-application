@@ -5,13 +5,16 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -27,6 +30,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private CustomLoginSuccessHandler successHandler;
 
+	@Autowired
+	private UserDetailsService userDetailsService;
+
 	@Qualifier("dataSource")
 	@Autowired
 	private DataSource dataSource;
@@ -37,15 +43,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Value("${spring.queries.roles-query}")
 	private String rolesQuery;
 
+	@Autowired
+	private CustomWebAuthenticationDetailsSource authenticationDetailsSource;
+
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication().usersByUsernameQuery(usersQuery).authoritiesByUsernameQuery(rolesQuery)
-				.dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
+//		auth.jdbcAuthentication().usersByUsernameQuery(usersQuery).authoritiesByUsernameQuery(rolesQuery)
+//				.dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder).and()
+//		.authenticationProvider(customAuthProvider);
+		auth.authenticationProvider(authProvider());
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
+		http.formLogin().authenticationDetailsSource(authenticationDetailsSource);
 		http.authorizeRequests()
 				// URLs matching for access rights
 				.antMatchers("/").permitAll()
@@ -61,6 +74,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("help/list/**").hasAnyAuthority("ADMIN")
 				.antMatchers("/merchant/**").hasAnyAuthority("MERCHANT")
 				.antMatchers("account-request/**").hasAnyAuthority("TIER1","ADMIN")
+				.antMatchers("/otp/generateOtp/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				// form login
@@ -75,6 +89,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 				// logout
 				.logout()
+				//.addLogoutHandler(new CustomLogoutHandler())
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessUrl("/").and()
 				.exceptionHandling()
@@ -93,6 +108,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public HttpSessionEventPublisher httpSessionEventPublisher() {
 		return new HttpSessionEventPublisher();
+	}
+
+	@Bean
+	public DaoAuthenticationProvider authProvider() {
+		CustomAuthenticationProvider authProvider = new CustomAuthenticationProvider();
+		authProvider.setUserDetailsService(userDetailsService);
+		authProvider.setPasswordEncoder(encoder());
+		return authProvider;
+	}
+
+	@Bean
+	public PasswordEncoder encoder() {
+		return new BCryptPasswordEncoder();
 	}
 
 }

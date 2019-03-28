@@ -26,10 +26,10 @@ import java.util.List;
 public class AuthenticationController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    EmployeeService employeeService;
+    private EmployeeService employeeService;
 
     @RequestMapping(value = { "/" }, method = RequestMethod.GET)
     public String main(Authentication authentication) { // resources/template/login.html

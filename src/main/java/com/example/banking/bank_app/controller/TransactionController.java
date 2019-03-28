@@ -19,10 +19,10 @@ import java.util.List;
 public class TransactionController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    TransactionService transactionService;
+    private TransactionService transactionService;
 
     @RequestMapping(value="/statement/list", method= RequestMethod.GET)
     public List<Transaction> statement_list(Authentication authentication) {

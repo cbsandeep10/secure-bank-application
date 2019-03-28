@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
 public class LogController {
 
     @Autowired
-    LogService logService;
+    private LogService logService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
     public ModelAndView list(@PathVariable("page") int page) {

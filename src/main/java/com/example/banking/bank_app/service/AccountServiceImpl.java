@@ -17,10 +17,10 @@ import java.util.List;
 public class AccountServiceImpl implements AccountService {
 
     @Autowired
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    CardRepository cardRepository;
+    private CardRepository cardRepository;
 
     @Override
     public List<Account> getAllAccounts() {

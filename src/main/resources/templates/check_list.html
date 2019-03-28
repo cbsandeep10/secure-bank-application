@@ -77,7 +77,7 @@
                     <nav aria-label="Pagination">
                         <ul class="pagination justify-content-center">
                             <li class="page-item" th:each="pagenumber : ${pageNumbers}" >
-                                <a class="page-link" th:href="@{|/user/list/${pagenumber}|}" th:text="${pagenumber}">1</a>
+                                <a class="page-link" th:href="@{|/check/list/${pagenumber}|}" th:text="${pagenumber}">1</a>
                             </li>
                         </ul>
                     </nav>

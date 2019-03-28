@@ -13,7 +13,7 @@ import java.util.List;
 public class HelpServiceImpl implements HelpService {
 
     @Autowired
-    HelpRepository helpRepository;
+    private HelpRepository helpRepository;
 
     @Override
     public List<Help> getAllHelp()

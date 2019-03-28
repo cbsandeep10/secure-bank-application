@@ -17,6 +17,8 @@ public class Transfer {
 
     private String description;
 
+    private String otp;
+
     public Long getFrom_account_no() {
         return from_account_no;
     }
@@ -47,5 +49,13 @@ public class Transfer {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
     }
 }

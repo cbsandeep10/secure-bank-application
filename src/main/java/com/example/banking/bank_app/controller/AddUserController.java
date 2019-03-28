@@ -1,7 +1,6 @@
 package com.example.banking.bank_app.controller;
 
 import com.example.banking.bank_app.model.*;
-import com.example.banking.bank_app.respository.AuthUserRoleRepository;
 import com.example.banking.bank_app.service.AccountService;
 import com.example.banking.bank_app.service.CardService;
 import com.example.banking.bank_app.service.LogService;
@@ -27,16 +26,16 @@ import java.util.Date;
 public class AddUserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    CardService cardService;
+    private CardService cardService;
 
     @Autowired
-    LogService logService;
+    private LogService logService;
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     @RequestMapping(value = "/addUser", method = RequestMethod.GET)
     public ModelAndView AddUserForm(@ModelAttribute("message") String message) {

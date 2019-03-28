@@ -34,3 +34,22 @@ function handleShift() {
         layoutName: shiftToggle
     });
 }
+
+$(document).ready(function() {
+    $('.form-signin').on('submit',function (event) {
+        event.preventDefault();
+
+        var data  = $("#email1").val();
+        $.ajax({
+            type: "GET",
+            url:  "/otp/generateOtp/"+data,
+            success : function(data) {
+
+            },
+        });
+        document.getElementById('password').value = document.getElementById('password1').value;
+        document.getElementById('email').value = document.getElementById('email1').value;
+        $('.profileForm #newaccountModal').modal();
+
+    });
+});

@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.Set;
 //import;
 
@@ -35,6 +36,12 @@ public class Auth_user {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "otp")
+    private Integer otp;
+
+    @Column(name = "expiry")
+    private Timestamp expiry;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "auth_user_role", joinColumns = @JoinColumn(name = "auth_user_id"), inverseJoinColumns = @JoinColumn(name = "auth_role_id"))
@@ -96,4 +103,19 @@ public class Auth_user {
         this.roles = roles;
     }
 
+    public Integer getOtp() {
+        return otp;
+    }
+
+    public void setOtp(Integer otp) {
+        this.otp = otp;
+    }
+
+    public Timestamp getExpiry() {
+        return expiry;
+    }
+
+    public void setExpiry(Timestamp expiry) {
+        this.expiry = expiry;
+    }
 }

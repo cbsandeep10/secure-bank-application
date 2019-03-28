@@ -14,7 +14,7 @@ import java.util.List;
 public class CardServiceImpl implements CardService {
 
     @Autowired
-    CardRepository cardRepository;
+    private CardRepository cardRepository;
 
     @Override
     public List<Card> getAllCards(){

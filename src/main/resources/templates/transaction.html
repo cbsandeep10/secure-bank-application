@@ -71,7 +71,8 @@
         <p th:text="${message}">
         </p>
     </div>
-    <form name="myForm" class="form-horizontal" th:object="${transfer}" th:action="@{|/transfer/${type}|}" method="post" >
+    <h4>Note: This transaction requires One Time Password</h4>
+    <form id="myForm" name="myForm" class="form-horizontal" th:object="${transfer}" th:action="@{|/transfer/${type}|}" method="post" >
         <div class="form-group" th:if="${role == 4}">
             <label class="control-label col-sm-2" >Account Number</label>
             <div class="col-sm-4">
@@ -142,6 +143,7 @@
                 <span class="help-block" id="description-error"></span>
             </div>
         </div>
+        <input type="hidden" name='otp' id='otp' th:field="*{otp}"/>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-primary" id="transfer">Transfer</button>
@@ -149,6 +151,33 @@
         </div>
 
     </form>
+
+    <div class="profileForm">
+        <form method="post" id="new">
+            <div class="modal fade" id="newaccountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel1">One Time Password:</h5>
+                            <p>Please Check your email for OTP.</p>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="password" th:placeholder="Password"  name='code' id='code' class="form-control input" required/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
 
 

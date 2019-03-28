@@ -1,6 +1,18 @@
 /*
  *
  */
+
+function generate(){
+    $.ajax({
+        type: "GET",
+        url:  "/otp/generateOtp/",
+        success : function(data) {
+
+        },
+    });
+    $('.profileForm #newaccountModal').modal();
+}
+
 $(document).ready( function () {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     $('#transfer').on('click',function (event) {
@@ -11,6 +23,7 @@ $(document).ready( function () {
             if(from === to.value){
                 document.getElementById('description-error').innerText = "From and to account cannot be same";
                 event.preventDefault();
+                return;
             }
         }
         else if(select){
@@ -18,7 +31,15 @@ $(document).ready( function () {
             if(select.options[select.selectedIndex].value === from){
                 document.getElementById('description-error').innerText = "From and to account cannot be same";
                 event.preventDefault();
+                return;
             }
+        }
+        var val = document.getElementById('myForm').checkValidity();
+        event.preventDefault();
+        if(val){
+            generate();
+        }else{
+            document.getElementById('myForm').reportValidity()
         }
     });
     $('#phone-btn').on('click',function (event) {
@@ -49,6 +70,14 @@ $(document).ready( function () {
                 dropdown.append($('<option></option>').attr('value', entry.accountNo).text(type+': '+entry.accountNo));
             })
         });
+        var val = document.getElementById('myForm').checkValidity();
+        event.preventDefault();
+        if(val){
+            generate();
+        }
+        else{
+            document.getElementById('myForm').reportValidity()
+        }
     });
 
     $('#email-btn').on('click',function (event) {
@@ -79,5 +108,19 @@ $(document).ready( function () {
                 dropdown.append($('<option></option>').attr('value', entry.accountNo).text(type+': '+entry.accountNo));
             })
         });
+        var val = document.getElementById('myForm').checkValidity();
+        event.preventDefault();
+        if(val){
+            generate();
+        }else{
+            document.getElementById('myForm').reportValidity()
+        }
     });
+
+    $('#new').on('submit',function (event) {
+        event.preventDefault();
+        document.getElementById("otp").value = document.getElementById("code").value;
+        $('#myForm').submit();
+    });
+
 });

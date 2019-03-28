@@ -15,7 +15,7 @@ import java.util.List;
 public class TransactionRequestServiceImpl implements TransactionRequestService {
 
     @Autowired
-    TransactionRequestRepository transactionRequestRepository;
+    private TransactionRequestRepository transactionRequestRepository;
 
     @Override
     public List<TransactionRequest> getAllRequests() {

@@ -24,16 +24,16 @@ import java.util.stream.IntStream;
 @RequestMapping(value="/employee")
 public class EmployeeController {
     @Autowired
-    EmployeeService employeeService;
+    private EmployeeService employeeService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    LogService logService;
+    private LogService logService;
 
     @Autowired
-    AccountRequestService accountRequestService;
+    private AccountRequestService accountRequestService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
     public ModelAndView list(@PathVariable("page") int page, Authentication authentication, @ModelAttribute("message") String message) {

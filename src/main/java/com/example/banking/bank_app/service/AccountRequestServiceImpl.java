@@ -16,7 +16,7 @@ import java.util.List;
 public class AccountRequestServiceImpl implements AccountRequestService {
 
     @Autowired
-    AccountRequestRepository accountRequestRepository;
+    private AccountRequestRepository accountRequestRepository;
 
     @Override
     public List<AccountRequest> getAllAccounts() {
