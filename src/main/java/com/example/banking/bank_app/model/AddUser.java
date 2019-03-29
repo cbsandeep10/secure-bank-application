@@ -37,6 +37,8 @@ public class AddUser {
 
     private String password;
 
+    private Integer userType;
+
     public String getName() {
         return name;
     }
@@ -123,5 +125,13 @@ public class AddUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getUserType() {
+        return userType;
+    }
+
+    public void setUserType(Integer userType) {
+        this.userType = userType;
     }
 }

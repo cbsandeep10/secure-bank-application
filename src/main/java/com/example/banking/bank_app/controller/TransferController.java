@@ -74,6 +74,23 @@ public class TransferController {
             redirectAttributes.addFlashAttribute("message","Invalid OTP!");
             return "redirect:/transfer/"+type;
         }
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> roles = new ArrayList<String>();
+        for(GrantedAuthority a : authorities) {
+            roles.add(a.getAuthority());
+        }
+        if(roles.contains("USER")){
+            User user = userService.getUserByUserId(userService.findUserByEmail(authentication.getName()));
+            boolean flag = false;
+            for(Account account: user.getAccounts()){
+                if(transfer.getFrom_account_no().equals(account.getAccountNo())){
+                    flag = true;
+                }
+            }
+            if(!flag){
+                return "No authorization for this Account!";
+            }
+        }
         Account from_account;
         Account to_account;
         try{
@@ -93,11 +110,11 @@ public class TransferController {
             return "redirect:/transfer/"+type;
         }
         //Dont delete the comment
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        List<String> roles = new ArrayList<String>();
-        for(GrantedAuthority a : authorities) {
-            roles.add(a.getAuthority());
-        }
+//        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+//        List<String> roles = new ArrayList<String>();
+//        for(GrantedAuthority a : authorities) {
+//            roles.add(a.getAuthority());
+//        }
         String name;
         if(roles.contains("TIER1")){
             Long id = employeeService.findUserByEmail(authentication.getName());

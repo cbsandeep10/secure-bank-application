@@ -190,7 +190,7 @@ public class  AccountController {
             role = Config.USER;
             modelAndView = new ModelAndView("redirect:/account/deposit1");
         }
-        String message = depositandwithdraw(Config.CREDIT, transaction,name, role);
+        String message = depositandwithdraw(Config.CREDIT, transaction,name, role, authentication);
         if(message.contains("Success")){
             logService.saveLog(authentication.getName(), "Deposited money for account "+transaction.getAccount_no()+" $"+transaction.getTransaction_amount());
         }
@@ -219,7 +219,7 @@ public class  AccountController {
             role = Config.USER;
             modelAndView = new ModelAndView("redirect:/account/withdraw1");
         }
-        String message = depositandwithdraw(Config.DEBIT, transaction, name, role);
+        String message = depositandwithdraw(Config.DEBIT, transaction, name, role, authentication);
         if(message.contains("Success")){
             logService.saveLog(authentication.getName(), "Withdraw money "+transaction.getAccount_no()+" $"+transaction.getTransaction_amount());
         }
@@ -227,8 +227,20 @@ public class  AccountController {
         return modelAndView;
     }
 
-    private String depositandwithdraw(int type, Transaction transaction, String name, int role){
+    private String depositandwithdraw(int type, Transaction transaction, String name, int role, Authentication authentication){
 //        Long id =  userService.findUserByEmail(name);
+        if(role == Config.USER){
+            User user = userService.getUserByUserId(userService.findUserByEmail(authentication.getName()));
+            boolean flag = false;
+            for(Account account: user.getAccounts()){
+                if(transaction.getAccount_no().equals(account.getAccountNo())){
+                    flag = true;
+                }
+            }
+            if(!flag){
+                return "No authorization for this Account!";
+            }
+        }
         transaction.setTransaction_timestamp(new Timestamp(System.currentTimeMillis()));
         Account account;
         try{

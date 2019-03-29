@@ -55,7 +55,7 @@
             <p th:text="|Phone: ${user.getContact()}|"></p>
             <p th:text="|Address: ${user.getAddress()}|"></p>
             <a class="btn btn-info" id="edit-profile">Edit Profile</a>
-            <a class="btn btn-info" id="new-account">Open New Account</a>
+            <a th:if="${user.getUserType() == 1}" class="btn btn-info" id="new-account">Open New Account</a>
         </div>
         <div class="panel-body">
             <div class="row">

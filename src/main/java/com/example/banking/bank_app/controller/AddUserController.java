@@ -53,8 +53,22 @@ public class AddUserController {
             redirectAttributes.addFlashAttribute("message","Please fix the errors");
             return "redirect:/addUser";
         }
+        if(!checkvalidPassword(adduser.getPassword())){
+            redirectAttributes.addFlashAttribute("message","Password doesnt match requirements!");
+            return "redirect:/addUser";
+        }
         Auth_user auth_user = new Auth_user();
         auth_user.setEmail(adduser.getEmailId());
+        try {
+            User u = userService.getUserByUserId(userService.findUserByPhone(adduser.getContact()));
+            if (u == null){
+                redirectAttributes.addFlashAttribute("message","Phone already exists!");
+                return "redirect:/addUser";
+            }
+        }catch (Exception e){
+            redirectAttributes.addFlashAttribute("message","Phone already exists!");
+            return "redirect:/addUser";
+        }
         if(userService.userAlreadyExist(auth_user)){
             redirectAttributes.addFlashAttribute("message", "Email already exists!");
             return "redirect:/addUser";
@@ -93,7 +107,7 @@ public class AddUserController {
         new_user.setContact(adduser.getContact());
         new_user.setEmailId(adduser.getEmailId());
         new_user.setAddress(adduser.getAddress());
-        new_user.setUserType(1);
+        new_user.setUserType(adduser.getUserType());
         new_user.setCreated(new Timestamp(System.currentTimeMillis()));
         User user=userService.saveOrUpdate(new_user);
         SecureRandom random = new SecureRandom();
@@ -131,4 +145,10 @@ public class AddUserController {
         logService.saveLog(authentication.getName(),"New User & Account created for "+adduser.getEmailId());
         return "redirect:/addUser";
     }
+
+    public boolean checkvalidPassword(String password) {
+        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
+        return password.matches(pattern);
+    }
+
 }

@@ -215,6 +215,18 @@
                                                 <input type="password" class="form-control"  required th:field="*{password}">
                                             </div>
                                             <div class="form-group">
+                                                <div class="col-md-12 col-md-offset-1">
+                                                    <ul>
+                                                        <li>a digit must occur at least once</li>
+                                                        <li>a lower case letter must occur at least once</li>
+                                                        <li>an upper case letter must occur at least once</li>
+                                                        <li>a special character must occur at least once</li>
+                                                        <li>no whitespace allowed in the entire string</li>
+                                                        <li>at least 8 characters</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="gender" class="col-form-label">Gender:</label>
                                                 <select class="form-control"  required th:field="*{gender}">
                                                     <option value="M">Male</option>
