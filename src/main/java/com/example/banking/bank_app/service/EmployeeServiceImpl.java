@@ -45,4 +45,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Long findUserByEmail(String email){
         return employeeRespository.findUserByEmail(email);
     }
+
+    @Override
+    public Long findUserByPhone(String contact){
+        return employeeRespository.findUserByPhone(contact);
+    }
 }

@@ -62,11 +62,11 @@ public class AddUserController {
         try {
             User u = userService.getUserByUserId(userService.findUserByPhone(adduser.getContact()));
             if (u == null){
-                redirectAttributes.addFlashAttribute("message","Phone already exists!");
+                redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
                 return "redirect:/addUser";
             }
         }catch (Exception e){
-            redirectAttributes.addFlashAttribute("message","Phone already exists!");
+            redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
             return "redirect:/addUser";
         }
         if(userService.userAlreadyExist(auth_user)){

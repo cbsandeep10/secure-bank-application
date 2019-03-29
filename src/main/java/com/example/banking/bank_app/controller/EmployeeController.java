@@ -97,6 +97,13 @@ public class EmployeeController {
                 redirectAttributes.addFlashAttribute("message","Age should be between 1 and 150!");
                 return new ModelAndView("redirect:/employee/list/1");
             }
+            try{
+                employeeService.findUserByPhone(employee.getContact_no());
+            }
+            catch (Exception e){
+                redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
+                return new ModelAndView("redirect:/employee/list/1");
+            }
             if(employee.getContact_no() == null || !employee.getContact_no().matches("-?\\d+(\\.\\d+)?") || employee.getContact_no().length() != 10){
                 redirectAttributes.addFlashAttribute("message","Contact Number not valid!");
                 return new ModelAndView("redirect:/employee/list/1");
@@ -130,6 +137,13 @@ public class EmployeeController {
         }
         if(employee.getAge() <0|| employee.getAge() > 150){
             redirectAttributes.addFlashAttribute("message","Age should be between 1 and 150!");
+            return new ModelAndView("redirect:/tier2");
+        }
+        try{
+            employeeService.findUserByPhone(employee.getContact_no());
+        }
+        catch (Exception e){
+            redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
             return new ModelAndView("redirect:/tier2");
         }
         if(employee.getContact_no() == null || !employee.getContact_no().matches("-?\\d+(\\.\\d+)?") || employee.getContact_no().length() != 10){
@@ -188,6 +202,13 @@ public class EmployeeController {
         Employee newEmployee = employeeService.getEmployeeById(employee.getEmployee_id());
         if(!employee.getEmployee_id().equals(newEmployee.getEmployee_id()) || !employee.getEmail_id().equals(newEmployee.getEmail_id()) | !employee.getEmployee_name().equals(newEmployee.getEmployee_name())){
             redirectAttributes.addFlashAttribute("message","Cannot edit Id, name & Email!");
+            return new ModelAndView("redirect:/employee/list/1");
+        }
+        try{
+            employeeService.findUserByPhone(employee.getContact_no());
+        }
+        catch (Exception e){
+            redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
             return new ModelAndView("redirect:/employee/list/1");
         }
         if(!employee.getGender().equals("M")&&!employee.getGender().equals("F")){
@@ -264,6 +285,17 @@ public class EmployeeController {
                 redirectAttributes.addFlashAttribute("message","Email already exists!");
                 return new ModelAndView("redirect:/employee/list/1");
             }
+            if(!checkvalidPassword(employee.getPassword())){
+                redirectAttributes.addFlashAttribute("message","Password doesnt match requirements!");
+                return new ModelAndView("redirect:/employee/list/1");
+            }
+            try{
+                employeeService.findUserByPhone(employee.getContact_no());
+            }
+            catch (Exception e){
+                redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
+                return new ModelAndView("redirect:/employee/list/1");
+            }
             if(!employee.getGender().equals("M")&&!employee.getGender().equals("F")){
                 redirectAttributes.addFlashAttribute("message","Invalid Gender!");
                 return new ModelAndView("redirect:/employee/list/1");
@@ -292,6 +324,11 @@ public class EmployeeController {
             logService.saveLog(authentication.getName(),"Created new employee profile for "+employee.getEmail_id());
         }
         return new ModelAndView("redirect:/employee/list/1");
+    }
+
+    public boolean checkvalidPassword(String password) {
+        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
+        return password.matches(pattern);
     }
 
 }

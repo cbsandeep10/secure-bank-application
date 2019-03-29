@@ -15,4 +15,7 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
     @Query("SELECT t.employee_id FROM Employee t WHERE t.email_id =:email")
     Long findUserByEmail(@Param("email") String email);
+
+    @Query("SELECT t.employee_id FROM Employee t WHERE t.contact_no =:contact_no")
+    Long findUserByPhone(@Param("contact_no") String contact_no);
 }

@@ -96,6 +96,13 @@ public class UserController {
             redirectAttributes.addFlashAttribute("message","Date of Birth Cannot be greater than today!");
             return new ModelAndView("redirect:/user");
         }
+        try{
+            userService.findUserByPhone(user.getContact());
+        }
+        catch (Exception e){
+            redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
+            return new ModelAndView("redirect:/user");
+        }
 //        userService.saveOrUpdate(old_user);
         AccountRequest accountRequest = new AccountRequest();
         Map<String, Object> attributes = new HashMap<>();

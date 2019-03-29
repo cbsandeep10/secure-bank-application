@@ -19,5 +19,7 @@ public interface EmployeeService {
     Employee getEmployeeById(Long id);
 
     Long findUserByEmail(String email);
+
+    Long findUserByPhone(String contact);
 }
 
