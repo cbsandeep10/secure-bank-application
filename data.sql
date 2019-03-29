@@ -95,7 +95,7 @@ CREATE TABLE bank.transaction (
   FOREIGN KEY (request_id) REFERENCES bank.transaction_request(request_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO bank.user (name, gender,dob, contact,email_id, address,user_type) values('User 1', 'M', CURRENT_TIMESTAMP(), '4805775641', 'user.tier3.sb@gmail.com', '2430 S MILL AVE, TEMPE',1 );
+INSERT INTO bank.user (name, gender,dob, contact,email_id, address,user_type) values('User 1', 'M', CURRENT_TIMESTAMP(), '4805775641', 'user.user1.sb@gmail.com', '2430 S MILL AVE, TEMPE',1 );
 INSERT INTO bank.account(user_id,balance ,routing_no,account_type, interest) VALUES (1000, 5000.0, 45612, 1, 5.0);
 INSERT INTO bank.account(user_id,balance ,routing_no,account_type, interest) VALUES (1000, 2500.0, 45622, 2, 12.0);
 
