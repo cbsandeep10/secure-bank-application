@@ -66,6 +66,26 @@
             </table>
         </div>
     </div>
+    <input class="btn btn-primary" type="button" id="btnExport" value="Download Statement" onclick="Export()" />
 </div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script type="text/javascript">
+    function Export() {
+        html2canvas(document.getElementById('statement-table'), {
+            onrendered: function (canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500
+                    }]
+                };
+                pdfMake.createPdf(docDefinition).download("Statement.pdf");
+            }
+        });
+    }
+</script>
 </body>
 </html>

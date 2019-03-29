@@ -68,7 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/admin/**").hasAnyAuthority("ADMIN")
 				.antMatchers("/tier1/**").hasAnyAuthority("TIER1")
 				.antMatchers("/tier2/**").hasAnyAuthority("TIER2")
-				.antMatchers("/user/**").hasAnyAuthority("USER")
+				//.antMatchers("/user/**").hasAnyAuthority("USER")
 				.antMatchers("/employee/**").hasAnyAuthority("ADMIN","TIER2")
 				.antMatchers("log/**").hasAnyAuthority("ADMIN")
 				.antMatchers("help/list/**").hasAnyAuthority("ADMIN")

@@ -24,6 +24,9 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
                 = ((CustomWebAuthenticationDetails) auth.getDetails())
                 .getVerificationCode();
         Auth_user auth_user = authUserRepository.findUserByEmail(auth.getName());
+        if(auth_user == null){
+            throw new BadCredentialsException("Wrong credentials");
+        }
         Timestamp time = auth_user.getExpiry();
         time.setTime(time.getTime() + TimeUnit.MINUTES.toMillis(10));
         if (time.before(new Timestamp(System.currentTimeMillis()))) {

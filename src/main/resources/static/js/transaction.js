@@ -16,7 +16,14 @@ function generate(){
 $(document).ready( function () {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     $('#transfer').on('click',function (event) {
-        var from = document.getElementById('AccountNumber').value;
+        console.log("here");
+        event.preventDefault();
+        var from = document.getElementById('AccountNumber');
+        if(from === null){
+            from = document.getElementById('account1').value;
+        }else{
+            from = from.value;
+        }
         var to = document.getElementById('account');
         var select = document.getElementById('account-select');
         if(to){
@@ -35,7 +42,7 @@ $(document).ready( function () {
             }
         }
         var val = document.getElementById('myForm').checkValidity();
-        event.preventDefault();
+
         if(val){
             generate();
         }else{
@@ -70,14 +77,14 @@ $(document).ready( function () {
                 dropdown.append($('<option></option>').attr('value', entry.accountNo).text(type+': '+entry.accountNo));
             })
         });
-        var val = document.getElementById('myForm').checkValidity();
-        event.preventDefault();
-        if(val){
-            generate();
-        }
-        else{
-            document.getElementById('myForm').reportValidity()
-        }
+        // var val = document.getElementById('myForm').checkValidity();
+        // event.preventDefault();
+        // if(val){
+        //     generate();
+        // }
+        // else{
+        //     document.getElementById('myForm').reportValidity()
+        // }
     });
 
     $('#email-btn').on('click',function (event) {
@@ -108,13 +115,13 @@ $(document).ready( function () {
                 dropdown.append($('<option></option>').attr('value', entry.accountNo).text(type+': '+entry.accountNo));
             })
         });
-        var val = document.getElementById('myForm').checkValidity();
-        event.preventDefault();
-        if(val){
-            generate();
-        }else{
-            document.getElementById('myForm').reportValidity()
-        }
+        // var val = document.getElementById('myForm').checkValidity();
+        // event.preventDefault();
+        // if(val){
+        //     generate();
+        // }else{
+        //     document.getElementById('myForm').reportValidity()
+        // }
     });
 
     $('#new').on('submit',function (event) {

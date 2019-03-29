@@ -137,7 +137,11 @@ public class TransferController {
             transactionRequest.setCreated_at(new Timestamp(System.currentTimeMillis()));
             transactionRequest.setDescription("Fund Transfer || Comments: "+transfer.getDescription());
             transactionRequest.setType(Config.TRANSFER);
-            transactionRequest.setCritical(Config.CRITICAL_YES);
+            if (transfer.getTransaction_amount() > Config.LIMIT){
+                transactionRequest.setCritical(Config.CRITICAL_YES);
+            }else{
+                transactionRequest.setCritical(Config.CRITICAL_NO);
+            }
             request_id = transactionRequestService.saveOrUpdate(transactionRequest).getRequest_id();
             from_transaction.setRequest_id(request_id);
             from_transaction.setStatus(Config.PENDING);
