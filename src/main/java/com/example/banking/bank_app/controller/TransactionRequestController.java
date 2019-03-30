@@ -7,11 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -43,7 +41,7 @@ public class TransactionRequestController {
     private TransactionService transactionService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
-    public ModelAndView list(@PathVariable("page") int page, Authentication authentication) {
+    public ModelAndView list(@PathVariable("page") int page, Authentication authentication, @ModelAttribute("message") String message) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> roles = new ArrayList<String>();
         for(GrantedAuthority a : authorities) {
@@ -67,6 +65,7 @@ public class TransactionRequestController {
             List<Integer> pageNums = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
             modelAndView.addObject("pageNums", pageNums);
         }
+        modelAndView.addObject("message",message);
         modelAndView.addObject("activeRequestList", true);
         modelAndView.addObject("requestList", requestPage.getContent());
         modelAndView.addObject("role", role);
@@ -74,7 +73,7 @@ public class TransactionRequestController {
     }
 
     @RequestMapping(value="/approve/{id}", method= RequestMethod.POST)
-    public ModelAndView approve(@PathVariable("id") int id, Authentication authentication) {
+    public ModelAndView approve(@PathVariable("id") int id, Authentication authentication, RedirectAttributes redirectAttributes) {
         Long userId =  employeeService.findUserByEmail(authentication.getName());
         Employee employee = employeeService.getEmployeeById(userId);
         TransactionRequest transactionRequest = transactionRequestService.getRequestByRequestId(new Long(id));
@@ -85,6 +84,11 @@ public class TransactionRequestController {
 
         if(transactionRequest.getType() == Config.TRANSFER){
             Account from_account = accountService.getAccountByAccountNo(transactionRequest.getFrom_account());
+            if(from_account.getBalance()-transactionRequest.getTransaction_amount() < 0){
+                redirectAttributes.addFlashAttribute("message", "Insufficient Balance, Declined transaction request");
+                logService.saveLog(authentication.getName(),"Insufficient Balance, Declined transaction request for id:"+id);
+                return new ModelAndView("redirect:/request/list/1");
+            }
             from_account.setBalance(from_account.getBalance()-transactionRequest.getTransaction_amount());
             Account to_account = accountService.getAccountByAccountNo(transactionRequest.getTo_account());
             to_account.setBalance(to_account.getBalance()+transactionRequest.getTransaction_amount());
@@ -105,6 +109,11 @@ public class TransactionRequestController {
         else{
             Account account = accountService.getAccountByAccountNo(transactionRequest.getFrom_account());
             if(transactionRequest.getType() == Config.WITHDRAW){
+                if(account.getBalance()-transactionRequest.getTransaction_amount() < 0){
+                    redirectAttributes.addFlashAttribute("message", "Insufficient Balance, Declined transaction request");
+                    logService.saveLog(authentication.getName(),"Insufficient Balance, Declined transaction request for id:"+id);
+                    return new ModelAndView("redirect:/request/list/1");
+                }
                 account.setBalance(account.getBalance()-transactionRequest.getTransaction_amount());
             }else{
                 account.setBalance(account.getBalance()+transactionRequest.getTransaction_amount());
@@ -118,6 +127,7 @@ public class TransactionRequestController {
                 transactionService.saveOrUpdate(transactions.get(i));
             }
         }
+        redirectAttributes.addFlashAttribute("message", "Approved transaction request");
         logService.saveLog(authentication.getName(),"Approved transaction request for id:"+id);
         return new ModelAndView("redirect:/request/list/1");
     }
