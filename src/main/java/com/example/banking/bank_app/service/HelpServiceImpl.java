@@ -22,7 +22,7 @@ public class HelpServiceImpl implements HelpService {
     }
 
     @Override
-    public Help getCheckByID(Integer helpid) {
+    public Help getCheckByID(Long helpid) {
         return helpRepository.findById(helpid).get();
     }
 
@@ -32,7 +32,7 @@ public class HelpServiceImpl implements HelpService {
     }
 
     @Override
-    public void deleteHelp(Integer helpid) {
+    public void deleteHelp(Long helpid) {
         helpRepository.deleteById(helpid);
     }
 

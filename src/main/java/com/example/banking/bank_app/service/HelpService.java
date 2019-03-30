@@ -8,11 +8,11 @@ public interface HelpService {
 
     List<Help> getAllHelp();
 
-    Help getCheckByID(Integer helpid);
+    Help getCheckByID(Long helpid);
 
     void saveOrUpdate(Help help );
 
-    void deleteHelp(Integer id);
+    void deleteHelp(Long id);
 
     Page<Help> getPaginated(Pageable pageable);
 }
