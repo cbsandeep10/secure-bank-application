@@ -143,7 +143,7 @@ CREATE TABLE bank.auth_user_role (
   CONSTRAINT FK_auth_user_role FOREIGN KEY (auth_role_id) REFERENCES auth_role (auth_role_id)
 ) ;
 
-insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (1,'Admin','admin','user.tier3.sb@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
+insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (1,'Admin','admin','user.tier3.sb@gmail.com','$2a$10$98BWDboGjCPKoYwh9T4xLO5wx1kjkg8k3k76FOWnXu610mWIE3Qhm','VERIFIED');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('1','1');
 
 
@@ -196,13 +196,13 @@ INSERT INTO `bank`.`checks`(`account_no`,`amount`)VALUES(1000000,500);
 INSERT INTO `bank`.`checks`(`account_no`,`amount`)VALUES(1000001,700);
 
 
-insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (2,'Tier 1','Tier 1','user.tier1.sb@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
+insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (2,'Tier 1','Tier 1','user.tier1.sb@gmail.com','$2a$10$98BWDboGjCPKoYwh9T4xLO5wx1kjkg8k3k76FOWnXu610mWIE3Qhm','VERIFIED');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('2','2');
 
-insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (3,'Tier 2','Tier 2','user.tier2.sb@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
+insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (3,'Tier 2','Tier 2','user.tier2.sb@gmail.com','$2a$10$98BWDboGjCPKoYwh9T4xLO5wx1kjkg8k3k76FOWnXu610mWIE3Qhm','VERIFIED');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('3','3');
 
-insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (4,'User','1','user.user1.sb@gmail.com','$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i','VERIFIED');
+insert into bank.auth_user (auth_user_id,first_name,last_name,email,password,status) values (4,'User','1','user.user1.sb@gmail.com','$2a$10$98BWDboGjCPKoYwh9T4xLO5wx1kjkg8k3k76FOWnXu610mWIE3Qhm','VERIFIED');
 insert into bank.auth_user_role (auth_user_id, auth_role_id) values ('4','4');
 
 
