@@ -329,7 +329,7 @@ public class  AccountController {
             accountService.saveOrUpdate(account);
         }
         transactionService.saveOrUpdate(transaction);
-        if(role == Config.USER){
+        if(role == Config.USER || transaction.getTransaction_amount() > Config.LIMIT ){
             return "Success! Pending approval from Bank authorities!";
         }
         return "Success";

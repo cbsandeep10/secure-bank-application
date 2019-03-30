@@ -181,7 +181,12 @@ public class TransferController {
         }
         transactionService.saveOrUpdate(from_transaction);
         transactionService.saveOrUpdate(to_transaction);
-        redirectAttributes.addFlashAttribute("message","Successfully transferred");
+        if(transfer.getTransaction_amount() > Config.LIMIT || roles.contains("USER")){
+            redirectAttributes.addFlashAttribute("message","Successfully transferred, pending for approval!");
+        }else{
+            redirectAttributes.addFlashAttribute("message","Successfully transferred");
+        }
+
         logService.saveLog(authentication.getName(),"Transferred money from "+transfer.getFrom_account_no()+" to "+transfer.getTo_account_no()+ " for $"+transfer.getTransaction_amount());
         return "redirect:/transfer/"+type;
     }

@@ -62,6 +62,7 @@
                         <td><strong>DESCRIPTION</strong></td>
                         <td><strong>TYPE</strong></td>
                         <td><strong>CREATED AT</strong></td>
+                        <td><strong>APPROVED/DECLINED BY</strong></td>
                         <td><strong>STATUS</strong></td>
                     </tr>
                     </thead>
@@ -75,6 +76,7 @@
                         <td th:if="${request.getType() == 1}" th:text="'Account'"></td>
                         <td th:if="${request.getType() == 2}" th:text="'User'"></td>
                         <td th:text="${request.getCreated_at()}"></td>
+                        <td th:text="${request.getApproved_by()}"></td>
                         <td th:if="${request.getStatus_id() == 0}" th:text="'Pending'"></td>
                         <td th:if="${request.getStatus_id() == 1}" th:text="'Approved'"></td>
                         <td th:if="${request.getStatus_id() == 2}" th:text="'Declined'"></td>
