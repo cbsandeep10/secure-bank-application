@@ -1,8 +1,6 @@
 package com.example.banking.bank_app;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,14 +16,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.sql.DataSource;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Autowired
 	private CustomLoginSuccessHandler successHandler;
@@ -33,15 +27,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	@Qualifier("dataSource")
-	@Autowired
-	private DataSource dataSource;
-
-	@Value("${spring.queries.users-query}")
-	private String usersQuery;
-
-	@Value("${spring.queries.roles-query}")
-	private String rolesQuery;
 
 	@Autowired
 	private CustomWebAuthenticationDetailsSource authenticationDetailsSource;
@@ -49,9 +34,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.jdbcAuthentication().usersByUsernameQuery(usersQuery).authoritiesByUsernameQuery(rolesQuery)
-//				.dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder).and()
-//		.authenticationProvider(customAuthProvider);
 		auth.authenticationProvider(authProvider());
 	}
 
