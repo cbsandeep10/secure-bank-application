@@ -96,6 +96,10 @@ public class TransferController {
         try{
             to_account = accountService.getAccountByAccountNo(transfer.getTo_account_no());
             from_account = accountService.getAccountByAccountNo(transfer.getFrom_account_no());
+            if(from_account.getAccountNo().equals(to_account.getAccountNo())){
+                redirectAttributes.addFlashAttribute("message","Account numbers cannot be same!");
+                return "redirect:/transfer/"+type;
+            }
         }
         catch (Exception e){
             redirectAttributes.addFlashAttribute("message","Account number doesn't exists!");

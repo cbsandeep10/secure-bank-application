@@ -3,6 +3,7 @@ package com.example.banking.bank_app;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -55,8 +56,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/employee/edit/**").hasAnyAuthority("ADMIN")
 				.antMatchers("/employee/**").hasAnyAuthority("ADMIN","TIER2")
 				.antMatchers("/addUser").hasAnyAuthority("TIER2")
-				.antMatchers("/account/deposit").hasAnyAuthority("TIER1")
-				.antMatchers("/account/withdraw").hasAnyAuthority("TIER1")
+                .antMatchers(HttpMethod.GET,"/account/deposit").hasAnyAuthority("TIER1")
+                .antMatchers(HttpMethod.GET, "/account/withdraw").hasAnyAuthority("TIER1")
+                .antMatchers(HttpMethod.POST,"/account/deposit").hasAnyAuthority("TIER1","USER")
+				.antMatchers(HttpMethod.POST, "/account/withdraw").hasAnyAuthority("TIER1","USER")
 				.antMatchers("/request/**").hasAnyAuthority("TIER2", "TIER1")
 				.antMatchers("/tier1/**").hasAnyAuthority("TIER1")
 				.antMatchers("/account/list/**").hasAnyAuthority("TIER1", "TIER2")
