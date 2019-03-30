@@ -267,7 +267,7 @@ public class EmployeeController {
     public ModelAndView deleteAccount(@PathVariable("employee") Long employeeId, Authentication authentication) {
         employeeService.deleteEmployee(employeeId);
         logService.saveLog(authentication.getName(),"Deleted employee profile of "+employeeId);
-        return new ModelAndView("redirect:/account/list/1");
+        return new ModelAndView("redirect:/employee/list/1");
     }
 
 

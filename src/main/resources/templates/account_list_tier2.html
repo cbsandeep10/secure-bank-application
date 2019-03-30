@@ -60,7 +60,7 @@
                         <td th:text="${account.getCreated()}"></td>
                         <td th:text="${account.getUpdated()}"></td>
                         <td><a th:attr="name=${account.getAccountNo()}" class="btn btn-primary eBtn" th:href="@{|/account/edit/${account.getAccountNo()}|}">Edit</a></td>
-                        <td><a th:attr="name=${account.getAccountNo()}" class="btn btn-primary eBtn2">Delete</a></td>
+                        <td><a th:attr="name=${account.getAccountNo()}" class="btn btn-primary eBtn2" th:href="@{|/account/delete/${account.getAccountNo()}|}">Delete</a></td>
                     </tr>
                 </tbody>
             </table>

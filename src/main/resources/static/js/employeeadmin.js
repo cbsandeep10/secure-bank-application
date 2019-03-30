@@ -27,4 +27,12 @@ $(document).ready(function() {
         event.preventDefault();
         $('.employeeForm1 #exampleModal1').modal();
     });
+
+    $('.table .eBtn2').on('click',function (event) {
+        event.preventDefault();
+        var name = $(this).attr('name');
+        var approveForm = document.getElementById("delete");
+        approveForm.action +=name;
+        $('.deleteForm #exampleModal2').modal();
+    });
 });

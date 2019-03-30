@@ -73,7 +73,7 @@
                         <td th:text="${dar.getEmail_id()}"></td>
                         <td th:text="${dar.getAddress()}"></td>
                         <td><a th:attr="name=${dar.getEmployee_id()}" th:href="@{|/employee/edit/${dar.getEmployee_id()}|}" class="btn btn-primary eBtn">Edit</a></td>
-                        <td><a th:attr="name=${dar.getEmployee_id()}" class="btn btn-primary eBtn2">Delete</a></td>
+                        <td><a th:attr="name=${dar.getEmployee_id()}" th:href="@{|/employee/delete/${dar.getEmployee_id()}|}" class="btn btn-primary eBtn2">Delete</a></td>
                     </tr>
 
                     </tbody>
