@@ -27,19 +27,19 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
         if(auth_user == null){
             throw new BadCredentialsException("Wrong credentials");
         }
-        Timestamp time = auth_user.getExpiry();
-        time.setTime(time.getTime() + TimeUnit.MINUTES.toMillis(10));
-        if (time.before(new Timestamp(System.currentTimeMillis()))) {
-            throw new BadCredentialsException("OTP expired.");
-        }
-        try {
-            if (auth_user.getOtp() != Integer.parseInt(verificationCode)) {
-                throw new BadCredentialsException("Invalid OTP");
-            }
-        }
-        catch (Exception e){
-            throw new BadCredentialsException("Invalid OTP");
-        }
+//        Timestamp time = auth_user.getExpiry();
+//        time.setTime(time.getTime() + TimeUnit.MINUTES.toMillis(10));
+//        if (time.before(new Timestamp(System.currentTimeMillis()))) {
+//            throw new BadCredentialsException("OTP expired.");
+//        }
+//        try {
+//            if (auth_user.getOtp() != Integer.parseInt(verificationCode)) {
+//                throw new BadCredentialsException("Invalid OTP");
+//            }
+//        }
+//        catch (Exception e){
+//            throw new BadCredentialsException("Invalid OTP");
+//        }
         Authentication result = super.authenticate(auth);
         return new UsernamePasswordAuthenticationToken(
                 auth_user.getEmail(), result.getCredentials(), result.getAuthorities());

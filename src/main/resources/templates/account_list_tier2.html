@@ -23,7 +23,14 @@
                 <li class="active"><a th:href="@{/home}">Home</a></li>
                 <li><a th:href="@{/account/list/1}">User Accounts</a></li>
                 <li><a th:href="@{/employee/list/1}">Employee Accounts</a></li>
-                <li><a th:href="@{/request/list/1}">Requests</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Request
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/request/list/1}">Transaction</a></li>
+                        <li><a th:href="@{/account-request/list/1}">Account</a></li>
+                    </ul>
+                </li>
             </ul>
             <div class="pull-right">
                 <ul class="nav pull-right navbar-nav">

@@ -96,7 +96,7 @@ public class  AccountController {
         accountRequest.setStatus_id(Config.PENDING);
         accountRequest.setCreated_at(new Timestamp(System.currentTimeMillis()));
         accountRequest.setType(Config.ACCOUNT_TYPE);
-        accountRequest.setRole(Config.TIER1);
+        accountRequest.setRole(Config.TIER2);
         try {
             accountRequest.serializeaccount();
         }

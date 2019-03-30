@@ -19,7 +19,7 @@
             <div class="navbar-header">
                 <a class="navbar-brand" th:href="@{/home}">Secure Bank</a>
             </div>
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav" th:if="${role == 2}">
                 <li class="active"><a th:href="@{/home}">Home</a></li>
                 <li><a th:href="@{/account/list/1}">Accounts</a></li>
                 <li class="dropdown">
@@ -40,6 +40,19 @@
                         <li><a th:href="@{/transfer/account}">By Account</a></li>
                         <li><a th:href="@{/transfer/phone}">By Phone</a></li>
                         <li><a th:href="@{/transfer/email}">By Email</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav" th:if="${role == 3}">
+                <li class="active"><a th:href="@{/home}">Home</a></li>
+                <li><a th:href="@{/account/list/1}">User Accounts</a></li>
+                <li><a th:href="@{/employee/list/1}">Employee Accounts</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Request
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/request/list/1}">Transaction</a></li>
+                        <li><a th:href="@{/account-request/list/1}">Account</a></li>
                     </ul>
                 </li>
             </ul>

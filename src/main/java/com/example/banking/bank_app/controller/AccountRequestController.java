@@ -55,8 +55,12 @@ public class AccountRequestController {
         if(roles.contains("ADMIN")){
             role = Config.ADMIN;
             modelAndView = new ModelAndView("account_request_admin");
-        }else{
+        }else if(roles.contains("TIER1")){
             role = Config.TIER1;
+            modelAndView = new ModelAndView("account_request");
+        }
+        else{
+            role = Config.TIER2;
             modelAndView = new ModelAndView("account_request");
         }
 
@@ -67,6 +71,7 @@ public class AccountRequestController {
             List<Integer> pageNums = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
             modelAndView.addObject("pageNums", pageNums);
         }
+        modelAndView.addObject("role", role);
         modelAndView.addObject("activeRequestList", true);
         modelAndView.addObject("requestList", requestPage.getContent());
         return modelAndView;

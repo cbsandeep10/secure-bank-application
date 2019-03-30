@@ -64,7 +64,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/request/**").hasAnyAuthority("TIER2", "TIER1")
 				.antMatchers("/tier1/**").hasAnyAuthority("TIER1")
 				.antMatchers("/account/list/**").hasAnyAuthority("TIER1", "TIER2")
-				.antMatchers("/account-request/**").hasAnyAuthority("TIER1", "ADMIN")
+				.antMatchers("/account-request/**").hasAnyAuthority("TIER1", "ADMIN", "TIER2")
 				.antMatchers("/checks/**").hasAnyAuthority("TIER1")
 				.antMatchers("/transfer/**").hasAnyAuthority("TIER1", "USER", "MERCHANT")
 				.antMatchers("/tier2/**").hasAnyAuthority("TIER2")
