@@ -132,6 +132,10 @@ public class  AccountController {
             redirectAttributes.addFlashAttribute("message", "Account number & Name cannot be edited");
             return new ModelAndView("redirect:/account/list/1");
         }
+        if(oldAccount.getBalance() != account.getBalance()){
+            redirectAttributes.addFlashAttribute("message", "Balance cannot be edited");
+            return new ModelAndView("redirect:/account/list/1");
+        }
         if(account.getBalance() < 0){
             redirectAttributes.addFlashAttribute("message", "Balance cannot be negative");
             return new ModelAndView("redirect:/account/list/1");
