@@ -79,12 +79,13 @@ public class TransactionRequestController {
         TransactionRequest transactionRequest = transactionRequestService.getRequestByRequestId(new Long(id));
         transactionRequest.setApproved_at(new Timestamp(System.currentTimeMillis()));
         transactionRequest.setApproved_by(employee.getEmployee_name()); //Remeber to change this
-        transactionRequest.setStatus_id(Config.APPROVED);
-        transactionRequestService.saveOrUpdate(transactionRequest);
+
 
         if(transactionRequest.getType() == Config.TRANSFER){
             Account from_account = accountService.getAccountByAccountNo(transactionRequest.getFrom_account());
             if(from_account.getBalance()-transactionRequest.getTransaction_amount() < 0){
+                transactionRequest.setStatus_id(Config.DECLINED);
+                transactionRequestService.saveOrUpdate(transactionRequest);
                 redirectAttributes.addFlashAttribute("message", "Insufficient Balance, Declined transaction request");
                 logService.saveLog(authentication.getName(),"Insufficient Balance, Declined transaction request for id:"+id);
                 return new ModelAndView("redirect:/request/list/1");
@@ -110,6 +111,8 @@ public class TransactionRequestController {
             Account account = accountService.getAccountByAccountNo(transactionRequest.getFrom_account());
             if(transactionRequest.getType() == Config.WITHDRAW){
                 if(account.getBalance()-transactionRequest.getTransaction_amount() < 0){
+                    transactionRequest.setStatus_id(Config.DECLINED);
+                    transactionRequestService.saveOrUpdate(transactionRequest);
                     redirectAttributes.addFlashAttribute("message", "Insufficient Balance, Declined transaction request");
                     logService.saveLog(authentication.getName(),"Insufficient Balance, Declined transaction request for id:"+id);
                     return new ModelAndView("redirect:/request/list/1");
@@ -127,6 +130,8 @@ public class TransactionRequestController {
                 transactionService.saveOrUpdate(transactions.get(i));
             }
         }
+        transactionRequest.setStatus_id(Config.APPROVED);
+        transactionRequestService.saveOrUpdate(transactionRequest);
         redirectAttributes.addFlashAttribute("message", "Approved transaction request");
         logService.saveLog(authentication.getName(),"Approved transaction request for id:"+id);
         return new ModelAndView("redirect:/request/list/1");

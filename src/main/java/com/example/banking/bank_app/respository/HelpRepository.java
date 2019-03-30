@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
-public interface HelpRepository extends CrudRepository<Help, Integer> {
+public interface HelpRepository extends CrudRepository<Help, Long> {
 
     Page<Help> findAll(Pageable pageable);
 }
