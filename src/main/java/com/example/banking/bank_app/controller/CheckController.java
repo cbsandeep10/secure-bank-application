@@ -72,6 +72,10 @@ public class CheckController {
             redirectAttributes.addFlashAttribute("message", "Account Number doesn't Exist!");
             return new ModelAndView("redirect:/checks/issue");
         }
+        if(check.getAmount() < 0){
+            redirectAttributes.addFlashAttribute("message", "Amount cannot be negative!");
+            return new ModelAndView("redirect:/checks/issue");
+        }
         if(account.getBalance() - check.getAmount() < 0){
             redirectAttributes.addFlashAttribute("message", "No Sufficient Balance");
             return new ModelAndView("redirect:/checks/issue");

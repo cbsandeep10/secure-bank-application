@@ -61,13 +61,12 @@ public class AddUserController {
         auth_user.setEmail(adduser.getEmailId());
         try {
             User u = userService.getUserByUserId(userService.findUserByPhone(adduser.getContact()));
-            if (u == null){
+            if (u != null){
                 redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
                 return "redirect:/addUser";
             }
         }catch (Exception e){
-            redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
-            return "redirect:/addUser";
+            System.out.println("Exception");
         }
         if(userService.userAlreadyExist(auth_user)){
             redirectAttributes.addFlashAttribute("message", "Email already exists!");

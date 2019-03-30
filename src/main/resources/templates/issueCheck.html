@@ -68,7 +68,7 @@
         <div class="form-group">
             <label class="control-label col-sm-2" >Amount</label>
             <div class="col-sm-4">
-                <input type ="number" class="form-control" th:field="*{amount}" placeholder="Enter Check Amount" name="amount" id="amount" required>
+                <input type ="number" class="form-control" th:field="*{amount}" placeholder="Enter Check Amount" name="amount" id="amount" min="1" step="0.1" required>
                 <span class="help-block" id="contact-error"></span>
             </div>
         </div>

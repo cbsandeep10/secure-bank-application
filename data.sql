@@ -236,7 +236,7 @@ CREATE TABLE bank.help_page (
 
 
 DROP TRIGGER IF EXISTS  bank.account_trigger;
-
+delimiter //
 CREATE TRIGGER bank.account_trigger BEFORE DELETE ON bank.account
 FOR EACH ROW
 BEGIN
@@ -247,6 +247,7 @@ DELETE FROM bank.transaction where account_no = OLD.account_no;
 DELETE FROM bank.cards where account_no = OLD.account_no;
 DELETE FROM bank.checks where account_no = OLD.account_no;
 END;//
+delimiter ;
 
 
 -- INSERT INTO bank.help_page(help_id, auth_user_id, mobile, email, title, shortdescription) values(1,1,'480-452-4823','abc@gmail.com','Error Page','Error in help page');

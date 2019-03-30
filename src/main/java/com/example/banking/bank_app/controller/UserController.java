@@ -97,11 +97,14 @@ public class UserController {
             return new ModelAndView("redirect:/user");
         }
         try{
-            userService.findUserByPhone(user.getContact());
+            User user1 = userService.getUserByUserId(userService.findUserByPhone(user.getContact()));
+            if( user1 != null && !user1.getUserId().equals(old_user.getUserId())){
+                redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
+                return new ModelAndView("redirect:/user");
+            }
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
-            return new ModelAndView("redirect:/user");
+            System.out.println("Exception");
         }
 //        userService.saveOrUpdate(old_user);
         AccountRequest accountRequest = new AccountRequest();

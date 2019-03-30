@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AuthUserRepository extends CrudRepository<Auth_user, Long> {
+public interface AuthUserRepository extends CrudRepository<Auth_user, Integer> {
 
 
     @Query("SELECT u FROM Auth_user u WHERE u.email =:email")

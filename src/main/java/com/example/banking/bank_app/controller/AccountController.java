@@ -44,7 +44,7 @@ public class  AccountController {
     private TransactionRequestService transactionRequestService;
 
     @RequestMapping(value="/list/{page}", method= RequestMethod.GET)
-    public ModelAndView list(@PathVariable("page") int page, Authentication authentication) {
+    public ModelAndView list(@PathVariable("page") int page, Authentication authentication, @ModelAttribute("message") String message) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> roles = new ArrayList<String>();
         for(GrantedAuthority a : authorities) {
@@ -67,6 +67,7 @@ public class  AccountController {
         modelAndView.addObject("accountList", accountPage.getContent());
         Account account = new Account();
         modelAndView.addObject("account", account);
+        modelAndView.addObject("message", message);
         return modelAndView;
     }
 
@@ -113,13 +114,43 @@ public class  AccountController {
     }
 
     @RequestMapping(value="/edit", method= RequestMethod.POST)
-    public ModelAndView editAccount(@Valid Account account) {
-        Account oldAccount = accountService.getAccountByAccountNo(account.getAccountNo());
+    public ModelAndView editAccount(@Valid Account account, RedirectAttributes redirectAttributes, Authentication authentication) {
+
+        Account oldAccount = null;
+        try{
+            oldAccount =accountService.getAccountByAccountNo(account.getAccountNo());
+        }
+        catch (Exception e){
+            redirectAttributes.addFlashAttribute("message", "Account number & Name cannot be edited");
+            return new ModelAndView("redirect:/account/list/1");
+        }
+        if(!account.getAccountNo().equals(oldAccount.getAccountNo())){
+            redirectAttributes.addFlashAttribute("message", "Account number & Name cannot be edited");
+            return new ModelAndView("redirect:/account/list/1");
+        }
+        if(!account.getUserName().equals(oldAccount.getUserName())){
+            redirectAttributes.addFlashAttribute("message", "Account number & Name cannot be edited");
+            return new ModelAndView("redirect:/account/list/1");
+        }
+        if(account.getBalance() < 0){
+            redirectAttributes.addFlashAttribute("message", "Balance cannot be negative");
+            return new ModelAndView("redirect:/account/list/1");
+        }
+        if(account.getInterest() < 0){
+            redirectAttributes.addFlashAttribute("message", "Interest cannot be negative");
+            return new ModelAndView("redirect:/account/list/1");
+        }
+        if(account.getAccountType() <0 || account.getAccountType() > 3){
+            redirectAttributes.addFlashAttribute("message", "Account type is not correct");
+            return new ModelAndView("redirect:/account/list/1");
+        }
         account.setCreated(oldAccount.getCreated());
         account.setRoutingNo(oldAccount.getRoutingNo());
         account.setUserId(oldAccount.getUserId());
         account.setUpdated(new Timestamp(System.currentTimeMillis()));
         accountService.saveOrUpdate(account);
+        logService.saveLog(authentication.getName(), "Account edit for  "+account.getAccountNo());
+        redirectAttributes.addFlashAttribute("message", "Successfully saved");
         return new ModelAndView("redirect:/account/list/1");
     }
 

@@ -1,6 +1,7 @@
 package com.example.banking.bank_app.service;
 
 import com.example.banking.bank_app.model.AuthUserRole;
+import com.example.banking.bank_app.model.AuthUserRolePK;
 import com.example.banking.bank_app.model.Auth_user;
 import com.example.banking.bank_app.model.User;
 import org.springframework.data.domain.Page;
@@ -28,11 +29,17 @@ public interface UserService {
 
 //    void saveNewUser(User user);
 
-    void deleteUser(Long userId);
+    void deleteUser(Integer userId);
 
     User saveOrUpdate(User user);
 
     void save(AuthUserRole authUserRole);
 
+    void deleteAuthUserRole(AuthUserRole authUserRole);
+
+    void deleteAuthUser(Integer authUserId);
+
     Auth_user findByEmail(String email);
+
+    AuthUserRole findById(AuthUserRolePK authUserRolePK);
 }

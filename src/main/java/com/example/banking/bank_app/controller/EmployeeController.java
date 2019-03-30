@@ -1,6 +1,7 @@
 package com.example.banking.bank_app.controller;
 
 import com.example.banking.bank_app.model.*;
+import com.example.banking.bank_app.respository.AuthUserRepository;
 import com.example.banking.bank_app.service.AccountRequestService;
 import com.example.banking.bank_app.service.EmployeeService;
 import com.example.banking.bank_app.service.LogService;
@@ -98,7 +99,11 @@ public class EmployeeController {
                 return new ModelAndView("redirect:/employee/list/1");
             }
             try{
-                employeeService.findUserByPhone(employee.getContact_no());
+                Long id11 = employeeService.findUserByPhone(employee.getContact_no());
+                if(id11 != null && !id11.equals(employee.getEmployee_id())){
+                    redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
+                    return new ModelAndView("redirect:/employee/list/1");
+                }
             }
             catch (Exception e){
                 redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
@@ -140,7 +145,11 @@ public class EmployeeController {
             return new ModelAndView("redirect:/tier2");
         }
         try{
-            employeeService.findUserByPhone(employee.getContact_no());
+            Long id11 = employeeService.findUserByPhone(employee.getContact_no());
+            if(id11 != null && !id11.equals(employee.getEmployee_id())){
+                redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
+                return new ModelAndView("redirect:/tier2");
+            }
         }
         catch (Exception e){
             redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
@@ -205,7 +214,11 @@ public class EmployeeController {
             return new ModelAndView("redirect:/employee/list/1");
         }
         try{
-            employeeService.findUserByPhone(employee.getContact_no());
+            Long id11 = employeeService.findUserByPhone(employee.getContact_no());
+            if(id11 != null && !id11.equals(employee.getEmployee_id())){
+                redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
+                return new ModelAndView("redirect:/employee/list/1");
+            }
         }
         catch (Exception e){
             redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
@@ -265,6 +278,13 @@ public class EmployeeController {
 
     @RequestMapping(value="/delete/{employee}", method= RequestMethod.POST)
     public ModelAndView deleteAccount(@PathVariable("employee") Long employeeId, Authentication authentication) {
+        Employee employee = employeeService.getEmployeeById(employeeId);
+        Auth_user auth_user = userService.findByEmail(employee.getEmail_id());
+        AuthUserRole authUserRole = new AuthUserRole();
+        authUserRole.setAuth_user_id(new Long(auth_user.getId()));
+        authUserRole.setAuth_role_id(new Long(employee.getTier_level()));
+        userService.deleteAuthUserRole(authUserRole);
+        userService.deleteAuthUser(auth_user.getId());
         employeeService.deleteEmployee(employeeId);
         logService.saveLog(authentication.getName(),"Deleted employee profile of "+employeeId);
         return new ModelAndView("redirect:/employee/list/1");
@@ -290,7 +310,10 @@ public class EmployeeController {
                 return new ModelAndView("redirect:/employee/list/1");
             }
             try{
-                employeeService.findUserByPhone(employee.getContact_no());
+                if(employeeService.findUserByPhone(employee.getContact_no())!=null){
+                    redirectAttributes.addFlashAttribute("message","Contact Number already exists!");
+                    return new ModelAndView("redirect:/employee/list/1");
+                }
             }
             catch (Exception e){
                 redirectAttributes.addFlashAttribute("message","Contact Number already exists!");

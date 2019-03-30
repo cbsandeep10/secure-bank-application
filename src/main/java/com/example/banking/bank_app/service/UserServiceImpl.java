@@ -1,9 +1,6 @@
 package com.example.banking.bank_app.service;
 
-import com.example.banking.bank_app.model.AuthUserRole;
-import com.example.banking.bank_app.model.Auth_role;
-import com.example.banking.bank_app.model.Auth_user;
-import com.example.banking.bank_app.model.User;
+import com.example.banking.bank_app.model.*;
 import com.example.banking.bank_app.respository.AuthUserRepository;
 import com.example.banking.bank_app.respository.AuthUserRoleRepository;
 import com.example.banking.bank_app.respository.RoleRepository;
@@ -75,7 +72,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Long userId) {
+    public void deleteUser(Integer userId) {
         authUserRepository.deleteById(userId);
     }
 
@@ -106,5 +103,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public Auth_user findByEmail(String email){
         return authUserRepository.findUserByEmail(email);
+    }
+
+    @Override
+    public void deleteAuthUserRole(AuthUserRole authUserRole){
+        authUserRoleRepository.delete(authUserRole);
+    }
+
+    @Override
+    public void deleteAuthUser(Integer authUserId){
+        authUserRepository.deleteById(authUserId);
+    }
+
+    @Override
+    public AuthUserRole findById(AuthUserRolePK authUserRolePK){
+        return authUserRoleRepository.findById(authUserRolePK).get();
     }
 }

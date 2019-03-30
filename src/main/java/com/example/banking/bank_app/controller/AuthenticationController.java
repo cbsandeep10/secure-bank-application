@@ -48,6 +48,14 @@ public class AuthenticationController {
         modelAndView.setViewName("login"); // resources/template/login.html
         return modelAndView;
     }
+
+    @RequestMapping(value = { "/denied" }, method = RequestMethod.GET)
+    public ModelAndView denied() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("denied"); // resources/template/login.html
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView register() {
         ModelAndView modelAndView = new ModelAndView();
