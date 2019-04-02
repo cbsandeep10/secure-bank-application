@@ -81,8 +81,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/user/list/**").denyAll()
 				.anyRequest().authenticated()
 				.and()
-				.csrf().disable().formLogin()
-				.loginPage("/login")
+				.csrf()
+				.and()
+				.formLogin().loginPage("/login")
 				.failureUrl("/login?error=true")
 				//.defaultSuccessUrl("/merchant")
 
