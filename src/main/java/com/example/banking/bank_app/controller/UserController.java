@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -76,7 +77,11 @@ public class UserController {
     }
 
     @RequestMapping(value="/edit", method= RequestMethod.POST)
-    public ModelAndView editAccount(@Valid User user, Authentication authentication, RedirectAttributes redirectAttributes) {
+    public ModelAndView editAccount(@Valid User user, BindingResult bindingResult,Authentication authentication,  RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("message","Please fix the errors");
+            return new ModelAndView("redirect:/user");
+        }
         Long id =  userService.findUserByEmail(authentication.getName());
         User old_user = userService.getUserByUserId(id);
 //        old_user.setAddress(user.getAddress());

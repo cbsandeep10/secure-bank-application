@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -114,8 +115,11 @@ public class  AccountController {
     }
 
     @RequestMapping(value="/edit", method= RequestMethod.POST)
-    public ModelAndView editAccount(@Valid Account account, RedirectAttributes redirectAttributes, Authentication authentication) {
-
+    public ModelAndView editAccount(@Valid Account account, BindingResult bindingResult, RedirectAttributes redirectAttributes, Authentication authentication) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("message","Please fix the errors");
+            return new ModelAndView("redirect:/account/list/1");
+        }
         Account oldAccount = null;
         try{
             oldAccount =accountService.getAccountByAccountNo(account.getAccountNo());
@@ -205,7 +209,8 @@ public class  AccountController {
     }
 
     @RequestMapping(value="/deposit", method= RequestMethod.POST)
-    public ModelAndView depositPost(@Valid Transaction transaction, Authentication authentication,  RedirectAttributes redirectAttributes) {
+    public ModelAndView depositPost(@Valid Transaction transaction, BindingResult bindingResult,Authentication authentication,  RedirectAttributes redirectAttributes) {
+
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> roles = new ArrayList<String>();
         for(GrantedAuthority a : authorities) {
@@ -225,6 +230,10 @@ public class  AccountController {
             role = Config.USER;
             modelAndView = new ModelAndView("redirect:/account/deposit1");
         }
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("message","Please fix the errors");
+            return modelAndView;
+        }
         String message = depositandwithdraw(Config.CREDIT, transaction,name, role, authentication);
         if(message.contains("Success")){
             logService.saveLog(authentication.getName(), "Deposited money for account "+transaction.getAccount_no()+" $"+transaction.getTransaction_amount());
@@ -234,7 +243,8 @@ public class  AccountController {
     }
 
     @RequestMapping(value="/withdraw", method= RequestMethod.POST)
-    public ModelAndView withdrawPost(@Valid Transaction transaction,Authentication authentication,  RedirectAttributes redirectAttributes) {
+    public ModelAndView withdrawPost(@Valid Transaction transaction,BindingResult bindingResult,Authentication authentication,  RedirectAttributes redirectAttributes) {
+
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> roles = new ArrayList<String>();
         for(GrantedAuthority a : authorities) {
@@ -253,6 +263,10 @@ public class  AccountController {
             name = userService.getUserByUserId(id).getName();
             role = Config.USER;
             modelAndView = new ModelAndView("redirect:/account/withdraw1");
+        }
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("message","Please fix the errors");
+            return modelAndView;
         }
         String message = depositandwithdraw(Config.DEBIT, transaction, name, role, authentication);
         if(message.contains("Success")){

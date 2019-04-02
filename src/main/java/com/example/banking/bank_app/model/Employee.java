@@ -1,4 +1,6 @@
 package com.example.banking.bank_app.model;
+import org.hibernate.validator.constraints.SafeHtml;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -12,9 +14,11 @@ public class Employee {
     private Long employee_id;
 
     @Column(name="employee_name")
+    @SafeHtml
     private String employee_name;
 
     @Column(name="gender")
+    @SafeHtml
     private String gender;
 
     @Column(name="age")
@@ -27,12 +31,15 @@ public class Employee {
     private Integer designation_id;
 
     @Column(name="contact_no")
+    @SafeHtml
     private String contact_no;
 
     @Column(name="email_id")
+    @SafeHtml
     private String email_id;
 
     @Column(name="address")
+    @SafeHtml
     private String address;
 
     @Column(name="created")

@@ -1,5 +1,7 @@
 package com.example.banking.bank_app.model;
 
+import org.hibernate.validator.constraints.SafeHtml;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,11 +32,13 @@ public class Help {
     @Column(name="shortdescription")
     @NotNull()
     @Size(min=2,max=200, message="Description should be between 2 to 200 characters")
+    @SafeHtml
     private String shortdescription;
 
     @Column(name="title")
     @NotNull()
     @Size(min=2,max=32,message = "Title should be between 2 to 32 characters")
+    @SafeHtml
     private String title;
 
     public String getTitle() {

@@ -18,7 +18,6 @@ public class HashMapConverter implements AttributeConverter<Map<String, Object>,
         try {
             customerInfoJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(customerInfo);
         } catch (final JsonProcessingException e) {
-//            logger.error("JSON writing error", e);
         }
 
         return customerInfoJson;
@@ -31,7 +30,6 @@ public class HashMapConverter implements AttributeConverter<Map<String, Object>,
         try {
             customerInfo = objectMapper.readValue(customerInfoJSON, Map.class);
         } catch (final IOException e) {
-//            logger.error("JSON reading error", e);
         }
 
         return customerInfo;

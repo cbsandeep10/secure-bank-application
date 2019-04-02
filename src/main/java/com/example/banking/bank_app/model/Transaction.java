@@ -1,5 +1,7 @@
 package com.example.banking.bank_app.model;
 
+import org.hibernate.validator.constraints.SafeHtml;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -19,6 +21,7 @@ public class Transaction {
     private Timestamp transaction_timestamp;
 
     @Column(name="description")
+    @SafeHtml
     private String description;
 
     @Column(name="status")

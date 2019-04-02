@@ -1,5 +1,6 @@
 package com.example.banking.bank_app.model;
 
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
@@ -9,9 +10,11 @@ public class AddUser {
 
 
     @NotNull(message="Name cannot be empty")
+    @SafeHtml
     private String name;
 
     @NotNull(message="Gender cannot be empty")
+    @SafeHtml
     private String gender;
 
     @NotNull(message="Gender cannot be empty")
@@ -19,12 +22,15 @@ public class AddUser {
     private Date dob;
 
     @NotNull(message="Contact cannot be empty")
+    @SafeHtml
     private String contact;
 
     @NotNull(message="Email id cannot be empty")
+    @SafeHtml
     private String emailId;
 
     @NotNull(message="Address cannot be empty")
+    @SafeHtml
     private String address;
 
     private float balance;

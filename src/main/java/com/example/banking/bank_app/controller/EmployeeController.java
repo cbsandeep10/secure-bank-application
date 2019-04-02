@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -74,7 +75,11 @@ public class EmployeeController {
     }
 
     @RequestMapping(value="/edit", method= RequestMethod.POST) //admin
-    public ModelAndView editEmployee(@Valid Employee employee, Authentication authentication, RedirectAttributes redirectAttributes) {
+    public ModelAndView editEmployee(@Valid Employee employee, BindingResult bindingResult,Authentication authentication, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("message","Please fix the errors");
+            return new ModelAndView("redirect:/employee/list/1");
+        }
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> roles = new ArrayList<String>();
         for(GrantedAuthority a : authorities) {
@@ -123,7 +128,11 @@ public class EmployeeController {
     }
 
     @RequestMapping(value="/edit1", method= RequestMethod.POST)//tier2 homepage
-    public ModelAndView editEmployee1(@Valid Employee employee, Authentication authentication, RedirectAttributes redirectAttributes) {
+    public ModelAndView editEmployee1(@Valid Employee employee, BindingResult bindingResult, Authentication authentication, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("message","Please fix the errors");
+            return new ModelAndView("redirect:/tier2");
+        }
         Long userId =  employeeService.findUserByEmail(authentication.getName());
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> roles = new ArrayList<String>();
@@ -200,7 +209,11 @@ public class EmployeeController {
     }
 
     @RequestMapping(value="/edit2", method= RequestMethod.POST)//tier2 employee page
-    public ModelAndView editEmployee2(@Valid Employee employee, Authentication authentication, RedirectAttributes redirectAttributes) {
+    public ModelAndView editEmployee2(@Valid Employee employee, BindingResult bindingResult,Authentication authentication, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("message","Please fix the errors");
+            return new ModelAndView("redirect:/employee/list/1");
+        }
         Long userId =  employeeService.findUserByEmail(authentication.getName());
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> roles = new ArrayList<String>();
@@ -292,7 +305,11 @@ public class EmployeeController {
 
 
     @RequestMapping(value="/create", method= RequestMethod.POST) //admin
-    public ModelAndView createEmployee(@Valid Employee employee, Authentication authentication, RedirectAttributes redirectAttributes) {
+    public ModelAndView createEmployee(@Valid Employee employee, BindingResult bindingResult,Authentication authentication, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("message","Please fix the errors");
+            return new ModelAndView("redirect:/employee/list/1");
+        }
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> roles = new ArrayList<String>();
         for(GrantedAuthority a : authorities) {

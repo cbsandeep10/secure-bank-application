@@ -65,7 +65,7 @@ public class TransferController {
     }
 
     @RequestMapping(value = "/transfer/{type}", method= RequestMethod.POST)
-    public String formSubmit(@Valid Transfer transfer,  @PathVariable String type, BindingResult bindingResult, Authentication authentication, RedirectAttributes redirectAttributes) {
+    public String formSubmit(@Valid Transfer transfer,  BindingResult bindingResult, @PathVariable String type,  Authentication authentication, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("message","Please correct the errors!");
             return "redirect:/transfer/"+type;

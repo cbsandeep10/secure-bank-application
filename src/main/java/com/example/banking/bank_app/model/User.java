@@ -1,6 +1,7 @@
 package com.example.banking.bank_app.model;
 
 
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -16,18 +17,23 @@ public class User {
     private Long userId;
 
     @Column(name="name")
+    @SafeHtml
     private String name;
 
     @Column(name="gender")
+    @SafeHtml
     private String gender;
 
     @Column(name="contact")
+    @SafeHtml
     private String contact;
 
     @Column(name="email_id")
+    @SafeHtml
     private String emailId;
 
     @Column(name="address")
+    @SafeHtml
     private String address;
 
     @Column(name="user_type")
